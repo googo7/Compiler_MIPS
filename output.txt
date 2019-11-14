@@ -1,0 +1,74 @@
+INTTK int
+IDENFR fun
+<声明头部>
+LPARENT (
+CHARTK char
+IDENFR ch
+<参数表>
+RPARENT )
+LBRACE {
+RETURNTK return
+LPARENT (
+IDENFR ch
+<因子>
+<项>
+PLUS +
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RPARENT )
+<返回语句>
+SEMICN ;
+<语句>
+<语句列>
+<复合语句>
+RBRACE }
+<有返回值函数定义>
+VOIDTK void
+MAINTK main
+LPARENT (
+RPARENT )
+LBRACE {
+CHARTK char
+IDENFR ch
+<变量定义>
+SEMICN ;
+INTTK int
+IDENFR num
+<变量定义>
+SEMICN ;
+<变量说明>
+IDENFR ch
+ASSIGN =
+CHARCON a
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR num
+ASSIGN =
+IDENFR fun
+LPARENT (
+IDENFR ch
+<因子>
+<项>
+<表达式>
+<值参数表>
+RPARENT )
+<有返回值函数调用语句>
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+<语句列>
+<复合语句>
+RBRACE }
+<主函数>
+<程序>

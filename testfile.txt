@@ -1,0 +1,9 @@
+int fun(char ch){
+	return (ch + 1);
+}
+void main(){
+	char ch;
+	int num;
+	ch = 'a';
+	num = fun(ch);
+}
