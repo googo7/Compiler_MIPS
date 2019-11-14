@@ -3,6 +3,7 @@
 #include <stack>
 #include "GMAnalysis.h"
 #include "FILEOperator.h"
+#include "MemoryManage.h"
 #include <set>
 #include <iostream>
 #include <sstream>
@@ -33,8 +34,15 @@ int label_cnt = 0;
 vector<token_info> midcode_vt{}; //用于保存用于解析出四元式的容器，注意及时清空
 int midcode_flag = 0;//控制是否进入midcode_vt的开关
 //WARNING!
+string func_name_now = "";
+int func_var_pt = 0;
+vector<MemoryTableItem> memory_table;
+
+
 
 extern string file_string;
+
+
 
 gm_analyse::gm_analyse() {
 	this->tk = tk_analyse();
@@ -85,6 +93,12 @@ void gm_analyse::isProgram() {
 	into_func();
 	isMainFunction();
 	out_func();
+
+	vector<var_info> vv = symtab.global_var_table;
+	for (int i = 0; i < vv.size(); i++) {
+		MemoryTableItem mti(vv[i].iden, "", 0, func_var_pt + vv[i].addr);
+		memory_table.push_back(mti);
+	}
 	//-------------OUT--------------------
 	string s("<程序>");
 	OUT_LABEL(s);
@@ -95,6 +109,7 @@ void gm_analyse::isMainFunction(void){
 		OUT(tk.now_token); getsym;
 	} //else error
 	if (type == MAINTK) {
+		func_name_now = "main";
 		OUT(tk.now_token); getsym;
 	} //else error
 	if (type == LPARENT) {
@@ -322,6 +337,7 @@ void gm_analyse::isDeclarationHeader(void){
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
 			symtab.func_push(token, vector<int>{}, INT);
+			func_name_now = token;
 			OUT(tk.now_token); getsym;
 		}
 	}
@@ -796,6 +812,7 @@ void gm_analyse::isVoidFunction(void){
 		OUT(tk.now_token); getsym;
 	}//else
 	if (type == IDENFR) {
+		func_name_now = token;
 		symtab.func_push(token, vector<int>{}, VOID);
 		OUT(tk.now_token); getsym;
 	}//else
@@ -925,6 +942,12 @@ void gm_analyse::into_func(void) {
 
 void gm_analyse::out_func(void) {
 	isLocal = 0;
+	vector<var_info> vv = symtab.local_var_table;
+	for (int i = 0; i < vv.size(); i++) {
+		MemoryTableItem mti(vv[i].iden, func_name_now, 1, func_var_pt + vv[i].addr);
+		memory_table.push_back(mti);
+	}
+	func_var_pt += vv.size();
 	symtab.clear();
 }
 

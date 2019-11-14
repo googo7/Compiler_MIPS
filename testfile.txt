@@ -1,9 +1,97 @@
-int fun(char ch){
-	return (ch + 1);
+const int aaaa = 1111, aaaaaa = 1111;
+const int a111 = 1111;
+const int azheng = +1111;
+const int afu = -1111;
+const char bbbb = '1';
+const char b111 = '1';
+const char bjia = '+';
+const char bjian = '-', bcheng = '*';
+const char bchu = '/';
+
+
+int A[10];
+int a, b, c;
+char B[10];
+char d, e, f;
+
+
+void fun1(){
+    const int a_fun1 = 1111;
+    const char b_fun1 = '+';
+    const char bb_fun1 = '_';
+    int a, i;
+    char b;
+    if (a_fun1) {
+        scanf(a, b);
+    } else {
+        scanf(a);
+    }
+    i = 0;
+    while(i != 5){
+        printf("the value of b_fun1 is", b_fun1);
+        i = i + (1 * 1);
+    }
+    return;
 }
-void main(){
-	char ch;
-	int num;
-	ch = 'a';
-	num = fun(ch);
+
+int return1(){
+    return (1);
+}
+
+int add(int a, int b){
+    return (a + b);
+}
+
+
+int multi(int a, int b){
+    int c;
+    c = a * (a + b);
+    c = c + a + b / c;
+    c = a * b;
+    return (c);
+}
+
+char nextChar(char a){
+    int i;
+    printf("the next letter is ");
+    printf(a + 1);
+    i = 0;
+    do{
+        printf("next", a + i);
+        i = i + 1;
+    } while(i <= 5)
+    return (a);
+}
+
+
+
+
+void main()
+{
+    int a[10];
+    int c;
+    char d;
+    int dd;
+    int i;
+    fun1();
+    c = 10;
+    a[1] = 999;
+    c = c - 1;
+    a[0] = c;
+    c = a[1] - ( (add(- (c + 1), 10012) + multi(+12306, c * c - 1)) * c + 10086);
+    d = nextChar(d);
+    for (i = 0; i < 10; i = i + 1){
+        d = nextChar(d);
+    }
+    if (i > 5) {
+        scanf(dd);
+    }
+    if (i >= 10000){
+        ;
+    }
+    if (i == 1){
+        ;
+    }
+    printf("Hello world!");
+    return;
 }

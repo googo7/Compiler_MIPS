@@ -51,6 +51,8 @@ string MidCodeGen::gen_temp(void) {
 
 void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 	if (type == "FUNC") {
+		if (tk_set.size() == 4)
+			return;
 		//int\char func_name(int a, int b, int c)
 		string s1 = tk_set[0].token;
 		string s2 = tk_set[1].token;
@@ -102,7 +104,10 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 				}
 			}
 			for (i++; i < tk_set.size(); i++) {
-				if (tk_set[i].type == RPARENT && tk_set[i - 2].type != IDENFR) {
+				if (tk_set[i].type == LPARENT) {
+					cnt_pa++;
+				}
+				if (tk_set[i].type == RPARENT) {
 					cnt_pa--;
 				}
 				if (!cnt_pa) {
@@ -272,8 +277,10 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 		for (i++; i < tk_set.size(); i++) {
 			vt2.push_back(tk_set[i]);
 		}
-		parse(string("EXPR"), vt2);
-		s2 = get_last_result();
+		if (vt2.size()) {
+			parse(string("EXPR"), vt2);
+			s2 = get_last_result();
+		}
 		push(op, s1, s2, gen_temp());
 	}
 	else if (type == "WHILE") {

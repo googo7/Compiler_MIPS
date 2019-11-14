@@ -7,6 +7,9 @@ using namespace std;
 
 
 class MemoryTableItem {
+public:
+	MemoryTableItem();
+	MemoryTableItem(string, string, int, int);
 	string iden;
 	string func;
 	int isLocal;

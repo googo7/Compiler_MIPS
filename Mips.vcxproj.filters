@@ -36,6 +36,9 @@
     <ClCompile Include="source\MidCode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="source\MemoryManage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Error.h">
@@ -54,9 +57,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="source\MidCode.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="source\MemoryManage.h">
