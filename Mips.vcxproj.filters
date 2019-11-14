@@ -59,5 +59,8 @@
     <ClInclude Include="MemoryManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="source\MemoryManage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

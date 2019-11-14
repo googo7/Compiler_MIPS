@@ -136,6 +136,7 @@
     <ClInclude Include="source\Error.h" />
     <ClInclude Include="source\FILEOperator.h" />
     <ClInclude Include="source\GMAnalysis.h" />
+    <ClInclude Include="source\MemoryManage.h" />
     <ClInclude Include="source\MidCode.h" />
     <ClInclude Include="source\SymbolTable.h" />
     <ClInclude Include="source\TkAnalysis.h" />
