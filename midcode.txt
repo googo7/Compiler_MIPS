@@ -1,3 +1,4 @@
-printf		|"abcd"		|		|
-printf		|"aaaa"		|		|
-printf		|"aaaaaaa"		|		|
+scanf		|a		|		|
+scanf		|b		|		|
+scanf		|c		|		|
+scanf		|d		|		|

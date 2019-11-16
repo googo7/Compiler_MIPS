@@ -14,28 +14,17 @@ IDENFR d
 <±äÁ¿¶¨Òå>
 SEMICN ;
 <±äÁ¿ËµÃ÷>
-PRINTFTK printf
+SCANFTK scanf
 LPARENT (
-STRCON abcd
-<×Ö·û´®>
+IDENFR a
+COMMA ,
+IDENFR b
+COMMA ,
+IDENFR c
+COMMA ,
+IDENFR d
 RPARENT )
-<Ð´Óï¾ä>
-SEMICN ;
-<Óï¾ä>
-PRINTFTK printf
-LPARENT (
-STRCON aaaa
-<×Ö·û´®>
-RPARENT )
-<Ð´Óï¾ä>
-SEMICN ;
-<Óï¾ä>
-PRINTFTK printf
-LPARENT (
-STRCON aaaaaaa
-<×Ö·û´®>
-RPARENT )
-<Ð´Óï¾ä>
+<¶ÁÓï¾ä>
 SEMICN ;
 <Óï¾ä>
 <Óï¾äÁÐ>

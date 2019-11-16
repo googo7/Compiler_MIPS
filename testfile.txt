@@ -1,6 +1,4 @@
 void main(){
 	int a, b, c, d;
-	printf("abcd");
-	printf("aaaa");
-	printf("aaaaaaa");
+	scanf(a, b, c, d);
 }

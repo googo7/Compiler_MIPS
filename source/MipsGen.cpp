@@ -351,6 +351,34 @@ void MipsGen::parse(MidCode mc) {
 			pop("a0");
 		}
 	}
+	else if (op == "scanf") {
+		int type = -1;
+		for (int i = 0; i < memory_table.size(); i++) {
+			if (memory_table[i].iden == s1 && memory_table[i].func == func_now) {
+				type = memory_table[i].var_type;
+				break;
+			}
+			if (memory_table[i].iden == s1 && memory_table[i].isLocal == 0) {
+				type = memory_table[i].var_type;
+				break;
+			}
+		}
+		if (type == INT) {
+			emit("li", "v0", "5", "");
+		}
+		else {
+			emit("li", "v0", "12", "");
+		}
+		emit("syscall", "", "", "");
+		string s1_reg = reg_t.lookup(s1, 1, SorT(s1));
+		if (!s1_reg.size()) {
+			s1_reg = "t8";
+		}
+		emit("move", s1_reg, "v0", "");
+		if (s1_reg == "t8") {
+			sw(s1_reg, s1);
+		}
+	}
 }
 
 void MipsGen::emit(string op, string s1, string s2, string s3) {

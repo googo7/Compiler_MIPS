@@ -1,26 +1,14 @@
 .data:
-string0:	.asciiz	"abcd"
-string1:	.asciiz	"aaaa"
-string2:	.asciiz	"aaaaaaa"
 .text:
-	sw	$a0,	0	($sp)
-	addiu	$sp,	$sp,	-4
-	la	$a0,	string0
-	li	$v0,	4
+	li	$v0,	5
 	syscall
-	addiu	$sp,	$sp,	4
-	lw	$a0,	0	($sp)
-	sw	$a0,	0	($sp)
-	addiu	$sp,	$sp,	-4
-	la	$a0,	string1
-	li	$v0,	4
+	move	$s0,	$v0
+	li	$v0,	5
 	syscall
-	addiu	$sp,	$sp,	4
-	lw	$a0,	0	($sp)
-	sw	$a0,	0	($sp)
-	addiu	$sp,	$sp,	-4
-	la	$a0,	string2
-	li	$v0,	4
+	move	$s1,	$v0
+	li	$v0,	5
 	syscall
-	addiu	$sp,	$sp,	4
-	lw	$a0,	0	($sp)
+	move	$s2,	$v0
+	li	$v0,	5
+	syscall
+	move	$s3,	$v0
