@@ -1,30 +1,36 @@
+INTTK int
+IDENFR test
+<变量定义>
+SEMICN ;
+<变量说明>
 VOIDTK void
 MAINTK main
 LPARENT (
 RPARENT )
 LBRACE {
-INTTK int
-IDENFR a
-COMMA ,
-IDENFR b
-COMMA ,
-IDENFR c
-COMMA ,
-IDENFR d
-<变量定义>
+PRINTFTK printf
+LPARENT (
+STRCON Hello World
+<字符串>
+RPARENT )
+<写语句>
 SEMICN ;
-<变量说明>
+<语句>
 SCANFTK scanf
 LPARENT (
-IDENFR a
-COMMA ,
-IDENFR b
-COMMA ,
-IDENFR c
-COMMA ,
-IDENFR d
+IDENFR test
 RPARENT )
 <读语句>
+SEMICN ;
+<语句>
+PRINTFTK printf
+LPARENT (
+IDENFR test
+<因子>
+<项>
+<表达式>
+RPARENT )
+<写语句>
 SEMICN ;
 <语句>
 <语句列>

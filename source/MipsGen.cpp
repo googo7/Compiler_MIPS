@@ -12,8 +12,7 @@ string func_now = "main";
 	func_push_para
 	func_call
 
-	scanf
-	printf
+
 	ret
 
 
@@ -23,7 +22,9 @@ string func_now = "main";
 	=
 	[]
 	mult
-	div	
+	div
+	scanf
+	printf	
 	BZ
 	BNZ
 	GOTO

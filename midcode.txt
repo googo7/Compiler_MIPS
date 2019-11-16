@@ -1,4 +1,4 @@
-scanf		|a		|		|
-scanf		|b		|		|
-scanf		|c		|		|
-scanf		|d		|		|
+printf		|"Hello World"		|		|
+scanf		|test		|		|
+=		|test		|		|test
+printf		|		|test		|
