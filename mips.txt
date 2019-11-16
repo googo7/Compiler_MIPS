@@ -1,60 +1,7 @@
-li	$t0,	101
-move	$s0,	$t0
-addiu	$t1,	$s0,	2
-move	$s1,	$t1
-subu	$t2,	$s1,	$s0
-move	$s1,	$t2
-li	$t3,	2
-move	$s2,	$t3
-addu	$t4,	$s2,	$s1
-move	$s3,	$t4
-li	$t5,	99
-move	$s0,	$t5
-addiu	$t6,	$s0,	-1
-move	$s0,	$t6
-addiu	$t7,	$s0,	-1
-move	$s0,	$t7
-addiu	$t8,	$s0,	-1
-sw	$t8,	16	($0)
-lw	$t9,	16	($0)
-move	$s0,	$t9
-addiu	$t8,	$s0,	-1
-sw	$t8,	20	($0)
-lw	$t9,	20	($0)
-move	$s0,	$t9
-addiu	$t8,	$s0,	-1
-sw	$t8,	24	($0)
-lw	$t9,	24	($0)
-move	$s0,	$t9
-addiu	$t8,	$s0,	-1
-sw	$t8,	28	($0)
-lw	$t9,	28	($0)
-move	$s0,	$t9
-addiu	$t8,	$s0,	-1
-sw	$t8,	32	($0)
-lw	$t9,	32	($0)
-move	$s0,	$t9
-addiu	$t8,	$s0,	-1
-sw	$t8,	36	($0)
-lw	$t9,	36	($0)
-move	$s0,	$t9
-addiu	$t8,	$s0,	-1
-sw	$t8,	40	($0)
-lw	$t9,	40	($0)
-move	$s0,	$t9
-addiu	$t8,	$s0,	-1
-sw	$t8,	44	($0)
-lw	$t9,	44	($0)
-move	$s0,	$t9
-addiu	$t8,	$s0,	-1
-sw	$t8,	48	($0)
-lw	$t9,	48	($0)
-move	$s0,	$t9
-addiu	$t8,	$s0,	-1
-sw	$t8,	52	($0)
-lw	$t9,	52	($0)
-move	$s0,	$t9
-addiu	$t8,	$s0,	-97
-sw	$t8,	56	($0)
-lw	$t9,	56	($0)
-move	$s0,	$t9
+li	$t9,	1
+sll	t9,	t9,	2
+lw	$t0,	40	($t9)
+addu	$t1,	$t0,	$s0
+li	$t9,	1
+sll	t9,	t9,	2
+sw	$t8,	0	($t9)

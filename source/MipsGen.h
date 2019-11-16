@@ -11,4 +11,6 @@ public:
 	string SorT(string s);
 	void sw(string s, string id);
 	void lw(string s, string id);
+	void sw(string s, string id, string reg);
+	void lw(string s, string id, string reg);
 };

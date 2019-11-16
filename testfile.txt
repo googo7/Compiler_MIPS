@@ -1,23 +1,5 @@
 void main(){
-	int a;
-	int b, c, d;
-	a = 1 + 100;
-	c = 2 + a;
-	c = c - a;
-	b = 1+ 1;
-	d = b + c;
-	a = 100 - 1;
-a = a - 1;
-a = a - 1;
-a = a - 1;
-a = a - 1;
-a = a - 1;
-a = a - 1;
-a = a - 1;
-a = a - 1;
-a = a - 1;
-a = a - 1;
-a = a - 1;
-a = a - 1;
-a = a - 'a';
+	int a[10];
+	int b[10], c, d;
+	a[1] = b[1] + c;
 }

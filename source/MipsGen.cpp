@@ -5,7 +5,7 @@
 RegTable reg_t;
 extern vector<MemoryTableItem> memory_table;
 MidCode mc_now;
-string func_now;
+string func_now = "main";
 /*
 	func
 	para
@@ -29,6 +29,7 @@ string func_now;
 	scanf
 	printf
 	ret
+	[]
 */
 void MipsGen::parse(MidCode mc) {
 	mc_now = mc;
@@ -123,6 +124,37 @@ void MipsGen::parse(MidCode mc) {
 					sw(result_reg, result);
 			}
 		}
+		else {
+			//result[s2] = s1
+			if (isdigit(s1[0]))
+				emit("li", "t8", s1, "");
+			else {
+				lw("t8", s1);
+			}
+			if (isdigit(s2[0]))
+				emit("li", "t9", s2, "");
+			else
+				lw("t9", s2);
+			emit("sll", "t9", "t9", "2");
+			sw("t8", result, "t9");
+		}
+	}
+	else if (op == "[]") {
+		//result = s1[s2]
+		string result_reg = reg_t.lookup(result, 1, SorT(result));
+		if (!result_reg.size()) {
+			result_reg = "t8";
+		}
+		if (isdigit(s2[0])) {
+			emit("li", "t9", s2, "");
+		}
+		else {
+			lw("t9", s2);
+		}
+		emit("sll", "t9", "t9", "2");
+		lw(result_reg, s1, "t9");
+		if (result_reg == "t8")
+			sw(result_reg, result);
 	}
 }
 
@@ -151,6 +183,11 @@ void MipsGen::emit(string op, string s1, string s2, string s3) {
 	else if (op == "move") {
 		res += "\t$" + s1;
 		res += ",\t$" + s2;
+	}
+	else if (op == "sll") {
+		res += "\t" + s1;
+		res += ",\t" + s2;
+		res += ",\t" + s3;
 	}
 	write_into_mfile(res);
 }
@@ -183,6 +220,23 @@ void MipsGen::sw(string s, string id) {
 	emit("sw", s, to_string(addr), "0");
 }
 
+void MipsGen::sw(string s, string id, string reg) {
+	int addr = -1;
+	int arr;
+	for (int i = 0; i < memory_table.size(); i++) {
+		arr = memory_table[i].arr;
+		if (memory_table[i].iden == id && memory_table[i].func == func_now) {
+			addr = memory_table[i].arr << 2;
+			break;
+		}
+		if (memory_table[i].iden == id && memory_table[i].isLocal == 0) {
+			addr = memory_table[i].arr << 2;
+			break;
+		}
+	}
+	emit("sw", s, to_string(addr), reg);
+}
+
 void MipsGen::lw(string s, string id) {
 	int addr = -1;
 	int arr = 0;
@@ -201,5 +255,22 @@ void MipsGen::lw(string s, string id) {
 		memory_table.push_back(MemoryTableItem(id, "xxj_temp", 0, arr + 1));
 		addr = (arr + 1) << 2;
 	}
-	emit("lw", s, to_string(addr), "0");
+	//emit("lw", s, to_string(addr), "0");lw正常情况下不能够被其他变量调用
+}
+
+void MipsGen::lw(string s, string id, string reg) {
+	int addr = -1;
+	int arr = 0;
+	for (int i = 0; i < memory_table.size(); i++) {
+		arr = memory_table[i].arr;
+		if (memory_table[i].iden == id && memory_table[i].func == func_now) {
+			addr = memory_table[i].arr << 2;
+			break;
+		}
+		if (memory_table[i].iden == id && memory_table[i].isLocal == 0) {
+			addr = memory_table[i].arr << 2;
+			break;
+		}
+	}
+	emit("lw", s, to_string(addr), reg);
 }
