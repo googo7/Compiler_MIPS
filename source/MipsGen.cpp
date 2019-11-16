@@ -37,9 +37,9 @@ void MipsGen::parse(MidCode mc) {
 	string s2 = mc.s2;
 	string result = mc.result;
 	if (mc.s1[0] == '\'')
-		s1 = (int)s1[1];
+		s1 = to_string((int)s1[1]);
 	if (mc.s2[0] == '\'')
-		s2 = (int)s2[1];
+		s2 = to_string((int)s2[1]);
 	if (op == "add" || op == "sub") {
 		string result_reg = reg_t.lookup(result, 1, SorT(result)), s1_reg, s2_reg;
 		if (!result_reg.size()) {
@@ -98,8 +98,30 @@ void MipsGen::parse(MidCode mc) {
 		}
 	}
 	else if (op == "=") {
-		if (isdigit(s1[0])) {
-			
+		if(s1 == result)
+			return;
+		if (s2 == "") {
+			if (isdigit(s1[0])) {
+				string result_reg = reg_t.lookup(result, 1, SorT(result));
+				if (result_reg == "")
+					result_reg = "t8";
+				emit("li", result_reg, to_string(stoi(s1)), "");
+				if (result_reg == "t8")
+					sw(result_reg, result);
+			}
+			else {
+				string result_reg = reg_t.lookup(result, 1, SorT(result));
+				string s1_reg = reg_t.lookup(s1, 1, SorT(s1));
+				if (result_reg == "")
+					result_reg = "t8";
+				if (s1_reg == "") {
+					s1_reg = "t9";
+					lw(s1_reg, s1);
+				}
+				emit("move", result_reg, s1_reg, "");
+				if (result_reg == "t8")
+					sw(result_reg, result);
+			}
 		}
 	}
 }
@@ -125,6 +147,10 @@ void MipsGen::emit(string op, string s1, string s2, string s3) {
 	else if (op == "li") {
 		res += "\t$" + s1;
 		res += ",\t" + s2;
+	}
+	else if (op == "move") {
+		res += "\t$" + s1;
+		res += ",\t$" + s2;
 	}
 	write_into_mfile(res);
 }
