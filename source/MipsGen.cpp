@@ -102,7 +102,37 @@ void MipsGen::parse(MidCode mc) {
 	}
 	else if (op == "mult" || op == "div") {
 		if (is_digit(s1[0])) {
-
+			emit("li", "t8", s1, "");
+		}
+		else {
+			string s1_reg = reg_t.lookup(s1, 1, SorT(s1));
+			if (!s1_reg.size()) {
+				s1_reg = "t8";
+				lw(s1_reg, s1);
+			}
+		}
+		if (is_digit(s2[0])) {
+			emit("li", "t9", s2, "");
+		}
+		else {
+			string s2_reg = reg_t.lookup(s2, 1, SorT(s2));
+			if (!s2_reg.size()) {
+				s2_reg = "t9";
+				lw(s2_reg, s2);
+			}
+		}
+		if (op == "mult") {
+			emit("mult", "t8", "t9", "");
+		}
+		else if (op == "div") {
+			emit("div", "t8", "t9", "");
+		}
+		string result_reg = reg_t.lookup(result, 1, SorT(result));
+		if (result_reg.size())
+			emit("mflo", result_reg, "", "");
+		else {
+			emit("mflo", "t8", "", "");
+			sw("t8", result);
 		}
 	}
 	else if (op == "=") {
@@ -192,9 +222,16 @@ void MipsGen::emit(string op, string s1, string s2, string s3) {
 		res += ",\t$" + s2;
 	}
 	else if (op == "sll") {
-		res += "\t" + s1;
-		res += ",\t" + s2;
+		res += "\t$" + s1;
+		res += ",\t$" + s2;
 		res += ",\t" + s3;
+	}
+	else if (op == "mult" || op == "div") {
+		res += "\t$" + s1;
+		res += ",\t$" + s2;
+	}
+	else if (op == "mflo") {
+		res += "\t$" + s1;
 	}
 	write_into_mfile(res);
 }
