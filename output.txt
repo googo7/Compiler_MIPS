@@ -14,47 +14,202 @@ IDENFR d
 <变量定义>
 SEMICN ;
 <变量说明>
-IDENFR a
-ASSIGN =
-MINU -
+IFTK if
+LPARENT (
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+LSS <
+INTCON 0
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+IFTK if
+LPARENT (
 IDENFR a
 <因子>
-MULT *
-LPARENT (
+<项>
+<表达式>
+LSS <
 IDENFR b
 <因子>
-MULT *
-IDENFR c
-<因子>
-<项>
-PLUS +
-INTCON 2
-<无符号整数>
-<整数>
-<因子>
 <项>
 <表达式>
+<条件>
 RPARENT )
-<因子>
-<项>
-MINU -
-INTCON 2
-<无符号整数>
-<整数>
-<因子>
-<项>
-PLUS +
-INTCON 3
-<无符号整数>
-<整数>
-<因子>
-DIV /
-IDENFR d
+LBRACE {
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+IFTK if
+LPARENT (
+IDENFR a
 <因子>
 <项>
 <表达式>
-<赋值语句>
+LSS <
+INTCON 0
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
 SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+IFTK if
+LPARENT (
+IDENFR a
+<因子>
+<项>
+<表达式>
+LEQ <=
+IDENFR b
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+IFTK if
+LPARENT (
+IDENFR a
+<因子>
+<项>
+<表达式>
+GRE >
+IDENFR b
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+IFTK if
+LPARENT (
+IDENFR a
+<因子>
+<项>
+<表达式>
+GEQ >=
+IDENFR b
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+IFTK if
+LPARENT (
+IDENFR a
+<因子>
+<项>
+<表达式>
+EQL ==
+IDENFR b
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+IFTK if
+LPARENT (
+IDENFR a
+<因子>
+<项>
+<表达式>
+NEQ !=
+IDENFR b
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
+<语句>
+IFTK if
+LPARENT (
+IDENFR a
+<因子>
+<项>
+<表达式>
+EQL ==
+INTCON 4
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+<条件>
+RPARENT )
+LBRACE {
+SEMICN ;
+<语句>
+<语句列>
+RBRACE }
+<语句>
+<条件语句>
 <语句>
 <语句列>
 <复合语句>

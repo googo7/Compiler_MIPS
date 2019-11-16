@@ -12,19 +12,14 @@ string func_now = "main";
 	func_push_para
 	func_call
 
-	mult
-	div
-	BZ
-	BNZ
-	GOTO
-	LABEL
-	
+
 	!=
 	==
-	<
-	<=
+	<					a < b ->  (a - b) slt result a, b
+	<=										sle	result a, b
 	>=
 	>
+
 	scanf
 	printf
 	ret
@@ -33,6 +28,13 @@ string func_now = "main";
 	sub
 	=
 	[]
+	mult
+	div	
+	BZ
+	BNZ
+	GOTO
+	LABEL
+	
 */
 void MipsGen::parse(MidCode mc) {
 	mc_now = mc;
@@ -193,17 +195,136 @@ void MipsGen::parse(MidCode mc) {
 		if (result_reg == "t8")
 			sw(result_reg, result);
 	}
+	else if (op == "BZ") {
+		//BZ s1 s2
+		//beq s1, $0, s2
+		string s1_reg = reg_t.lookup(s1, 1, SorT(s1));
+		if (s1_reg.size())
+			emit("beq", s1_reg, "0", s2);
+		else {
+			lw("t8", s1);
+			emit("beq", "t8", "0", s2);
+		}
+	}
+	else if (op == "BNZ") {
+		string s1_reg = reg_t.lookup(s1, 1, SorT(s1));
+		if (s1_reg.size())
+			emit("bne", s1_reg, "0", s2);
+		else {
+			lw("t8", s1);
+			emit("bne", "t8", "0", s2);
+		}
+	}
+	else if (op == "GOTO") {
+		emit("j", s1, "", "");
+	}
+	else if (op == "LABEL") {
+	emit("LABEL", s1, s2, "");
+	}
+	else if (op == "<" || op == "<=" || op == ">=" || op == ">" || op == "==" || op == "!=") {
+		string result_reg = reg_t.lookup(result, 1, SorT(result)), s1_reg, s2_reg;
+		if (!result_reg.size()) {
+			result_reg = "t8";
+		}
+		if (is_digit(s1[0])) {
+			if (is_digit(s2[0])) {
+				int res = 0;
+				if (op == "<")
+					res = (stoi(s1) < stoi(s2));
+				else if(op == "<=")
+					res = (stoi(s1) <= stoi(s2));
+				else if (op == ">=")
+					res = (stoi(s1) >= stoi(s2));
+				else if (op == ">")
+					res = (stoi(s1) > stoi(s2));
+				else if (op == "==")
+					res = (stoi(s1) == stoi(s2));
+				else if (op == "!=")
+					res = (stoi(s1) != stoi(s2));
+				emit("li", result_reg, to_string(res), "");
+
+			}
+			else {
+				s2_reg = reg_t.lookup(s2, 1, SorT(s2));
+				if (!s2_reg.size()) {
+					s2_reg = "t9";
+					lw(s2_reg, s2);
+				}
+				if (op == "<")   // num < iden
+					emit("sgt", result_reg, s2_reg, to_string(stoi(s1)));
+				else if (op == "<=")
+					emit("sge", result_reg, s2_reg, to_string(stoi(s1)));
+				else if (op == ">=")
+					emit("sle", result_reg, s2_reg, to_string(stoi(s1)));
+				else if (op == ">")
+					emit("slti", result_reg, s2_reg, to_string(stoi(s1)));
+				else if (op == "==")
+					emit("seq", result_reg, s2_reg, to_string(stoi(s1)));
+				else if (op == "!=")
+					emit("sne", result_reg, s2_reg, to_string(stoi(s1)));
+			}
+		}
+		else {
+			if (is_digit(s2[0])) {
+				s1_reg = reg_t.lookup(s1, 1, SorT(s1));
+				if (!s1_reg.size()) {
+					s1_reg = "t8";
+					lw(s1_reg, s1);
+				}
+				if (op == "<")   // num < iden
+					emit("slti", result_reg, s1_reg, to_string(stoi(s2)));
+				else if (op == "<=")
+					emit("sle", result_reg, s1_reg, to_string(stoi(s2)));
+				else if (op == ">=")
+					emit("sge", result_reg, s1_reg, to_string(stoi(s2)));
+				else if (op == ">")
+					emit("sgt", result_reg, s1_reg, to_string(stoi(s2)));
+				else if (op == "==")
+					emit("seq", result_reg, s1_reg, to_string(stoi(s2)));
+				else if (op == "!=")
+					emit("sne", result_reg, s1_reg, to_string(stoi(s2)));
+			}
+			else {
+				s1_reg = reg_t.lookup(s1, 1, SorT(s1));
+				if (!s1_reg.size()) {
+					s1_reg = "t8";
+					lw(s1_reg, s1);
+				}
+				s2_reg = reg_t.lookup(s2, 1, SorT(s2));
+				if (!s2_reg.size()) {
+					s2_reg = "t9";
+					lw(s2_reg, s2);
+				}
+				if (op == "<")   // num < iden
+					emit("slt", result_reg, s1_reg, s2_reg);
+				else if (op == "<=")
+					emit("sle", result_reg, s1_reg, s2_reg);
+				else if (op == ">=")
+					emit("sge", result_reg, s1_reg, s2_reg);
+				else if (op == ">")
+					emit("sgt", result_reg, s1_reg, s2_reg);
+				else if (op == "==")
+					emit("seq", result_reg, s1_reg, s2_reg);
+				else if (op == "!=")
+					emit("sne", result_reg, s1_reg, s2_reg);
+			}
+		}
+		if (result_reg == "t8") {
+			sw(result_reg, result);
+		}
+
+}
 }
 
 void MipsGen::emit(string op, string s1, string s2, string s3) {
 	string res;
-	res = op;
+	res = "\t" + op;
 	if (op == "lw" || op == "sw") {
 		res += "\t$" + s1;
 		res += ",\t" + s2;
 		res += "\t($" + s3 + ")";
 	}
-	else if(op == "addu" || op == "subu"){
+	else if (op == "addu" || op == "subu") {
 		res += "\t$" + s1;
 		res += ",\t$" + s2;
 		res += ",\t$" + s3;
@@ -233,6 +354,25 @@ void MipsGen::emit(string op, string s1, string s2, string s3) {
 	else if (op == "mflo") {
 		res += "\t$" + s1;
 	}
+	else if (op == "bne" || op == "beq") {
+		res += "\t$" + s1;
+		res += ",\t$" + s2;
+		res += ",\t" + s3;
+	}
+	else if (op == "j") {
+		res += "\t" + s1;
+	}
+	else if (op == "LABEL") {
+		res = s1 + s2 + ":";
+	}
+	else if (op == "slt" || op == "slti" || op == "sge" || op == "sle" || op == "sgt" || op == "sne" || op == "seq") {
+		res += "\t$" + s1;
+		res += ",\t$" + s2;
+		if (is_digit(s3[0]))
+			res += ",\t" + s3;
+		else
+			res += ",\t$" + s3;
+	} 
 	write_into_mfile(res);
 }
 

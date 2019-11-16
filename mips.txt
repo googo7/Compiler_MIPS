@@ -1,12 +1,46 @@
-mult	$t8,	$t9
-mflo	$t0
-addiu	$t1,	$t0,	2
-mult	$t8,	$t9
-mflo	$t2
-addiu	$t3,	$t2,	0
-addiu	$t4,	$t3,	-2
-li	$t8,	3
-div	$t8,	$t9
-mflo	$t5
-addu	$t6,	$t4,	$t5
-move	$s2,	$t6
+	li	$t0,	0
+	beq	$t0,	$0,	label_if_head0
+	j	label_if_tail0
+label_if_head0:
+label_if_tail0:
+	slt	$t1,	$s0,	$s1
+	beq	$t1,	$0,	label_if_head1
+	j	label_if_tail1
+label_if_head1:
+label_if_tail1:
+	slti	$t2,	$s0,	0
+	beq	$t2,	$0,	label_if_head2
+	j	label_if_tail2
+label_if_head2:
+label_if_tail2:
+	sle	$t3,	$s0,	$s1
+	beq	$t3,	$0,	label_if_head3
+	j	label_if_tail3
+label_if_head3:
+label_if_tail3:
+	sgt	$t4,	$s0,	$s1
+	beq	$t4,	$0,	label_if_head4
+	j	label_if_tail4
+label_if_head4:
+label_if_tail4:
+	sge	$t5,	$s0,	$s1
+	beq	$t5,	$0,	label_if_head5
+	j	label_if_tail5
+label_if_head5:
+label_if_tail5:
+	seq	$t6,	$s0,	$s1
+	beq	$t6,	$0,	label_if_head6
+	j	label_if_tail6
+label_if_head6:
+label_if_tail6:
+	sne	$t7,	$s0,	$s1
+	beq	$t7,	$0,	label_if_head7
+	j	label_if_tail7
+label_if_head7:
+label_if_tail7:
+	seq	$t8,	$s0,	4
+	sw	$t8,	16	($0)
+	beq	$t8,	$0,	label_if_head8
+	j	label_if_tail8
+label_if_head8:
+label_if_tail8:
