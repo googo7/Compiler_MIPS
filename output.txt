@@ -14,202 +14,29 @@ IDENFR d
 <变量定义>
 SEMICN ;
 <变量说明>
-IFTK if
+PRINTFTK printf
 LPARENT (
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-LSS <
-INTCON 0
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<条件>
+STRCON abcd
+<字符串>
 RPARENT )
-LBRACE {
+<写语句>
 SEMICN ;
 <语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-IFTK if
+PRINTFTK printf
 LPARENT (
-IDENFR a
-<因子>
-<项>
-<表达式>
-LSS <
-IDENFR b
-<因子>
-<项>
-<表达式>
-<条件>
+STRCON aaaa
+<字符串>
 RPARENT )
-LBRACE {
+<写语句>
 SEMICN ;
 <语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-IFTK if
+PRINTFTK printf
 LPARENT (
-IDENFR a
-<因子>
-<项>
-<表达式>
-LSS <
-INTCON 0
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<条件>
+STRCON aaaaaaa
+<字符串>
 RPARENT )
-LBRACE {
+<写语句>
 SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-IFTK if
-LPARENT (
-IDENFR a
-<因子>
-<项>
-<表达式>
-LEQ <=
-IDENFR b
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-LBRACE {
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-IFTK if
-LPARENT (
-IDENFR a
-<因子>
-<项>
-<表达式>
-GRE >
-IDENFR b
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-LBRACE {
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-IFTK if
-LPARENT (
-IDENFR a
-<因子>
-<项>
-<表达式>
-GEQ >=
-IDENFR b
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-LBRACE {
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-IFTK if
-LPARENT (
-IDENFR a
-<因子>
-<项>
-<表达式>
-EQL ==
-IDENFR b
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-LBRACE {
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-IFTK if
-LPARENT (
-IDENFR a
-<因子>
-<项>
-<表达式>
-NEQ !=
-IDENFR b
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-LBRACE {
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
-<语句>
-IFTK if
-LPARENT (
-IDENFR a
-<因子>
-<项>
-<表达式>
-EQL ==
-INTCON 4
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<条件>
-RPARENT )
-LBRACE {
-SEMICN ;
-<语句>
-<语句列>
-RBRACE }
-<语句>
-<条件语句>
 <语句>
 <语句列>
 <复合语句>

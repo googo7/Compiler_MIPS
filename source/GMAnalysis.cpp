@@ -96,7 +96,7 @@ void gm_analyse::isProgram() {
 
 	vector<var_info> vv = symtab.global_var_table;
 	for (int i = 0; i < vv.size(); i++) {
-		MemoryTableItem mti(vv[i].iden, "", 0, func_var_pt + vv[i].addr);
+		MemoryTableItem mti(vv[i].iden, "", 0, func_var_pt + vv[i].addr, vv[i]._type);
 		memory_table.push_back(mti);
 	}
 	//-------------OUT--------------------
@@ -944,7 +944,7 @@ void gm_analyse::out_func(void) {
 	isLocal = 0;
 	vector<var_info> vv = symtab.local_var_table;
 	for (int i = 0; i < vv.size(); i++) {
-		MemoryTableItem mti(vv[i].iden, func_name_now, 1, func_var_pt + vv[i].addr);
+		MemoryTableItem mti(vv[i].iden, func_name_now, 1, func_var_pt + vv[i].addr, vv[i]._type);
 		memory_table.push_back(mti);
 	}
 	func_var_pt += vv.size();

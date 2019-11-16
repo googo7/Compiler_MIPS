@@ -9,11 +9,12 @@ using namespace std;
 class MemoryTableItem {
 public:
 	MemoryTableItem();
-	MemoryTableItem(string, string, int, int);
+	MemoryTableItem(string, string, int, int, int);
 	string iden;
 	string func;
 	int isLocal;
 	int arr;
+	int var_type;
 };
 
 class RegTableItem {

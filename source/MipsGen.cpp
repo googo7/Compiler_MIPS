@@ -12,17 +12,11 @@ string func_now = "main";
 	func_push_para
 	func_call
 
-
-	!=
-	==
-	<					a < b ->  (a - b) slt result a, b
-	<=										sle	result a, b
-	>=
-	>
-
 	scanf
 	printf
 	ret
+
+
 	---------------
 	add
 	sub
@@ -34,7 +28,12 @@ string func_now = "main";
 	BNZ
 	GOTO
 	LABEL
-	
+	!=
+	==
+	<					
+	<=									
+	>=
+	>
 */
 void MipsGen::parse(MidCode mc) {
 	mc_now = mc;
@@ -314,6 +313,44 @@ void MipsGen::parse(MidCode mc) {
 		}
 
 }
+	else if (op == "printf") {
+		//printf s1(string) s2(expr)
+		if (s1.size()) {
+			push("a0");
+			string string_no = this->string_map[s1];
+			emit("la", "a0", string_no, "");
+			emit("li", "v0", "4", "");
+			emit("syscall", "", "", "");
+			pop("a0");
+		}
+		if (s2.size()) {
+			string s2_reg = reg_t.lookup(s2, 1, SorT(s2));
+			push("a0");
+			if (s2_reg.size()) {
+				emit("move", "a0", s2_reg, "");
+			}
+			else {
+				lw("a0", s2);
+			}
+			int type = -1;
+			for (int i = 0; i < memory_table.size(); i++) {
+				if (memory_table[i].iden == s2 && memory_table[i].func == func_now) {
+					type = memory_table[i].var_type;
+					break;
+				}
+				if (memory_table[i].iden == s2 && memory_table[i].isLocal == 0) {
+					type = memory_table[i].var_type;
+					break;
+				}
+			}
+			if (type == INT)
+				emit("li", "v0", "1", "");
+			else if (type == CHAR)
+				emit("li", "v0", "11", "");
+			emit("syscall", "", "", "");
+			pop("a0");
+		}
+	}
 }
 
 void MipsGen::emit(string op, string s1, string s2, string s3) {
@@ -373,6 +410,15 @@ void MipsGen::emit(string op, string s1, string s2, string s3) {
 		else
 			res += ",\t$" + s3;
 	} 
+	else if (op == "string") {
+		res = op + s2 + ":";
+		res += "\t.asciiz";
+		res += "\t" + s1;
+	}
+	else if (op == "la") {
+		res += "\t$" + s1;
+		res += ",\t" + s2;
+	}
 	write_into_mfile(res);
 }
 
@@ -398,7 +444,7 @@ void MipsGen::sw(string s, string id) {
 		}
 	}
 	if (addr == -1) {
-		memory_table.push_back(MemoryTableItem(id, "xxj_temp", 0, arr + 1));
+		memory_table.push_back(MemoryTableItem(id, "xxj_temp", 0, arr + 1, INT));
 		addr = (arr + 1) << 2;
 	}
 	emit("sw", s, to_string(addr), "0");
@@ -436,7 +482,7 @@ void MipsGen::lw(string s, string id) {
 		}
 	}
 	if (addr == -1) {
-		memory_table.push_back(MemoryTableItem(id, "xxj_temp", 0, arr + 1));
+		memory_table.push_back(MemoryTableItem(id, "xxj_temp", 0, arr + 1, INT));
 		addr = (arr + 1) << 2;
 	}
 	//emit("lw", s, to_string(addr), "0");lw正常情况下不能够被其他变量调用
@@ -461,4 +507,30 @@ void MipsGen::lw(string s, string id, string reg) {
 
 int MipsGen::is_digit(char ch) {
 	return isdigit(ch) || ch == '+' || ch == '-';
+}
+
+void MipsGen::predeal(vector<MidCode> mc) {
+	write_into_mfile(".data:");
+	this->mc = mc;
+	static int string_cnt = 0;
+	for (int i = 0; i < mc.size(); i++) {
+		if (mc[i].op == "printf") {
+			if (mc[i].s1[0] == '\"') {
+				emit("string", mc[i].s1, to_string(string_cnt), "");
+				this->string_map[mc[i].s1] = ("string" + to_string(string_cnt));
+				string_cnt++;
+			}
+		}
+	}
+	write_into_mfile(".text:");
+}
+
+void MipsGen::push(string reg) {
+	emit("sw", reg, "0", "sp");
+	emit("addiu", "sp", "sp", "-4");
+}
+
+void MipsGen::pop(string reg) {
+	emit("addiu", "sp", "sp", "4");
+	emit("lw", reg, "0", "sp");
 }

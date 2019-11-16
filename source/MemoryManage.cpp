@@ -5,11 +5,12 @@ MemoryTableItem::MemoryTableItem() {
 	
 }
 
-MemoryTableItem::MemoryTableItem(string i, string f, int il, int a) {
+MemoryTableItem::MemoryTableItem(string i, string f, int il, int a, int type) {
 	this->iden = i;
 	this->func = f;
 	this->isLocal = il;
 	this->arr = a;
+	this->var_type = type;
 }
 
 RegTableItem::RegTableItem(){}

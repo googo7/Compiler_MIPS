@@ -374,6 +374,7 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 }
 
 void MidCodeGen::out() {
+	mips_gen.predeal(this->mc);
 	for (int i = 0; i < this->mc.size(); i++) {
 		write_into_file(mc[i]);
 		mips_gen.parse(mc[i]);
