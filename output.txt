@@ -5,18 +5,8 @@ RPARENT )
 LBRACE {
 INTTK int
 IDENFR a
-LBRACK [
-INTCON 10
-<无符号整数>
-RBRACK ]
-<变量定义>
-SEMICN ;
-INTTK int
+COMMA ,
 IDENFR b
-LBRACK [
-INTCON 10
-<无符号整数>
-RBRACK ]
 COMMA ,
 IDENFR c
 COMMA ,
@@ -25,28 +15,41 @@ IDENFR d
 SEMICN ;
 <变量说明>
 IDENFR a
-LBRACK [
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-RBRACK ]
 ASSIGN =
-IDENFR b
-LBRACK [
-INTCON 1
-<无符号整数>
-<整数>
+MINU -
+IDENFR a
 <因子>
-<项>
-<表达式>
-RBRACK ]
+MULT *
+LPARENT (
+IDENFR b
+<因子>
+MULT *
+IDENFR c
 <因子>
 <项>
 PLUS +
-IDENFR c
+INTCON 2
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RPARENT )
+<因子>
+<项>
+MINU -
+INTCON 2
+<无符号整数>
+<整数>
+<因子>
+<项>
+PLUS +
+INTCON 3
+<无符号整数>
+<整数>
+<因子>
+DIV /
+IDENFR d
 <因子>
 <项>
 <表达式>

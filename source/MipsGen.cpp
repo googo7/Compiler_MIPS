@@ -11,15 +11,14 @@ string func_now = "main";
 	para
 	func_push_para
 	func_call
-	add
-	sub
+
 	mult
 	div
 	BZ
 	BNZ
 	GOTO
 	LABEL
-	=
+	
 	!=
 	==
 	<
@@ -29,6 +28,10 @@ string func_now = "main";
 	scanf
 	printf
 	ret
+	---------------
+	add
+	sub
+	=
 	[]
 */
 void MipsGen::parse(MidCode mc) {
@@ -45,10 +48,9 @@ void MipsGen::parse(MidCode mc) {
 		string result_reg = reg_t.lookup(result, 1, SorT(result)), s1_reg, s2_reg;
 		if (!result_reg.size()) {
 			result_reg = "t8";
-
 		}
-		if (isdigit(s1[0])) {
-			if (isdigit(s2[0])) {
+		if (is_digit(s1[0])) {
+			if (is_digit(s2[0])) {
 				int res = (op == "add") ? (stoi(s1) + stoi(s2)) : (stoi(s1) - stoi(s2));
 				emit("li", result_reg, to_string(res), "");
 
@@ -66,7 +68,7 @@ void MipsGen::parse(MidCode mc) {
 			}
 		}
 		else {
-			if (isdigit(s2[0])) {
+			if (is_digit(s2[0])) {
 				s1_reg = reg_t.lookup(s1, 1, SorT(s1));
 				if (!s1_reg.size()) {
 					s1_reg = "t8";
@@ -98,11 +100,16 @@ void MipsGen::parse(MidCode mc) {
 			sw(result_reg, result);
 		}
 	}
+	else if (op == "mult" || op == "div") {
+		if (is_digit(s1[0])) {
+
+		}
+	}
 	else if (op == "=") {
 		if(s1 == result)
 			return;
 		if (s2 == "") {
-			if (isdigit(s1[0])) {
+			if (is_digit(s1[0])) {
 				string result_reg = reg_t.lookup(result, 1, SorT(result));
 				if (result_reg == "")
 					result_reg = "t8";
@@ -126,12 +133,12 @@ void MipsGen::parse(MidCode mc) {
 		}
 		else {
 			//result[s2] = s1
-			if (isdigit(s1[0]))
+			if (is_digit(s1[0]))
 				emit("li", "t8", s1, "");
 			else {
 				lw("t8", s1);
 			}
-			if (isdigit(s2[0]))
+			if (is_digit(s2[0]))
 				emit("li", "t9", s2, "");
 			else
 				lw("t9", s2);
@@ -145,7 +152,7 @@ void MipsGen::parse(MidCode mc) {
 		if (!result_reg.size()) {
 			result_reg = "t8";
 		}
-		if (isdigit(s2[0])) {
+		if (is_digit(s2[0])) {
 			emit("li", "t9", s2, "");
 		}
 		else {
@@ -273,4 +280,8 @@ void MipsGen::lw(string s, string id, string reg) {
 		}
 	}
 	emit("lw", s, to_string(addr), reg);
+}
+
+int MipsGen::is_digit(char ch) {
+	return isdigit(ch) || ch == '+' || ch == '-';
 }

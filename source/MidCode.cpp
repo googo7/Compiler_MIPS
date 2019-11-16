@@ -141,7 +141,9 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 		}
 		else if (tk_set[0].type == MINU) {
 			isPos = 0;
-			i++;
+			string tk = string("0");
+			tk_set.insert(tk_set.begin(), token_info(INTCON, tk));
+			//i++;
 		}
 		for (int j = i; j < tk_set.size(); j++) {
 			if ((tk_set[j].type == PLUS || tk_set[j].type == MINU) && (tk_set[j - 1].type == PLUS || tk_set[j - 1].type == MINU || tk_set[j - 1].type == MULT || tk_set[j - 1].type == DIV)) {

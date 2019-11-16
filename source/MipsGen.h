@@ -13,4 +13,5 @@ public:
 	void lw(string s, string id);
 	void sw(string s, string id, string reg);
 	void lw(string s, string id, string reg);
+	int is_digit(char);
 };
