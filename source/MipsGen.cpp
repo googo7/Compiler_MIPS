@@ -33,11 +33,14 @@ string func_now;
 void MipsGen::parse(MidCode mc) {
 	mc_now = mc;
 	string op = mc.op;
-
+	string s1 = mc.s1;
+	string s2 = mc.s2;
+	string result = mc.result;
+	if (mc.s1[0] == '\'')
+		s1 = (int)s1[1];
+	if (mc.s2[0] == '\'')
+		s2 = (int)s2[1];
 	if (op == "add" || op == "sub") {
-		string s1 = mc.s1;
-		string s2 = mc.s2;
-		string result = mc.result;
 		string result_reg = reg_t.lookup(result, 1, SorT(result)), s1_reg, s2_reg;
 		if (!result_reg.size()) {
 			result_reg = "t8";
@@ -95,9 +98,6 @@ void MipsGen::parse(MidCode mc) {
 		}
 	}
 	else if (op == "=") {
-		string s1 = mc.s1;
-		string s2 = mc.s2;
-		string result = mc.result;
 		if (isdigit(s1[0])) {
 			
 		}
