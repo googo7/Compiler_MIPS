@@ -1,4 +1,5 @@
-		|		|		|xxj_temp0
+=		|a_fun1		|		|a_fun1
+=		|a_fun1		|		|xxj_temp0
 BZ		|xxj_temp0	|label_if_head0	|
 scanf		|a		|		|
 scanf		|b		|		|

@@ -262,18 +262,19 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 		//exp1 <= exp2
 		string s1;
 		string s2;
-		string op;
+		string op = "=";
 		vector<token_info> vt1, vt2;
 		int i;
 		for (i = 0; i < tk_set.size(); i++) {
 			if (tk_set[i].type == LEQ || tk_set[i].type == LSS || tk_set[i].type == EQL || tk_set[i].type == NEQ || tk_set[i].type == GEQ || tk_set[i].type == GRE) {
 				op = tk_set[i].token;
-				parse(string("EXPR"), vt1);
-				s1 = get_last_result();
+				
 				break;
 			}
 			vt1.push_back(tk_set[i]);
 		}
+		parse(string("EXPR"), vt1);
+		s1 = get_last_result();
 		for (i++; i < tk_set.size(); i++) {
 			vt2.push_back(tk_set[i]);
 		}

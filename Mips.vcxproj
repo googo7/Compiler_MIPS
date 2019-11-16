@@ -129,6 +129,7 @@
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\MemoryManage.cpp" />
     <ClCompile Include="source\MidCode.cpp" />
+    <ClCompile Include="source\MipsGen.cpp" />
     <ClCompile Include="source\SymbolTable.cpp" />
     <ClCompile Include="source\TkAnalysis.cpp" />
   </ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="source\GMAnalysis.h" />
     <ClInclude Include="source\MemoryManage.h" />
     <ClInclude Include="source\MidCode.h" />
+    <ClInclude Include="source\MipsGen.h" />
     <ClInclude Include="source\SymbolTable.h" />
     <ClInclude Include="source\TkAnalysis.h" />
   </ItemGroup>
