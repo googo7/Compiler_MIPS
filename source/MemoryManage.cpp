@@ -77,3 +77,25 @@ int RegTable::alloc(string id, string type) {
 	}
 	return 1;
 }
+
+void RegTable::clear_t() {
+	this->use_t_reg = {};
+	this->free_t_reg = { "t0", "t1", "t2", "t3", "t4", "t5", "t6","t7" };
+	for (int i = 0; i < this->reg_table.size(); i++) {
+		if (this->reg_table[i].reg[0] == 't') {
+			this->reg_table.erase(reg_table.begin() + i, reg_table.begin() + i + 1);
+			i--;
+		}
+	}
+}
+
+void RegTable::clear_s() {
+	this->use_s_reg = {};
+	this->free_s_reg = { "s0", "s1", "s2", "s3", "s4", "s5", "s6","s7" };
+	for (int i = 0; i < this->reg_table.size(); i++) {
+		if (this->reg_table[i].reg[0] == 's') {
+			this->reg_table.erase(reg_table.begin() + i, reg_table.begin() + i + 1);
+			i--;
+		}
+	}
+}

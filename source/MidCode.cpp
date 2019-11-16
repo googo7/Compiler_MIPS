@@ -1,6 +1,9 @@
 #include "MidCode.h"
 #include "FILEOperator.h"
+#include "MipsGen.h"
 
+
+MipsGen mips_gen;
 extern int label_cnt;
 MidCode::MidCode() { ; }
 MidCode::MidCode(string o, string s, string ss, string r) {
@@ -371,6 +374,7 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 void MidCodeGen::out() {
 	for (int i = 0; i < this->mc.size(); i++) {
 		write_into_file(mc[i]);
+		mips_gen.parse(mc[i]);
 	}
 }
 

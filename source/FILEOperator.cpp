@@ -67,6 +67,10 @@ void write_into_file(MidCode mc) {
 	midfile << mc.out() << endl;
 }
 
+void write_into_mfile(string s) {
+	mipsfile << s << endl;
+}
+
 void close_file() {
 	if (ifile)
 		ifile.close();

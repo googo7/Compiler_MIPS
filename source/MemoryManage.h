@@ -40,4 +40,6 @@ public:
 
 	string lookup(string, int, string);
 	int alloc(string i, string type);
+	void clear_t();
+	void clear_s();
 };

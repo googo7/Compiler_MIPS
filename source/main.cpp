@@ -41,5 +41,6 @@ int main() {
 	close_file();
 	gm.mc_gen.out();
 	//symtab_test();
+
 	return 0;
 }
