@@ -1,4 +1,17 @@
+func		|int		|gets1		|
+para		|int		|a		|
+para		|int		|b		|
+add		|a		|b		|xxj_temp0
+=		|xxj_temp0	|		|xxj_temp0
+ret		|xxj_temp0	|		|
 printf		|"Hello World"		|		|
 scanf		|test		|		|
+=		|test		|		|test
+func_push_para		|test		|		|
+=		|a		|		|a
+func_push_para		|a		|		|
+func_call		|gets		|		|xxj_temp1
+=		|xxj_temp1	|		|xxj_temp1
+=		|xxj_temp1	|		|test
 =		|test		|		|test
 printf		|		|test		|

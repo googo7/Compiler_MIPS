@@ -7,7 +7,7 @@
 #include <iostream>
 using namespace std;
 extern string file_string;
-extern vector<MemoryTableItem> memory_table;
+extern MemoryTable memory_table;
 void symtab_test() {
 	Symtab symtab = Symtab();
 	symtab.func_push(string("fun1"), vector<int> {1}, 1);

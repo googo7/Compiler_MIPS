@@ -22,7 +22,7 @@
 #define VOID 0
 #define INT 1
 #define CHAR 2
-
+#define TEMP 3
 
 using namespace std;
 class func_info {

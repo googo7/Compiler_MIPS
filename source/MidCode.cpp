@@ -1,10 +1,13 @@
 #include "MidCode.h"
 #include "FILEOperator.h"
 #include "MipsGen.h"
+#include "MemoryManage.h"
 
 
 MipsGen mips_gen;
 extern int label_cnt;
+extern MemoryTable memory_table;
+extern string func_name_now;
 MidCode::MidCode() { ; }
 MidCode::MidCode(string o, string s, string ss, string r) {
 	this->op = o;
@@ -49,6 +52,7 @@ string MidCodeGen::get_last_result(void) {
 string MidCodeGen::gen_temp(void) {
 	static int cnt = 0;
 	string s = string("xxj_temp") + to_string(cnt++);
+	memory_table.push(s);
 	return s;
 }
 

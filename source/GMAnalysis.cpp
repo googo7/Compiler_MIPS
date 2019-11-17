@@ -36,7 +36,7 @@ int midcode_flag = 0;//控制是否进入midcode_vt的开关
 //WARNING!
 string func_name_now = "";
 int func_var_pt = 0;
-vector<MemoryTableItem> memory_table;
+MemoryTable memory_table;
 
 
 
@@ -96,8 +96,7 @@ void gm_analyse::isProgram() {
 
 	vector<var_info> vv = symtab.global_var_table;
 	for (int i = 0; i < vv.size(); i++) {
-		MemoryTableItem mti(vv[i].iden, "", 0, func_var_pt + vv[i].addr, vv[i]._type);
-		memory_table.push_back(mti);
+		memory_table.push("", vv[i]);
 	}
 	//-------------OUT--------------------
 	string s("<程序>");
@@ -944,11 +943,12 @@ void gm_analyse::out_func(void) {
 	isLocal = 0;
 	vector<var_info> vv = symtab.local_var_table;
 	for (int i = 0; i < vv.size(); i++) {
-		MemoryTableItem mti(vv[i].iden, func_name_now, 1, func_var_pt + vv[i].addr, vv[i]._type);
-		memory_table.push_back(mti);
+		memory_table.push(func_name_now, vv[i]);
 	}
-	func_var_pt += vv.size();
+	for (int i = 0; i < memory_table.temp.size(); i++)
+		memory_table.push(func_name_now, memory_table.temp[i]);
 	symtab.clear();
+	memory_table.temp.clear();
 }
 
 void gm_analyse::begin_midcode(void) {
