@@ -1,4 +1,4 @@
-#include "MipsGen.h"
+ï»¿#include "MipsGen.h"
 #include "FILEOperator.h"
 #include "GMAnalysis.h"
 extern MemoryTable memory_table;
@@ -90,17 +90,15 @@ void MipsGen::parse(MidCode mc) {
 		}
 		else {
 			string s1_reg = lookup(s1);
+			emit("move", "$t8", s1_reg, "");
 		}
+		
 		if (is_digit(s2[0])) {
 			emit("li", "$t9", s2, "");
 		}
 		else {
 			string s2_reg = lookup(s2, "$t9");
-			if (!s2_reg.size()) {
-				s2_reg = "$t9";
-				
-			}
-			lw(s2_reg, s2);
+			emit("move", "$t9", s2_reg, "");
 		}
 		if (op == "mult") {
 			emit("mult", "$t8", "$t9", "");
@@ -164,12 +162,10 @@ void MipsGen::parse(MidCode mc) {
 		//BZ s1 s2
 		//beq s1, $0, s2
 		string s1_reg = lookup(s1);
-		lw(s1_reg, s1);
 		emit("beq", s1_reg, "$0", s2);
 	}
 	else if (op == "BNZ") {
 		string s1_reg = lookup(s1);
-		lw(s1_reg, s1);
 		emit("bne", s1_reg, "$0", s2);
 
 	}
@@ -262,17 +258,21 @@ void MipsGen::parse(MidCode mc) {
 			emit("syscall", "", "", "");
 		}
 		if (s2.size()) {
-			lw("$a0", s2);
+			string s2_reg = lookup(s2);
+			emit("move", "$a0", s2_reg, "");
 			int type = -1;
 			type = memory_table.lookup(func_now, s2)._type;
 			if(type == -1)
 				type = memory_table.lookup("", s2)._type;
-			if (type == INT)
+			if (type == INT || type == TEMP)//æ•°ç»„æŸ¥æ‰¾ç±»åž‹
 				emit("li", "$v0", "1", "");
 			else if (type == CHAR)
 				emit("li", "$v0", "11", "");
 			emit("syscall", "", "", "");
 		}
+		emit("la", "$a0", "enter", "");
+		emit("li", "$v0", "4", "");
+		emit("syscall", "", "", "");
 	}
 	else if (op == "scanf") {
 		int type = -1;
@@ -324,7 +324,7 @@ void MipsGen::parse(MidCode mc) {
 		}
 		for (int i = 0; i < clr_t.size(); i++) {
 			sw(clr_t[i].reg, clr_t[i].var.iden);
-		}//ÇåÀí¼Ä´æÆ÷
+		}//æ¸…ç†å¯„å­˜å™¨
 		emit("sw", "$sp", to_string(-divide), "$sp");
 		divide += 4;
 		emit("addiu", "$sp", "$sp", to_string(-divide));
@@ -343,8 +343,14 @@ void MipsGen::parse(MidCode mc) {
 		emit("jr", "$ra", "", "");
 	}
 	else if (op == "ret") {
-	string s1_reg = lookup(s1);
-	emit("move", "$v0", s1_reg, "");
+	if (is_digit(s1[0])) {
+		emit("li", "$v0", to_string(stoi(s1)), "");
+	}
+	else {
+		string s1_reg = lookup(s1);
+		emit("move", "$v0", s1_reg, "");
+
+	}
 }
 	else if (op == "exit") {
 	emit("li", "$v0", "10", "");
@@ -432,7 +438,7 @@ string MipsGen::SorT(string s) {
 void MipsGen::sw(string s, string id) {
 	int addr = memory_table.lookup_addr(func_now, id);
 	if (addr < 0) {
-		addr = memory_table.lookup_addr(func_now, id);
+		addr = memory_table.lookup_addr("", id);
 		emit("sw", s, to_string(addr), "$gp");
 		return;
 	}
@@ -442,8 +448,8 @@ void MipsGen::sw(string s, string id) {
 void MipsGen::sw(string s, string id, string reg) {
 	int addr = memory_table.lookup_addr(func_now, id);
 	if (addr < 0) {
-		addr = memory_table.lookup_addr(func_now, id);
-		emit("sw", s, to_string(addr), reg);
+		addr = memory_table.lookup_addr("", id);
+		emit("sw", s, to_string(addr + 0x1800), reg);
 		return;
 	}
 	emit("sw", s, to_string(-addr), reg);
@@ -452,17 +458,17 @@ void MipsGen::sw(string s, string id, string reg) {
 void MipsGen::lw(string s, string id) {
 	int addr = memory_table.lookup_addr(func_now, id);
 	if (addr < 0) {
-		addr = memory_table.lookup_addr(func_now, id);
-		emit("lw", s, to_string(addr), "$gp");
+		addr = memory_table.lookup_addr("", id);
+		emit("lw", s, to_string(addr + 0x1800), "$gp");
 		return;
 	}
-	emit("lw", s, to_string(-addr), "$sp");//lwÕý³£Çé¿öÏÂ²»ÄÜ¹»±»ÖÐ¼äÁÙÊ±±äÁ¿µ÷ÓÃ
+	emit("lw", s, to_string(-addr), "$sp");//lwæ­£å¸¸æƒ…å†µä¸‹ä¸èƒ½å¤Ÿè¢«ä¸­é—´ä¸´æ—¶å˜é‡è°ƒç”¨
 }
 
 void MipsGen::lw(string s, string id, string reg) {
 	int addr = memory_table.lookup_addr(func_now, id);
 	if (addr < 0) {
-		addr = memory_table.lookup_addr(func_now, id);
+		addr = memory_table.lookup_addr("", id);
 		emit("lw", s, to_string(addr), reg);
 		return;
 	}
@@ -475,6 +481,7 @@ int MipsGen::is_digit(char ch) {
 
 void MipsGen::predeal(vector<MidCode> mc) {
 	write_into_mfile(".data:");
+	write_into_mfile("\tenter: .asciiz \"\\n\"");
 	this->mc = mc;
 	static int string_cnt = 0;
 	for (int i = 0; i < mc.size(); i++) {
@@ -526,6 +533,7 @@ string MipsGen::alloc(string iden, string reg) {
 			string reg = free_s_reg[0];
 			free_s_reg.erase(free_s_reg.begin(), free_s_reg.begin() + 1);
 			use_s_reg.push_back(reg);
+			this->reg_table.push_back(RegTableItem(reg, 1, var_info(iden, -1, -1, -1, -1)));
 			lw(reg, iden);
 			return reg;
 		}
@@ -539,6 +547,7 @@ string MipsGen::alloc(string iden, string reg) {
 			string reg = free_t_reg[0];
 			free_t_reg.erase(free_t_reg.begin(), free_t_reg.begin() + 1);
 			use_t_reg.push_back(reg);
+			this->reg_table.push_back(RegTableItem(reg, 1, var_info(iden, -1, -1, -1, -1)));
 			lw(reg, iden);
 			return reg;
 		}
@@ -554,7 +563,7 @@ vector<RegTableItem> MipsGen::clear_t() {
 	this->use_t_reg = {};
 	this->free_t_reg = { "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6","$t7" };
 	for (int i = 0; i < this->reg_table.size(); i++) {
-		if (this->reg_table[i].reg[0] == 't') {
+		if (this->reg_table[i].reg[1] == 't') {
 			clr.push_back(this->reg_table[i]);
 			this->reg_table.erase(reg_table.begin() + i, reg_table.begin() + i + 1);
 			i--;
@@ -568,7 +577,7 @@ vector<RegTableItem> MipsGen::clear_s() {
 	this->use_s_reg = {};
 	this->free_s_reg = { "$s0", "$s1", "$s2", "$s3", "$s4", "$s5", "$s6","$s7" };
 	for (int i = 0; i < this->reg_table.size(); i++) {
-		if (this->reg_table[i].reg[0] == 's') {
+		if (this->reg_table[i].reg[1] == 's') {
 			clr.push_back(this->reg_table[i]);
 			this->reg_table.erase(reg_table.begin() + i, reg_table.begin() + i + 1);
 			i--;

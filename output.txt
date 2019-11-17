@@ -1,55 +1,8 @@
-CONSTTK const
-INTTK int
-IDENFR a
-ASSIGN =
-INTCON 1
-<无符号整数>
-<整数>
-<常量定义>
-SEMICN ;
-CONSTTK const
-CHARTK char
-IDENFR b
-ASSIGN =
-CHARCON a
-<常量定义>
-SEMICN ;
-<常量说明>
 INTTK int
 IDENFR test
 <变量定义>
 SEMICN ;
 <变量说明>
-INTTK int
-IDENFR gets1
-<声明头部>
-LPARENT (
-INTTK int
-IDENFR a
-COMMA ,
-INTTK int
-IDENFR b
-<参数表>
-RPARENT )
-LBRACE {
-RETURNTK return
-LPARENT (
-IDENFR a
-<因子>
-<项>
-PLUS +
-IDENFR b
-<因子>
-<项>
-<表达式>
-RPARENT )
-<返回语句>
-SEMICN ;
-<语句>
-<语句列>
-<复合语句>
-RBRACE }
-<有返回值函数定义>
 VOIDTK void
 MAINTK main
 LPARENT (
@@ -68,28 +21,6 @@ LPARENT (
 IDENFR test
 RPARENT )
 <读语句>
-SEMICN ;
-<语句>
-IDENFR test
-ASSIGN =
-IDENFR gets1
-LPARENT (
-IDENFR test
-<因子>
-<项>
-<表达式>
-COMMA ,
-IDENFR a
-<因子>
-<项>
-<表达式>
-<值参数表>
-RPARENT )
-<有返回值函数调用语句>
-<因子>
-<项>
-<表达式>
-<赋值语句>
 SEMICN ;
 <语句>
 PRINTFTK printf

@@ -1,4 +1,4 @@
-#include "MidCode.h"
+ï»¿#include "MidCode.h"
 #include "FILEOperator.h"
 #include "MipsGen.h"
 #include "MemoryManage.h"
@@ -57,7 +57,7 @@ string MidCodeGen::gen_temp(void) {
 	return s;
 }
 
-void MidCodeGen::parse(string type, vector<token_info> tk_set) {
+void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 	if (type == "FUNC") {
 		
 		//int\char func_name(int a, int b, int c)
@@ -98,7 +98,7 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 	}
 	else if (type == "EXPR") {
 		// a + b * c - d / (5 + -1) - func() + a[1] + b()
-		//ÔËËã·ûÕ»µÄ·½·¨½âÎö±í´ïÊ½
+		//è¿ç®—ç¬¦æ ˆçš„æ–¹æ³•è§£æè¡¨è¾¾å¼
 
 		int cnt_pa = 0;
 		vector<token_info> expr;
@@ -219,7 +219,7 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 			polish.push_back(stack[stack.size() - 1]);
 			stack.pop_back();
 		}
-		//Êä³öËÄÔªÊ½
+		//è¾“å‡ºå››å…ƒå¼
 		string s1 = "";
 		string s2 = "";
 		for (int i = 0; i < polish.size(); i++) {
@@ -267,7 +267,7 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 		}
 		parse("CONDITION", vt);
 		string s1 = get_last_result();
-		string s2 = "label_if_head" + to_string(label_cnt);
+		string s2 = "label_if_head" + to_string(cnt);
 		push(string("BZ"), s1, s2, string(""));
 	}
 	else if (type == "CONDITION") {
@@ -304,14 +304,14 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 		//	stat1
 		//	GOTO <label_while_begin>
 		//	label_while_end:
-		push(string("LABEL"), string("label_while_begin"), to_string(label_cnt), string(""));
+		push(string("LABEL"), string("label_while_begin"), to_string(cnt), string(""));
 		vector<token_info> vt;
 		for (int i = 2; i < tk_set.size() - 1; i++) {
 			vt.push_back(tk_set[i]);
 		}
 		parse(string("CONDITION"), vt);
 		string s1 = get_last_result();
-		string s2 = string("label_while_end") + to_string(label_cnt);
+		string s2 = string("label_while_end") + to_string(cnt);
 		push(string("BZ"), s1, s2, string(""));
 		
 	
@@ -330,7 +330,7 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 		}
 		parse(string("CONDITION"), vt);
 		string s1 = get_last_result();
-		string s2 = string("label_while_end") + to_string(label_cnt++);
+		string s2 = string("label_dowhile") + to_string(cnt);
 		push(string("BNZ"), s1, s2, string(""));
 	}
 	else if (type == "FOR") {
@@ -355,7 +355,7 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 		}
 		parse("EXPR", expr);
 		push("=", get_last_result(), "", tk_set[2].token);
-		push("LABEL", "label_for_begin", to_string(label_cnt), "");
+		push("LABEL", "label_for_begin", to_string(cnt), "");
 		for (i++; i < tk_set.size(); i++) {
 			if (tk_set[i].type == SEMICN) {
 				break;
@@ -363,7 +363,7 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 			con.push_back(tk_set[i]);
 		}
 		parse("CONDITION", con);
-		push(string("BNZ"), get_last_result(), "label_for_end" + to_string(label_cnt), string(""));
+		push(string("BZ"), get_last_result(), "label_for_end" + to_string(cnt), string(""));
 
 	}
 	else if (type == "ARRAY") {
@@ -398,7 +398,7 @@ void MidCodeGen::out() {
 
 /*
 		// a + b * c - d / (5 + -1) - func() + a[1] + b()
-		//ÔËËã·ûÕ»µÄ·½·¨½âÎö±í´ïÊ½
+		//è¿ç®—ç¬¦æ ˆçš„æ–¹æ³•è§£æè¡¨è¾¾å¼
 		vector<string> stack;
 		vector<string> polish;
 		int isPos = 1;

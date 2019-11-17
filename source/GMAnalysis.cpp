@@ -551,6 +551,9 @@ void gm_analyse::isStatement(void){
 	OUT_LABEL(s);
 }
 void gm_analyse::isConditionStatement(void){
+	
+	int la_cnt = label_cnt;
+	label_cnt++;
 	begin_midcode();
 	if (type == IFTK) {
 		OUT(tk.now_token); getsym;
@@ -562,23 +565,23 @@ void gm_analyse::isConditionStatement(void){
 	if (type == RPARENT) {
 		OUT(tk.now_token); getsym;
 	}//else
-	end_midcode("IFHEAD");
-
+	end_midcode("IFHEAD", la_cnt);
 	isStatement();
-	mc_gen.push(string("GOTO"), string("label_if_tail") + to_string(label_cnt), string(""), string(""));
-	mc_gen.push(string("LABEL"), string("label_if_head"), to_string(label_cnt), string(""));
+	mc_gen.push(string("GOTO"), string("label_if_tail") + to_string(la_cnt), string(""), string(""));
+	mc_gen.push(string("LABEL"), string("label_if_head"), to_string(la_cnt), string(""));
 	if (type == ELSETK) {
 		OUT(tk.now_token); getsym;
 		isStatement();
 		
 	}//not else
-	mc_gen.push(string("LABEL"), string("label_if_tail"), to_string(label_cnt++), string(""));
+	mc_gen.push(string("LABEL"), string("label_if_tail"), to_string(la_cnt), string(""));
 	//----------------------pass---------------------
 	string s("<条件语句>");
 	OUT_LABEL(s);
 }
 void gm_analyse::isLoopStatement(void){
-	
+	int la_cnt = label_cnt;
+	label_cnt++;
 	if (type == WHILETK) {
 		begin_midcode();
 		OUT(tk.now_token); getsym;
@@ -589,13 +592,13 @@ void gm_analyse::isLoopStatement(void){
 		if (type == RPARENT) {
 			OUT(tk.now_token); getsym;
 		}//else
-		end_midcode("WHILE");
+		end_midcode("WHILE", la_cnt);
 		isStatement();
-		mc_gen.push(string("GOTO"), string("label_while_begin") + to_string(label_cnt), string(""), string(""));
-		mc_gen.push(string("LABEL"), string("label_if_end"), to_string(label_cnt++), string(""));
+		mc_gen.push(string("GOTO"), string("label_while_begin") + to_string(la_cnt), string(""), string(""));
+		mc_gen.push(string("LABEL"), string("label_if_end"), to_string(la_cnt), string(""));
 	}
 	else if (type == DOTK) {
-		mc_gen.push(string("LABEL"), string("label_dowhile"), to_string(label_cnt), string(""));
+		mc_gen.push(string("LABEL"), string("label_dowhile"), to_string(la_cnt), string(""));
 		OUT(tk.now_token); getsym;
 		isStatement();
 		begin_midcode();
@@ -609,7 +612,7 @@ void gm_analyse::isLoopStatement(void){
 		if (type == RPARENT) {
 			OUT(tk.now_token); getsym;
 		}//else
-		end_midcode("DOWHILE");
+		end_midcode("DOWHILE", la_cnt);
 	}
 	else if (type == FORTK) {
 		string s1;
@@ -657,11 +660,11 @@ void gm_analyse::isLoopStatement(void){
 		if (type == RPARENT) {
 			OUT(tk.now_token); getsym;
 		}//else
-		end_midcode("FOR");
+		end_midcode("FOR", la_cnt);
 		isStatement();
 		mc_gen.push(op, s1, s2, result);
-		mc_gen.push("GOTO", "label_for_begin" + to_string(label_cnt), "", "");
-		mc_gen.push("LABEL", "label_for_end", to_string(label_cnt++), "");
+		mc_gen.push("GOTO", "label_for_begin" + to_string(la_cnt), "", "");
+		mc_gen.push("LABEL", "label_for_end", to_string(la_cnt), "");
 	}//else
 
 	//---------------pass--------------------
@@ -863,6 +866,7 @@ void gm_analyse::isReturnFunctionCall(void){
 	OUT_LABEL(s);
 }
 void gm_analyse::isVoidFunctionCall(void) {
+	begin_midcode();
 	if (type == IDENFR) {
 		OUT(tk.now_token); getsym;
 	}
@@ -873,6 +877,7 @@ void gm_analyse::isVoidFunctionCall(void) {
 	if (type == RPARENT) {
 		OUT(tk.now_token); getsym;
 	}
+	end_midcode(string("FUNCCALL"));
 	string s("<无返回值函数调用语句>");
 	OUT_LABEL(s);
 }
@@ -965,11 +970,11 @@ void gm_analyse::begin_midcode(void) {
 	midcode_flag += 1;
 }
 
-void gm_analyse::end_midcode(string s) {
+void gm_analyse::end_midcode(string s, int cnt) {
 	midcode_flag -= 1;
 	if (midcode_flag)
 		return;
-	mc_gen.parse(s, midcode_vt);
+	mc_gen.parse(s, midcode_vt, cnt);
 	midcode_vt.clear();
 }
 

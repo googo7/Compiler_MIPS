@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 /*
 	func(global)
 	------------------------------------------------
@@ -40,7 +40,7 @@ public:
 	int isConst;
 	int _type = -1;
 	int value;
-	int addr;
+	int addr = -1;
 	int size = 1;
 	var_info();
 	var_info(string, int, int, int, int);

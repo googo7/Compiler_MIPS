@@ -1,12 +1,6 @@
-const int a =1 ;
-const char b = 'a';
 int test;
-int gets1(int a, int b){
-	return (a + b);
-}
 void main(){
     printf("Hello World");
     scanf(test);
-    test = gets1(test, a);
     printf(test);
 }

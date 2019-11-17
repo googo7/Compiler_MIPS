@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <string>
 #include <unordered_map>
 #include "TkAnalysis.h"
@@ -15,34 +15,34 @@ const static vector<string> tk_type_string = {
 	"EQL", "NEQ", "ASSIGN", "SEMICN", "COMMA",
 	"LPARENT", "RPARENT", "LBRACK", "RBRACK", "LBRACE",
 	"RBRACE"
-};	//µ¥´ÊtokenµÄËùÓĞÀàĞÍµÄ¶ÔÓ¦×Ö·û´®£¬×¢ÒâÓëenum½á¹¹Ò»Ò»¶ÔÓ¦¡£
+};	//å•è¯tokençš„æ‰€æœ‰ç±»å‹çš„å¯¹åº”å­—ç¬¦ä¸²ï¼Œæ³¨æ„ä¸enumç»“æ„ä¸€ä¸€å¯¹åº”ã€‚
 
 typedef unordered_map<string, int> string_int_map;
 string_int_map reserved_word = {
 	{"const", CONSTTK}, {"int", INTTK}, {"char", CHARTK}, {"void", VOIDTK}, {"main",MAINTK},
 	{"if",IFTK}, {"else",ELSETK}, {"do",DOTK}, {"while", WHILETK}, {"for",FORTK},
 	{"scanf",SCANFTK},{"printf",PRINTFTK}, {"return", RETURNTK}
-};			//±£Áô×ÖµÄ¶ÔÓ¦map(string->ENUM)
+};			//ä¿ç•™å­—çš„å¯¹åº”map(string->ENUM)
 
 token_info::token_info() {
 	;
-}//Ä¬ÈÏ¹¹Ôì
+}//é»˜è®¤æ„é€ 
 
 
-//³£ÓÃµÄ¹¹Ôìº¯Êı
+//å¸¸ç”¨çš„æ„é€ å‡½æ•°
 token_info::token_info(int type, string& token) {
 	this->type = type;
 	this->token = token;
 }
 
 
-//´Ótype(intĞÍ±äÁ¿)×ª»»µ½×Ö·û´®µÄtostring
+//ä»type(intå‹å˜é‡)è½¬æ¢åˆ°å­—ç¬¦ä¸²çš„tostring
 string token_info::out_type_string(){
 	return tk_type_string[this->type];
 }
 
 
-//´Ê·¨·ÖÎöÆ÷µÄÄ¬ÈÏ¹¹ÔìÍê³É³õÊ¼»¯¹ı³Ì£ºa)Ö¸Õë¹é0    b)µ±Ç°×Ö·ûÖÃ'\0'   c)¶ÁÈ¡µÚÒ»¸öµ¥´Ê£¬´æÈëµ¥´Ê¼Ä´æÆ÷
+//è¯æ³•åˆ†æå™¨çš„é»˜è®¤æ„é€ å®Œæˆåˆå§‹åŒ–è¿‡ç¨‹ï¼ša)æŒ‡é’ˆå½’0    b)å½“å‰å­—ç¬¦ç½®'\0'   c)è¯»å–ç¬¬ä¸€ä¸ªå•è¯ï¼Œå­˜å…¥å•è¯å¯„å­˜å™¨
 tk_analyse::tk_analyse() {
 	this->ch_pt = 0;
 	this->line = 1;
@@ -50,7 +50,7 @@ tk_analyse::tk_analyse() {
 	get_token();
 }
 
-//´Ê·¨·ÖÎöµÄºËĞÄ£¬¶ÁÈ¡²¢·ÖÎö×Ö·û£¬½«·ÖÎö³öµÄµ¥´Ê´æÈë¼Ä´æÆ÷now_token
+//è¯æ³•åˆ†æçš„æ ¸å¿ƒï¼Œè¯»å–å¹¶åˆ†æå­—ç¬¦ï¼Œå°†åˆ†æå‡ºçš„å•è¯å­˜å…¥å¯„å­˜å™¨now_token
 void tk_analyse::get_token() {
 	get_char();
 	while (isspace(ch)) {
@@ -273,8 +273,8 @@ void tk_analyse::get_token() {
 }
 
 
-//¶ÁÈëÏÂÒ»¸ö×Ö·û£¬Ö¸ÕëÓÀÔ¶Ö¸Ïòµ±Ç°×Ö·ûµÄÏÂÒ»¸ö×Ö·û´¦
-//tips£º×ö³öÅĞ±ğ£¬ÈôÖ¸ÕëÔ½½ç£¬Ôò½«chÖÃ'\0'
+//è¯»å…¥ä¸‹ä¸€ä¸ªå­—ç¬¦ï¼ŒæŒ‡é’ˆæ°¸è¿œæŒ‡å‘å½“å‰å­—ç¬¦çš„ä¸‹ä¸€ä¸ªå­—ç¬¦å¤„
+//tipsï¼šåšå‡ºåˆ¤åˆ«ï¼Œè‹¥æŒ‡é’ˆè¶Šç•Œï¼Œåˆ™å°†chç½®'\0'
 void tk_analyse::get_char() {
 	if (ch_pt >= file_string.size()) {
 		this->ch = '\0';
@@ -283,14 +283,14 @@ void tk_analyse::get_char() {
 }
 
 
-//·µ»ØÉÏÒ»¸ö×Ö·û²¢»¹Ô­Ö¸Õë
+//è¿”å›ä¸Šä¸€ä¸ªå­—ç¬¦å¹¶è¿˜åŸæŒ‡é’ˆ
 void tk_analyse::unget_char() {
 	this->ch_pt--;
 	this->ch = file_string[this->ch_pt - 1];
 }
 
 
-//ÒÔÏÂÎª¶ÔÓ¦µÄÅĞ¶Ïch×Ö·ûÀàĞÍÓï¾ä£¬ÆäÖĞ×ÖÄ¸¼¯¼ÓÈë'_'
+//ä»¥ä¸‹ä¸ºå¯¹åº”çš„åˆ¤æ–­chå­—ç¬¦ç±»å‹è¯­å¥ï¼Œå…¶ä¸­å­—æ¯é›†åŠ å…¥'_'
 int tk_analyse::is_alpha() {
 	return (isalpha(this->ch) || this->ch == '_');
 }

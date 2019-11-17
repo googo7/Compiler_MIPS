@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <string>
 #include <stack>
@@ -57,6 +57,6 @@ public:
 	void into_func(void);
 	void out_func(void);
 	void begin_midcode(void);
-	void end_midcode(string);
+	void end_midcode(string, int i = 0);
 	token_info replace(token_info);
 };

@@ -1,4 +1,4 @@
-#include "FILEOperator.h"
+﻿#include "FILEOperator.h"
 #include "TkAnalysis.h"
 #include "GMAnalysis.h"
 #include "Error.h"
