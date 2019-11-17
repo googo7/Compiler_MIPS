@@ -58,4 +58,5 @@ public:
 	void out_func(void);
 	void begin_midcode(void);
 	void end_midcode(string);
+	token_info replace(token_info);
 };

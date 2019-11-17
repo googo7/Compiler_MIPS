@@ -8,6 +8,7 @@
 using namespace std;
 extern string file_string;
 extern MemoryTable memory_table;
+gm_analyse gm;
 void symtab_test() {
 	Symtab symtab = Symtab();
 	symtab.func_push(string("fun1"), vector<int> {1}, 1);
@@ -35,7 +36,7 @@ int main() {
 		tk.get_token();
 	}*/
 
-	gm_analyse gm = gm_analyse();
+	gm = gm_analyse();
 	gm.isProgram();
 	gm.er.out();
 	close_file();

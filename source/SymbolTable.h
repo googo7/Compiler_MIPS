@@ -38,7 +38,7 @@ class var_info {
 public:
 	string iden;
 	int isConst;
-	int _type;
+	int _type = -1;
 	int value;
 	int addr;
 	int size = 1;

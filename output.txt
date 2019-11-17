@@ -72,7 +72,7 @@ SEMICN ;
 <Óï¾ä>
 IDENFR test
 ASSIGN =
-IDENFR gets
+IDENFR gets1
 LPARENT (
 IDENFR test
 <Òò×Ó>

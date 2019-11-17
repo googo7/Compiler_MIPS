@@ -22,7 +22,8 @@
 #define getsym do{(tk.get_token());}while(0)
 #define PUSH do{(sp.push(tk.ch_pt - token.size())); line_reg = tk.line;}while(0)
 #define POP do{tk.ch_pt = sp.top(); sp.pop(); tk.get_token(); tk.line = line_reg;}while(0)
-#define OUT(A) do{write_into_file(A); if (midcode_flag) midcode_vt.push_back(tk.now_token);}while(0)
+#define OUT(A) do{write_into_file(A); if (midcode_flag) {midcode_vt.push_back(replace(tk.now_token));}}while(0)
+#define OUT_DEF(A) do{write_into_file(A); if (midcode_flag) {midcode_vt.push_back((tk.now_token));}}while(0)
 #define OUT_LABEL(A) do{write_into_file(A);}while(0)
 #define push_into_symtab(A, B, C, D) do{if(!D && isLocal) symtab.local_push(iden, A, B, C, -1);else if(!D && !isLocal) symtab.global_push(iden, A, B, C, -1); else if (D && isLocal) symtab.local_push(iden, A, B, C, local_cnt++); else symtab.global_push(iden, A, B, C, global_cnt++);} while(0)  //添加到符号表，分别为isConst,type,value,addr,默认具有iden
 int isLocal = 0;    //表示是否处在local内或在global作用域内
@@ -104,6 +105,7 @@ void gm_analyse::isProgram() {
 }
 void gm_analyse::isMainFunction(void){
 	//--------------main function-----------------------
+	begin_midcode();
 	if (type == VOIDTK) {
 		OUT(tk.now_token); getsym;
 	} //else error
@@ -117,6 +119,7 @@ void gm_analyse::isMainFunction(void){
 	if (type == RPARENT) {
 		OUT(tk.now_token); getsym;
 	} //else error
+	end_midcode("FUNC");
 	if (type == LBRACE) {
 		OUT(tk.now_token); getsym;
 	}
@@ -125,6 +128,8 @@ void gm_analyse::isMainFunction(void){
 	if (type == RBRACE) {
 		OUT(tk.now_token); getsym;
 	}
+	begin_midcode();
+	end_midcode("EXIT");
 	//---------------------pass-----------------
 	string s("<主函数>");
 	OUT_LABEL(s);
@@ -154,7 +159,7 @@ void gm_analyse::isConstDefinition(void){
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
 			iden = token;
-			OUT(tk.now_token); getsym;
+			OUT_DEF(tk.now_token); getsym;
 		}//else
 		if (type == ASSIGN) {
 			OUT(tk.now_token); getsym;
@@ -165,7 +170,7 @@ void gm_analyse::isConstDefinition(void){
 			OUT(tk.now_token); getsym;
 			if (type == IDENFR) {
 				iden = token;
-				OUT(tk.now_token); getsym;
+				OUT_DEF(tk.now_token); getsym;
 			}//else
 			if (type == ASSIGN) {
 				OUT(tk.now_token); getsym;
@@ -179,7 +184,7 @@ void gm_analyse::isConstDefinition(void){
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
 			iden = token;
-			OUT(tk.now_token); getsym;
+			OUT_DEF(tk.now_token); getsym;
 		}//else
 		if (type == ASSIGN) {
 			OUT(tk.now_token); getsym;
@@ -202,7 +207,7 @@ void gm_analyse::isConstDefinition(void){
 			OUT(tk.now_token); getsym;
 			if (type == IDENFR) {
 				iden = token;
-				OUT(tk.now_token); getsym;
+				OUT_DEF(tk.now_token); getsym;
 			}//else
 			if (type == ASSIGN) {
 				OUT(tk.now_token); getsym;
@@ -257,7 +262,7 @@ void gm_analyse::isVariDefinition(void){
 	int res = isTypeIden();
 	if (type == IDENFR) {
 		iden = token;
-		OUT(tk.now_token); getsym;
+		OUT_DEF(tk.now_token); getsym;
 	
 	}//else
 	if (type == LBRACK) {
@@ -281,7 +286,7 @@ void gm_analyse::isVariDefinition(void){
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
 			iden = token;
-			OUT(tk.now_token); getsym;
+			OUT_DEF(tk.now_token); getsym;
 		}
 		if (type == LBRACK) {
 			OUT(tk.now_token); getsym;
@@ -327,6 +332,8 @@ void gm_analyse::isReturnFunction(void){
 	if (type == RBRACE) {
 		OUT(tk.now_token); getsym;
 	}
+	begin_midcode();
+	end_midcode("ENDFUNC");
 	//-------------pass----------------
 	string s("<有返回值函数定义>");
 	OUT_LABEL(s);
@@ -337,14 +344,14 @@ void gm_analyse::isDeclarationHeader(void){
 		if (type == IDENFR) {
 			symtab.func_push(token, vector<int>{}, INT);
 			func_name_now = token;
-			OUT(tk.now_token); getsym;
+			OUT_DEF(tk.now_token); getsym;
 		}
 	}
 	else if (type == CHARTK) {
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
 			symtab.func_push(token, vector<int>{}, CHAR);
-			OUT(tk.now_token); getsym;
+			OUT_DEF(tk.now_token); getsym;
 		}
 	}//else
 	//------------pass-------------------
@@ -406,6 +413,7 @@ char gm_analyse::isChar(void){
 }
 void gm_analyse::isVariTable(void){
 	string s("<参数表>");
+	vector<int> vt{};
 	if (type == RPARENT) {
 		//empty
 		OUT_LABEL(s);
@@ -414,22 +422,22 @@ void gm_analyse::isVariTable(void){
 	int res = isTypeIden();
 	if (type == IDENFR) {
 		string iden = token;
-		push_into_symtab(0, res, -1, 1);
-		OUT(tk.now_token); getsym;
+		OUT_DEF(tk.now_token);push_into_symtab(0, res, -1, 1); getsym;
 	}
-
+	vt.push_back(res);
 	while (type == COMMA) {
 		OUT(tk.now_token); getsym;
 		
 		res = isTypeIden();
 		if (type == IDENFR) {
 			string iden = token;
-			push_into_symtab(0, res, -1, 1);
-			OUT(tk.now_token); getsym;
+			OUT_DEF(tk.now_token); push_into_symtab(0, res, -1, 1);getsym;//要求必须OUT后修改，否则修改后replace生效
 		}//else
+		vt.push_back(res);
 	}
 	//------------pass-----------------
 	OUT_LABEL(s);
+	symtab.func_table[symtab.func_table.size() - 1].v_table = vt;
 }
 void gm_analyse::isValueVariTable(void){
 	string s("<值参数表>");
@@ -831,6 +839,8 @@ void gm_analyse::isVoidFunction(void){
 	if (type == RBRACE) {
 		OUT(tk.now_token); getsym;
 	}//else
+	begin_midcode();
+	end_midcode("ENDFUNC");
 	//-----------------------pass-----------------------
 	string s("<无返回值函数定义>");
 	OUT_LABEL(s);
@@ -961,4 +971,23 @@ void gm_analyse::end_midcode(string s) {
 		return;
 	mc_gen.parse(s, midcode_vt);
 	midcode_vt.clear();
+}
+
+token_info gm_analyse::replace(token_info t) {
+	if (type != IDENFR)
+		return t;
+	else {
+		if (symtab.var_lookup(token).isConst == 1) {
+			if (symtab.var_lookup(token)._type == INT) {
+				string a = to_string(symtab.var_lookup(token).value);
+				return token_info(INTCON, a);
+			}
+			else {
+				string a = "\'" + (char)symtab.var_lookup(token).value + '\'';
+				return token_info(CHARCON, a);
+			}
+		}
+		else
+			return t;
+	}
 }

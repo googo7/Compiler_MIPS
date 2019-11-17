@@ -1,11 +1,12 @@
 #include "MipsGen.h"
-#include "MemoryManage.h"
 #include "FILEOperator.h"
-
-RegTable reg_t;
+#include "GMAnalysis.h"
 extern MemoryTable memory_table;
+extern gm_analyse gm;
 MidCode mc_now;
+vector<string> func_name_stack = {};
 string func_now = "";
+int divide = 0;
 /*
 	func
 	para
@@ -47,10 +48,7 @@ void MipsGen::parse(MidCode mc) {
 	if (mc.s2[0] == '\'')
 		s2 = to_string((int)s2[1]);
 	if (op == "add" || op == "sub") {
-		string result_reg = reg_t.lookup(result, 1, SorT(result)), s1_reg, s2_reg;
-		if (!result_reg.size()) {
-			result_reg = "$t8";
-		}
+		string result_reg = lookup(result), s1_reg, s2_reg;
 		if (is_digit(s1[0])) {
 			if (is_digit(s2[0])) {
 				int res = (op == "add") ? (stoi(s1) + stoi(s2)) : (stoi(s1) - stoi(s2));
@@ -58,11 +56,7 @@ void MipsGen::parse(MidCode mc) {
 
 			}
 			else {
-				s2_reg = reg_t.lookup(s2, 1, SorT(s2));
-				if (!s2_reg.size()) {
-					s2_reg = "$t9";
-					lw(s2_reg, s2);
-				}
+				s2_reg = lookup(s2, "$t9");
 				if (op == "add")
 					emit("addiu", result_reg, s2_reg, s1);
 				else
@@ -71,27 +65,15 @@ void MipsGen::parse(MidCode mc) {
 		}
 		else {
 			if (is_digit(s2[0])) {
-				s1_reg = reg_t.lookup(s1, 1, SorT(s1));
-				if (!s1_reg.size()) {
-					s1_reg = "t8";
-					lw(s1_reg, s1);
-				}
+				s1_reg = lookup(s1);
 				if (op == "add")
 					emit("addiu", result_reg, s1_reg, s2);
 				else
 					emit("addiu", result_reg, s1_reg, to_string(0 - stoi(s2)));
 			}
 			else {
-				s1_reg = reg_t.lookup(s1, 1, SorT(s1)); 
-				if (!s1_reg.size()) {
-					s1_reg = "$t8";
-					lw(s1_reg, s1);
-				}
-				s2_reg = reg_t.lookup(s2, 1, SorT(s2));
-				if (!s2_reg.size()) {
-					s2_reg = "$t9";
-					lw(s2_reg, s2);
-				}
+				s1_reg = lookup(s1); 
+				s2_reg = lookup(s2, "$t9");
 				if(op == "add")
 					emit("addu", result_reg, s1_reg, s2_reg);
 				else
@@ -107,21 +89,18 @@ void MipsGen::parse(MidCode mc) {
 			emit("li", "$t8", s1, "");
 		}
 		else {
-			string s1_reg = reg_t.lookup(s1, 1, SorT(s1));
-			if (!s1_reg.size()) {
-				s1_reg = "$t8";
-				lw(s1_reg, s1);
-			}
+			string s1_reg = lookup(s1);
 		}
 		if (is_digit(s2[0])) {
 			emit("li", "$t9", s2, "");
 		}
 		else {
-			string s2_reg = reg_t.lookup(s2, 1, SorT(s2));
+			string s2_reg = lookup(s2, "$t9");
 			if (!s2_reg.size()) {
 				s2_reg = "$t9";
-				lw(s2_reg, s2);
+				
 			}
+			lw(s2_reg, s2);
 		}
 		if (op == "mult") {
 			emit("mult", "$t8", "$t9", "");
@@ -129,35 +108,24 @@ void MipsGen::parse(MidCode mc) {
 		else if (op == "div") {
 			emit("div", "$t8", "$t9", "");
 		}
-		string result_reg = reg_t.lookup(result, 1, SorT(result));
-		if (result_reg.size())
-			emit("mflo", result_reg, "", "");
-		else {
-			emit("mflo", "$t8", "", "");
+		string result_reg =lookup(result, "$t8");
+		emit("mflo", result_reg, "", "");
+		if(result_reg == "$t8")
 			sw("$t8", result);
-		}
 	}
 	else if (op == "=") {
 		if(s1 == result)
 			return;
 		if (s2 == "") {
 			if (is_digit(s1[0])) {
-				string result_reg = reg_t.lookup(result, 1, SorT(result));
-				if (result_reg == "")
-					result_reg = "$t8";
+				string result_reg = lookup(result);
 				emit("li", result_reg, to_string(stoi(s1)), "");
 				if (result_reg == "$t8")
 					sw(result_reg, result);
 			}
 			else {
-				string result_reg = reg_t.lookup(result, 1, SorT(result));
-				string s1_reg = reg_t.lookup(s1, 1, SorT(s1));
-				if (result_reg == "")
-					result_reg = "$t8";
-				if (s1_reg == "") {
-					s1_reg = "$t9";
-					lw(s1_reg, s1);
-				}
+				string result_reg = lookup(result);
+				string s1_reg = lookup(s1, "$t9");
 				emit("move", result_reg, s1_reg, "");
 				if (result_reg == "$t8")
 					sw(result_reg, result);
@@ -180,10 +148,7 @@ void MipsGen::parse(MidCode mc) {
 	}
 	else if (op == "[]") {
 		//result = s1[s2]
-		string result_reg = reg_t.lookup(result, 1, SorT(result));
-		if (!result_reg.size()) {
-			result_reg = "$t8";
-		}
+		string result_reg = lookup(result);
 		if (is_digit(s2[0])) {
 			emit("li", "$t9", s2, "");
 		}
@@ -198,22 +163,15 @@ void MipsGen::parse(MidCode mc) {
 	else if (op == "BZ") {
 		//BZ s1 s2
 		//beq s1, $0, s2
-		string s1_reg = reg_t.lookup(s1, 1, SorT(s1));
-		if (s1_reg.size())
-			emit("beq", s1_reg, "$0", s2);
-		else {
-			lw("t8", s1);
-			emit("beq", "$t8", "$0", s2);
-		}
+		string s1_reg = lookup(s1);
+		lw(s1_reg, s1);
+		emit("beq", s1_reg, "$0", s2);
 	}
 	else if (op == "BNZ") {
-		string s1_reg = reg_t.lookup(s1, 1, SorT(s1));
-		if (s1_reg.size())
-			emit("bne", s1_reg, "$0", s2);
-		else {
-			lw("t8", s1);
-			emit("bne", "$t8", "$0", s2);
-		}
+		string s1_reg = lookup(s1);
+		lw(s1_reg, s1);
+		emit("bne", s1_reg, "$0", s2);
+
 	}
 	else if (op == "GOTO") {
 		emit("j", s1, "", "");
@@ -222,10 +180,7 @@ void MipsGen::parse(MidCode mc) {
 	emit("LABEL", s1, s2, "");
 	}
 	else if (op == "<" || op == "<=" || op == ">=" || op == ">" || op == "==" || op == "!=") {
-		string result_reg = reg_t.lookup(result, 1, SorT(result)), s1_reg, s2_reg;
-		if (!result_reg.size()) {
-			result_reg = "t8";
-		}
+		string result_reg = lookup(result), s1_reg, s2_reg;
 		if (is_digit(s1[0])) {
 			if (is_digit(s2[0])) {
 				int res = 0;
@@ -245,11 +200,7 @@ void MipsGen::parse(MidCode mc) {
 
 			}
 			else {
-				s2_reg = reg_t.lookup(s2, 1, SorT(s2));
-				if (!s2_reg.size()) {
-					s2_reg = "t9";
-					lw(s2_reg, s2);
-				}
+				s2_reg = lookup(s2, "$t9");
 				if (op == "<")   // num < iden
 					emit("sgt", result_reg, s2_reg, to_string(stoi(s1)));
 				else if (op == "<=")
@@ -266,11 +217,7 @@ void MipsGen::parse(MidCode mc) {
 		}
 		else {
 			if (is_digit(s2[0])) {
-				s1_reg = reg_t.lookup(s1, 1, SorT(s1));
-				if (!s1_reg.size()) {
-					s1_reg = "t8";
-					lw(s1_reg, s1);
-				}
+				s1_reg = lookup(s1, "$t9");
 				if (op == "<")   // num < iden
 					emit("slti", result_reg, s1_reg, to_string(stoi(s2)));
 				else if (op == "<=")
@@ -285,16 +232,8 @@ void MipsGen::parse(MidCode mc) {
 					emit("sne", result_reg, s1_reg, to_string(stoi(s2)));
 			}
 			else {
-				s1_reg = reg_t.lookup(s1, 1, SorT(s1));
-				if (!s1_reg.size()) {
-					s1_reg = "t8";
-					lw(s1_reg, s1);
-				}
-				s2_reg = reg_t.lookup(s2, 1, SorT(s2));
-				if (!s2_reg.size()) {
-					s2_reg = "t9";
-					lw(s2_reg, s2);
-				}
+				s1_reg = lookup(s1);
+				s2_reg = lookup(s2, "$t9");
 				if (op == "<")   // num < iden
 					emit("slt", result_reg, s1_reg, s2_reg);
 				else if (op == "<=")
@@ -309,7 +248,7 @@ void MipsGen::parse(MidCode mc) {
 					emit("sne", result_reg, s1_reg, s2_reg);
 			}
 		}
-		if (result_reg == "t8") {
+		if (result_reg == "$t8") {
 			sw(result_reg, result);
 		}
 
@@ -323,14 +262,11 @@ void MipsGen::parse(MidCode mc) {
 			emit("syscall", "", "", "");
 		}
 		if (s2.size()) {
-			string s2_reg = reg_t.lookup(s2, 1, SorT(s2));
-			if (s2_reg.size()) {
-				emit("move", "$a0", s2_reg, "");
-			}
-			else {
-				lw("$a0", s2);
-			}
-			int type = memory_table.lookup(func_now, s2)._type;
+			lw("$a0", s2);
+			int type = -1;
+			type = memory_table.lookup(func_now, s2)._type;
+			if(type == -1)
+				type = memory_table.lookup("", s2)._type;
 			if (type == INT)
 				emit("li", "$v0", "1", "");
 			else if (type == CHAR)
@@ -339,7 +275,10 @@ void MipsGen::parse(MidCode mc) {
 		}
 	}
 	else if (op == "scanf") {
-		int type = memory_table.lookup(func_now, s1)._type;
+		int type = -1;
+		type = memory_table.lookup(func_now, s1)._type;
+		if (type == -1)
+			type = memory_table.lookup("", s1)._type;
 		if (type == INT) {
 			emit("li", "$v0", "5", "");
 		}
@@ -347,18 +286,70 @@ void MipsGen::parse(MidCode mc) {
 			emit("li", "$v0", "12", "");
 		}
 		emit("syscall", "", "", "");
-		string s1_reg = reg_t.lookup(s1, 1, SorT(s1));
-		if (!s1_reg.size()) {
-			s1_reg = "$t8";
-		}
+		string s1_reg = lookup(s1);
 		emit("move", s1_reg, "$v0", "");
 		if (s1_reg == "$t8") {
 			sw(s1_reg, s1);
 		}
 	}
 	else if (op == "func") {
-		
+		//func int func_name
+		emit("LABEL", s2, "", "");		
+		push("$ra");
+
+		func_now = s2;
 	}
+	else if (op == "para") {
+		int num = gm.symtab.func_lookup(func_now).v_table.size();
+		emit("lw", "$t8", to_string(8 + 4 * num - stoi(s1)), "$sp");
+		sw("$t8", s2);
+	}
+	else if (op == "func_push_para") {
+	string s1_reg;
+	if (is_digit(s1[0])) {
+		s1_reg = "$t8";
+		emit("li", "$t8", s1, "");
+		}
+	else {
+		s1_reg = lookup(s1);
+	}
+		emit("sw", s1_reg, to_string(-((memory_table.top_addr(func_now) + stoi(s2)) << 2)), "$sp");
+		divide = ((memory_table.top_addr(func_now) + stoi(s2)) << 2) + 4;
+	}
+	else if (op == "func_call") {
+		vector<RegTableItem> clr_s = clear_s();
+		vector<RegTableItem> clr_t = clear_t();
+		for (int i = 0; i < clr_s.size(); i++) {
+			sw(clr_s[i].reg, clr_s[i].var.iden);
+		}
+		for (int i = 0; i < clr_t.size(); i++) {
+			sw(clr_t[i].reg, clr_t[i].var.iden);
+		}//清理寄存器
+		emit("sw", "$sp", to_string(-divide), "$sp");
+		divide += 4;
+		emit("addiu", "$sp", "$sp", to_string(-divide));
+		emit("jal", s1, "", "");
+		string result_reg = lookup(result);
+		emit("move", result_reg, "$v0", "");
+		if (result_reg == "$t8") {
+			sw(result_reg, result);
+		}
+	}
+	else if (op == "end_func") {
+		vector<RegTableItem> clr_s = clear_s();
+		vector<RegTableItem> clr_t = clear_t();
+		pop("$ra");
+		pop("$sp");
+		emit("jr", "$ra", "", "");
+	}
+	else if (op == "ret") {
+	string s1_reg = lookup(s1);
+	emit("move", "$v0", s1_reg, "");
+}
+	else if (op == "exit") {
+	emit("li", "$v0", "10", "");
+	emit("syscall", "", "", "");
+}
 }
 
 void MipsGen::emit(string op, string s1, string s2, string s3) {
@@ -425,6 +416,9 @@ void MipsGen::emit(string op, string s1, string s2, string s3) {
 		res += "\t" + s1;
 		res += ",\t" + s2;
 	}
+	else if(op == "jal" || op == "jr"){
+		res += "\t" + s1;
+	}
 	write_into_mfile(res);
 }
 
@@ -437,22 +431,42 @@ string MipsGen::SorT(string s) {
 
 void MipsGen::sw(string s, string id) {
 	int addr = memory_table.lookup_addr(func_now, id);
-	emit("sw", s, to_string(addr), "$sp");
+	if (addr < 0) {
+		addr = memory_table.lookup_addr(func_now, id);
+		emit("sw", s, to_string(addr), "$gp");
+		return;
+	}
+	emit("sw", s, to_string(-addr), "$sp");
 }
 
 void MipsGen::sw(string s, string id, string reg) {
 	int addr = memory_table.lookup_addr(func_now, id);
-	emit("sw", s, to_string(addr), reg);
+	if (addr < 0) {
+		addr = memory_table.lookup_addr(func_now, id);
+		emit("sw", s, to_string(addr), reg);
+		return;
+	}
+	emit("sw", s, to_string(-addr), reg);
 }
 
 void MipsGen::lw(string s, string id) {
 	int addr = memory_table.lookup_addr(func_now, id);
-	emit("lw", s, to_string(addr), "$sp");//lw正常情况下不能够被中间临时变量调用
+	if (addr < 0) {
+		addr = memory_table.lookup_addr(func_now, id);
+		emit("lw", s, to_string(addr), "$gp");
+		return;
+	}
+	emit("lw", s, to_string(-addr), "$sp");//lw正常情况下不能够被中间临时变量调用
 }
 
 void MipsGen::lw(string s, string id, string reg) {
 	int addr = memory_table.lookup_addr(func_now, id);
-	emit("lw", s, to_string(addr), reg);
+	if (addr < 0) {
+		addr = memory_table.lookup_addr(func_now, id);
+		emit("lw", s, to_string(addr), reg);
+		return;
+	}
+	emit("lw", s, to_string(-addr), reg);
 }
 
 int MipsGen::is_digit(char ch) {
@@ -473,14 +487,92 @@ void MipsGen::predeal(vector<MidCode> mc) {
 		}
 	}
 	write_into_mfile(".text:");
+	write_into_mfile("j main");
 }
 
 void MipsGen::push(string reg) {
-	emit("sw", reg, "$0", "$sp");
+	emit("sw", reg, "0", "$sp");
 	emit("addiu", "$sp", "$sp", "-4");
 }
 
 void MipsGen::pop(string reg) {
 	emit("addiu", "$sp", "$sp", "4");
-	emit("lw", reg, "$0", "$sp");
+	emit("lw", reg, "0", "$sp");
+}
+
+string MipsGen::lookup(string iden, string reg) {
+	var_info v;
+	v = memory_table.lookup(func_now, iden);
+	if (v._type == -1) {
+		//global
+		v = memory_table.lookup("", iden);
+		emit("lw", reg, to_string(v.addr << 2), "$gp");
+		return reg;
+	}
+	for (int i = 0; i < this->reg_table.size(); i++) {
+		if (this->reg_table[i].isHit) {
+			v = this->reg_table[i].var;
+			if (v.iden == iden)
+				return this->reg_table[i].reg;
+		}
+	}
+	return alloc(iden, reg);
+}
+
+string MipsGen::alloc(string iden, string reg) {
+	string type = SorT(iden);
+	if (type == "s") {
+		if (free_s_reg.size()) {
+			string reg = free_s_reg[0];
+			free_s_reg.erase(free_s_reg.begin(), free_s_reg.begin() + 1);
+			use_s_reg.push_back(reg);
+			lw(reg, iden);
+			return reg;
+		}
+		else {
+			lw(reg, iden);
+			return reg;
+		}
+	}
+	if (type == "t") {
+		if (free_t_reg.size()) {
+			string reg = free_t_reg[0];
+			free_t_reg.erase(free_t_reg.begin(), free_t_reg.begin() + 1);
+			use_t_reg.push_back(reg);
+			lw(reg, iden);
+			return reg;
+		}
+		else {
+			lw(reg, iden);
+			return reg;
+		}
+	}
+}
+
+vector<RegTableItem> MipsGen::clear_t() {
+	vector<RegTableItem> clr = {};
+	this->use_t_reg = {};
+	this->free_t_reg = { "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6","$t7" };
+	for (int i = 0; i < this->reg_table.size(); i++) {
+		if (this->reg_table[i].reg[0] == 't') {
+			clr.push_back(this->reg_table[i]);
+			this->reg_table.erase(reg_table.begin() + i, reg_table.begin() + i + 1);
+			i--;
+		}
+	}
+	return clr;
+}
+
+vector<RegTableItem> MipsGen::clear_s() {
+	vector<RegTableItem> clr = {};
+	this->use_s_reg = {};
+	this->free_s_reg = { "$s0", "$s1", "$s2", "$s3", "$s4", "$s5", "$s6","$s7" };
+	for (int i = 0; i < this->reg_table.size(); i++) {
+		if (this->reg_table[i].reg[0] == 's') {
+			clr.push_back(this->reg_table[i]);
+			this->reg_table.erase(reg_table.begin() + i, reg_table.begin() + i + 1);
+			i--;
+		}
+	}
+	return clr;
 }

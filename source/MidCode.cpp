@@ -8,6 +8,7 @@ MipsGen mips_gen;
 extern int label_cnt;
 extern MemoryTable memory_table;
 extern string func_name_now;
+
 MidCode::MidCode() { ; }
 MidCode::MidCode(string o, string s, string ss, string r) {
 	this->op = o;
@@ -58,16 +59,17 @@ string MidCodeGen::gen_temp(void) {
 
 void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 	if (type == "FUNC") {
-		if (tk_set.size() == 4)
-			return;
+		
 		//int\char func_name(int a, int b, int c)
 		string s1 = tk_set[0].token;
 		string s2 = tk_set[1].token;
 		push(string("func"), s1, s2, string(""));
+		if (tk_set.size() == 4)
+			return;
 		for (int i = 3; i < tk_set.size(); i += 3) {
 			s1 = tk_set[i].token;
 			s2 = tk_set[i + 1].token;
-			push(string("para"), s1, s2, string(""));
+			push(string("para"), to_string((i / 3 - 1) << 2), s2, string(""));
 		}
 	}
 	else if (type == "FUNCCALL") {
@@ -75,11 +77,12 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 		string s1;
 		string s2;
 		vector<token_info> vt;
+		int cnt_para = 0;
 		for (int i = 2; i < tk_set.size(); i++) {
 			if (tk_set[i].type == COMMA) {
 				parse("EXPR", vt);
 				string res = get_last_result();
-				push(string("func_push_para"), res, string(""), string(""));
+				push(string("func_push_para"), res, to_string(cnt_para++), string(""));
 				vt.clear();
 			}
 			else if (i != tk_set.size() - 1) {
@@ -88,7 +91,7 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 		}
 		parse("EXPR", vt);
 		string res = get_last_result();
-		push(string("func_push_para"), res, string(""), string(""));
+		push(string("func_push_para"), res, to_string(cnt_para++), string(""));
 		vt.clear();
 		s1 = tk_set[0].token;
 		push(string("func_call"), s1, string(""), gen_temp());
@@ -375,6 +378,12 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set) {
 		string s2 = get_last_result();
 		push("[]", s1, s2, gen_temp());
 	}
+	else if (type == "ENDFUNC") {
+	push("end_func", "", "", "");
+}
+	else if (type == "EXIT") {
+	push("exit", "", "", "");
+}
 }
 
 void MidCodeGen::out() {

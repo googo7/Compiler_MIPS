@@ -7,6 +7,6 @@ int gets1(int a, int b){
 void main(){
     printf("Hello World");
     scanf(test);
-    test = gets(test, a);
+    test = gets1(test, a);
     printf(test);
 }

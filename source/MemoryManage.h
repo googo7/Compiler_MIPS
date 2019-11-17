@@ -16,34 +16,16 @@ public:
 	void push(string func_name, var_info vi);
 	void push(string);
 	void push(string func_name, string temp_name);
-	var_info lookup(string func_name, string iden);
+	var_info lookup(string func_name, string iden = "$t8");
 	int lookup_addr(string func_name, string iden);
+	int top_addr(string func_name);
 };
 
 class RegTableItem {
 public:
 	RegTableItem();
-	RegTableItem(string, int, string, int);
-	string iden;
-	int isHit = 0;
+	RegTableItem(string, int, var_info);
 	string reg;
-	int isLocal = 0;
-};
-
-
-class RegTable {
-	//用于完成变量对寄存器的映射关系的数据结构
-public:
-	vector<RegTableItem> reg_table;
-	vector<string> free_s_reg = { "$s0", "$s1", "$s2", "$s3", "$s4", "$s5", "$s6","$s7" };
-	vector<string> free_t_reg = { "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6","$t7" };
-	vector<string> use_s_reg = {};
-	vector<string> use_t_reg = {};
-
-	RegTable();
-
-	string lookup(string, int, string);
-	int alloc(string i, string type);
-	void clear_t();
-	void clear_s();
+	int isHit = 0;
+	var_info var;
 };
