@@ -43,24 +43,23 @@ void MipsGen::parse(MidCode mc) {
 	string s1 = mc.s1;
 	string s2 = mc.s2;
 	string result = mc.result;
-	if (mc.s1[0] == '\'')
-		s1 = to_string((int)s1[1]);
-	if (mc.s2[0] == '\'')
-		s2 = to_string((int)s2[1]);
+	//if (mc.s1[0] == '\'')
+	//	s1 = to_string((int)s1[1]);
+	//if (mc.s2[0] == '\'')
+	//	s2 = to_string((int)s2[1]);
 	if (op == "add" || op == "sub") {
 		string result_reg = lookup(result), s1_reg, s2_reg;
 		if (is_digit(s1[0])) {
 			if (is_digit(s2[0])) {
-				int res = (op == "add") ? (stoi(s1) + stoi(s2)) : (stoi(s1) - stoi(s2));
+				int res = (op == "add") ? (toi(s1) + toi(s2)) : (toi(s1) - toi(s2));
 				emit("li", result_reg, to_string(res), "");
-
 			}
 			else {
 				s2_reg = lookup(s2, "$t9");
 				if (op == "add")
 					emit("addiu", result_reg, s2_reg, s1);
 				else
-					emit("addiu", result_reg, s2_reg, to_string(0 - stoi(s1)));
+					emit("addiu", result_reg, s2_reg, to_string(0 - toi(s1)));
 			}
 		}
 		else {
@@ -69,7 +68,7 @@ void MipsGen::parse(MidCode mc) {
 				if (op == "add")
 					emit("addiu", result_reg, s1_reg, s2);
 				else
-					emit("addiu", result_reg, s1_reg, to_string(0 - stoi(s2)));
+					emit("addiu", result_reg, s1_reg, to_string(0 - toi(s2)));
 			}
 			else {
 				s1_reg = lookup(s1); 
@@ -117,7 +116,7 @@ void MipsGen::parse(MidCode mc) {
 		if (s2 == "") {
 			if (is_digit(s1[0])) {
 				string result_reg = lookup(result);
-				emit("li", result_reg, to_string(stoi(s1)), "");
+				emit("li", result_reg, to_string(toi(s1)), "");
 				if (result_reg == "$t8")
 					sw(result_reg, result);
 			}
@@ -181,51 +180,51 @@ void MipsGen::parse(MidCode mc) {
 			if (is_digit(s2[0])) {
 				int res = 0;
 				if (op == "<")
-					res = (stoi(s1) < stoi(s2));
+					res = (toi(s1) < toi(s2));
 				else if(op == "<=")
-					res = (stoi(s1) <= stoi(s2));
+					res = (toi(s1) <= toi(s2));
 				else if (op == ">=")
-					res = (stoi(s1) >= stoi(s2));
+					res = (toi(s1) >= toi(s2));
 				else if (op == ">")
-					res = (stoi(s1) > stoi(s2));
+					res = (toi(s1) > toi(s2));
 				else if (op == "==")
-					res = (stoi(s1) == stoi(s2));
+					res = (toi(s1) == toi(s2));
 				else if (op == "!=")
-					res = (stoi(s1) != stoi(s2));
+					res = (toi(s1) != toi(s2));
 				emit("li", result_reg, to_string(res), "");
 
 			}
 			else {
 				s2_reg = lookup(s2, "$t9");
 				if (op == "<")   // num < iden
-					emit("sgt", result_reg, s2_reg, to_string(stoi(s1)));
+					emit("sgt", result_reg, s2_reg, to_string(toi(s1)));
 				else if (op == "<=")
-					emit("sge", result_reg, s2_reg, to_string(stoi(s1)));
+					emit("sge", result_reg, s2_reg, to_string(toi(s1)));
 				else if (op == ">=")
-					emit("sle", result_reg, s2_reg, to_string(stoi(s1)));
+					emit("sle", result_reg, s2_reg, to_string(toi(s1)));
 				else if (op == ">")
-					emit("slti", result_reg, s2_reg, to_string(stoi(s1)));
+					emit("slti", result_reg, s2_reg, to_string(toi(s1)));
 				else if (op == "==")
-					emit("seq", result_reg, s2_reg, to_string(stoi(s1)));
+					emit("seq", result_reg, s2_reg, to_string(toi(s1)));
 				else if (op == "!=")
-					emit("sne", result_reg, s2_reg, to_string(stoi(s1)));
+					emit("sne", result_reg, s2_reg, to_string(toi(s1)));
 			}
 		}
 		else {
 			if (is_digit(s2[0])) {
 				s1_reg = lookup(s1, "$t9");
 				if (op == "<")   // num < iden
-					emit("slti", result_reg, s1_reg, to_string(stoi(s2)));
+					emit("slti", result_reg, s1_reg, to_string(toi(s2)));
 				else if (op == "<=")
-					emit("sle", result_reg, s1_reg, to_string(stoi(s2)));
+					emit("sle", result_reg, s1_reg, to_string(toi(s2)));
 				else if (op == ">=")
-					emit("sge", result_reg, s1_reg, to_string(stoi(s2)));
+					emit("sge", result_reg, s1_reg, to_string(toi(s2)));
 				else if (op == ">")
-					emit("sgt", result_reg, s1_reg, to_string(stoi(s2)));
+					emit("sgt", result_reg, s1_reg, to_string(toi(s2)));
 				else if (op == "==")
-					emit("seq", result_reg, s1_reg, to_string(stoi(s2)));
+					emit("seq", result_reg, s1_reg, to_string(toi(s2)));
 				else if (op == "!=")
-					emit("sne", result_reg, s1_reg, to_string(stoi(s2)));
+					emit("sne", result_reg, s1_reg, to_string(toi(s2)));
 			}
 			else {
 				s1_reg = lookup(s1);
@@ -258,17 +257,29 @@ void MipsGen::parse(MidCode mc) {
 			emit("syscall", "", "", "");
 		}
 		if (s2.size()) {
-			string s2_reg = lookup(s2);
-			emit("move", "$a0", s2_reg, "");
-			int type = -1;
-			type = memory_table.lookup(func_now, s2)._type;
-			if(type == -1)
-				type = memory_table.lookup("", s2)._type;
-			if (type == INT || type == TEMP)//数组查找类型
+			if (isdigit(s2[0]) || s2[0] == '+' || s2[0] == '-' ) {
+				emit("li", "$a0", to_string(toi(s2)), "");
 				emit("li", "$v0", "1", "");
-			else if (type == CHAR)
+				emit("syscall", "", "", "");
+			}
+			else if (s2[0] == '\'') {
+				emit("li", "$a0", to_string((int)s2[1]), "");
 				emit("li", "$v0", "11", "");
-			emit("syscall", "", "", "");
+				emit("syscall", "", "", "");
+			}
+			else {
+				string s2_reg = lookup(s2);
+				emit("move", "$a0", s2_reg, "");
+				int type = -1;
+				type = memory_table.lookup(func_now, s2)._type;
+				if (type == -1)
+					type = memory_table.lookup("", s2)._type;
+				if (type == INT || type == TEMP)//数组查找类型
+					emit("li", "$v0", "1", "");
+				else if (type == CHAR)
+					emit("li", "$v0", "11", "");
+				emit("syscall", "", "", "");
+			}
 		}
 		emit("la", "$a0", "enter", "");
 		emit("li", "$v0", "4", "");
@@ -301,7 +312,7 @@ void MipsGen::parse(MidCode mc) {
 	}
 	else if (op == "para") {
 		int num = gm.symtab.func_lookup(func_now).v_table.size();
-		emit("lw", "$t8", to_string(8 + 4 * num - stoi(s1)), "$sp");
+		emit("lw", "$t8", to_string(8 + 4 * num - toi(s1)), "$sp");
 		sw("$t8", s2);
 	}
 	else if (op == "func_push_para") {
@@ -313,8 +324,8 @@ void MipsGen::parse(MidCode mc) {
 	else {
 		s1_reg = lookup(s1);
 	}
-		emit("sw", s1_reg, to_string(-((memory_table.top_addr(func_now) + stoi(s2)) << 2)), "$sp");
-		divide = ((memory_table.top_addr(func_now) + stoi(s2)) << 2) + 4;
+		emit("sw", s1_reg, to_string(-((memory_table.top_addr(func_now) + toi(s2)) << 2)), "$sp");
+		divide = ((memory_table.top_addr(func_now) + toi(s2)) << 2) + 4;
 	}
 	else if (op == "func_call") {
 		vector<RegTableItem> clr_s = clear_s();
@@ -343,8 +354,10 @@ void MipsGen::parse(MidCode mc) {
 		emit("jr", "$ra", "", "");
 	}
 	else if (op == "ret") {
+	if (!s1.size())
+		return;
 	if (is_digit(s1[0])) {
-		emit("li", "$v0", to_string(stoi(s1)), "");
+		emit("li", "$v0", to_string(toi(s1)), "");
 	}
 	else {
 		string s1_reg = lookup(s1);
@@ -459,7 +472,7 @@ void MipsGen::lw(string s, string id) {
 	int addr = memory_table.lookup_addr(func_now, id);
 	if (addr < 0) {
 		addr = memory_table.lookup_addr("", id);
-		emit("lw", s, to_string(addr + 0x1800), "$gp");
+		emit("lw", s, to_string(addr), "$gp");
 		return;
 	}
 	emit("lw", s, to_string(-addr), "$sp");//lw正常情况下不能够被中间临时变量调用
@@ -469,14 +482,14 @@ void MipsGen::lw(string s, string id, string reg) {
 	int addr = memory_table.lookup_addr(func_now, id);
 	if (addr < 0) {
 		addr = memory_table.lookup_addr("", id);
-		emit("lw", s, to_string(addr), reg);
+		emit("lw", s, to_string(addr + 0x1800), reg);
 		return;
 	}
 	emit("lw", s, to_string(-addr), reg);
 }
 
 int MipsGen::is_digit(char ch) {
-	return isdigit(ch) || ch == '+' || ch == '-';
+	return isdigit(ch) || ch == '+' || ch == '-' || ch == '\'';
 }
 
 void MipsGen::predeal(vector<MidCode> mc) {
@@ -584,4 +597,12 @@ vector<RegTableItem> MipsGen::clear_s() {
 		}
 	}
 	return clr;
+}
+
+
+int MipsGen::toi(string a) {
+	if (is_digit(a[0]))
+		return stoi(a);
+	else
+		return int(a[1]);
 }

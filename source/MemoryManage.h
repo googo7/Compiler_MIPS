@@ -12,10 +12,10 @@ class MemoryTable {
 public:
 	MemoryTable();
 	unordered_map<string, vector<var_info>> map;
-	vector<string> temp;
+	unordered_map<string, int> temp;
 	void push(string func_name, var_info vi);
-	void push(string);
-	void push(string func_name, string temp_name);
+	void push(string, int);
+	void push(string func_name, pair<string, int> temp_name);
 	var_info lookup(string func_name, string iden = "$t8");
 	int lookup_addr(string func_name, string iden);
 	int top_addr(string func_name);

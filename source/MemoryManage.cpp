@@ -16,22 +16,24 @@ void MemoryTable::push(string func_name, var_info vi) {
 	}
 }
 
-void MemoryTable::push(string s) {
-	this->temp.push_back(s);
+void MemoryTable::push(string s, int type) {
+	this->temp[s] = type;
 }
 
-void MemoryTable::push(string func_name, string temp_name) {
+void MemoryTable::push(string func_name, pair<string, int> temp_name) {
 	if (map.find(func_name) == map.end()) {
-		map[func_name] = vector<var_info>{ var_info(temp_name, 0, TEMP, -1, 0) };
+		map[func_name] = vector<var_info>{ var_info(temp_name.first, 0, temp_name.second, -1, 0) };
 		return;
 	}
 	int addr = map[func_name][map[func_name].size() - 1].addr;
-	var_info v(temp_name, 0, TEMP, -1, addr + 1);
+	var_info v(temp_name.first, 0, temp_name.second, -1, addr + 1);
 	map[func_name].push_back(v);
 }
 
 var_info MemoryTable::lookup(string func_name, string iden) {
 	var_info res;
+	if (map.find(func_name) == map.end())
+		return res;
 	vector<var_info> vi = map[func_name];
 	for (int i = 0; i < vi.size(); i++) {
 		if (vi[i].iden == iden)
@@ -42,6 +44,8 @@ var_info MemoryTable::lookup(string func_name, string iden) {
 
 int MemoryTable::top_addr(string func_name) {
 	int res = 0;
+	if (map.find(func_name) == map.end())
+		return res;
 	vector<var_info> vi = map[func_name];
 	for (int i = 0; i < vi.size(); i++) {
 			res = vi[i].addr;

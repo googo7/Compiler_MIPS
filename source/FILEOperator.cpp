@@ -78,4 +78,8 @@ void close_file() {
 		ofile.close();
 	if (efile)
 		efile.close();
+	if (midfile)
+		midfile.close();
+	if (mipsfile)
+		mipsfile.close();
 }

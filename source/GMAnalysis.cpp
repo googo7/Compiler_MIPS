@@ -38,7 +38,7 @@ int midcode_flag = 0;//控制是否进入midcode_vt的开关
 string func_name_now = "";
 int func_var_pt = 0;
 MemoryTable memory_table;
-
+int array_type = 0;
 
 
 extern string file_string;
@@ -266,6 +266,7 @@ void gm_analyse::isVariDefinition(void){
 	
 	}//else
 	if (type == LBRACK) {
+		array_type = res;
 		OUT(tk.now_token); getsym;
 		int num = isUnsigned();
 		//else
@@ -289,6 +290,7 @@ void gm_analyse::isVariDefinition(void){
 			OUT_DEF(tk.now_token); getsym;
 		}
 		if (type == LBRACK) {
+			array_type = res;
 			OUT(tk.now_token); getsym;
 			int num = isUnsigned();
 			push_into_symtab(0, res, -1, 1);
@@ -913,8 +915,10 @@ void gm_analyse::isFactor(void) {
 		}
 		else {
 			POP; 
+			string res = token;
 			OUT(tk.now_token); getsym;
 			if (type == LBRACK) {
+				array_type = symtab.var_lookup(res)._type;
 				OUT(tk.now_token); getsym;
 				isExpression();
 				if (type == RBRACK) {
@@ -960,8 +964,11 @@ void gm_analyse::out_func(void) {
 	for (int i = 0; i < vv.size(); i++) {
 		memory_table.push(func_name_now, vv[i]);
 	}
-	for (int i = 0; i < memory_table.temp.size(); i++)
-		memory_table.push(func_name_now, memory_table.temp[i]);
+	unordered_map<string, int>::iterator ui = memory_table.temp.begin();
+	while (ui != memory_table.temp.end()) {
+		memory_table.push(func_name_now, *ui);
+		ui++;
+	}
 	symtab.clear();
 	memory_table.temp.clear();
 }
@@ -988,7 +995,8 @@ token_info gm_analyse::replace(token_info t) {
 				return token_info(INTCON, a);
 			}
 			else {
-				string a = "\'" + (char)symtab.var_lookup(token).value + '\'';
+				string a = "";
+				a  += (char)symtab.var_lookup(token).value;
 				return token_info(CHARCON, a);
 			}
 		}

@@ -1,6 +1,6 @@
 func		|void		|main		|
-printf		|"Hello World"		|		|
-scanf		|test		|		|
-=		|test		|		|test
-printf		|		|test		|
+=		|1		|		|1
+printf		|		|1		|
+=		|'b'		|		|'b'
+printf		|		|'b'		|
 exit		|		|		|

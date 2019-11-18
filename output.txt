@@ -1,8 +1,20 @@
+CONSTTK const
 INTTK int
-IDENFR test
-<变量定义>
+IDENFR a
+ASSIGN =
+INTCON 1
+<无符号整数>
+<整数>
+<常量定义>
 SEMICN ;
-<变量说明>
+CONSTTK const
+CHARTK char
+IDENFR b
+ASSIGN =
+CHARCON b
+<常量定义>
+SEMICN ;
+<常量说明>
 VOIDTK void
 MAINTK main
 LPARENT (
@@ -10,22 +22,17 @@ RPARENT )
 LBRACE {
 PRINTFTK printf
 LPARENT (
-STRCON Hello World
-<字符串>
+IDENFR a
+<因子>
+<项>
+<表达式>
 RPARENT )
 <写语句>
 SEMICN ;
 <语句>
-SCANFTK scanf
-LPARENT (
-IDENFR test
-RPARENT )
-<读语句>
-SEMICN ;
-<语句>
 PRINTFTK printf
 LPARENT (
-IDENFR test
+IDENFR b
 <因子>
 <项>
 <表达式>

@@ -34,4 +34,5 @@ public:
 	string alloc(string i, string reg);
 	vector<RegTableItem> clear_t();
 	vector<RegTableItem> clear_s();
+	int toi(string);
 };

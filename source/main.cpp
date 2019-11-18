@@ -39,8 +39,8 @@ int main() {
 	gm = gm_analyse();
 	gm.isProgram();
 	gm.er.out();
-	close_file();
 	gm.mc_gen.out();
+	close_file();
 	//symtab_test();
 	return 0;
 }

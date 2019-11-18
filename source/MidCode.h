@@ -22,7 +22,7 @@ public:
 	MidCodeGen();
 	void push(string, string, string, string);
 	void parse(string, vector<token_info>, int i = 0);
-	string gen_temp(void);
+	string gen_temp(int type = 1);
 	string get_last_result(void);
 	void out();
 };

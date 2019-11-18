@@ -1,6 +1,6 @@
-int test;
+const int a = 1;
+const char b = 'b';
 void main(){
-    printf("Hello World");
-    scanf(test);
-    printf(test);
+	printf(a);
+	printf(b);
 }

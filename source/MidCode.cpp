@@ -8,7 +8,7 @@ MipsGen mips_gen;
 extern int label_cnt;
 extern MemoryTable memory_table;
 extern string func_name_now;
-
+extern int array_type;
 MidCode::MidCode() { ; }
 MidCode::MidCode(string o, string s, string ss, string r) {
 	this->op = o;
@@ -50,10 +50,10 @@ string MidCodeGen::get_last_result(void) {
 	return this->mc[mc.size() - 1].result;
 }
 
-string MidCodeGen::gen_temp(void) {
+string MidCodeGen::gen_temp(int type) {
 	static int cnt = 0;
 	string s = string("xxj_temp") + to_string(cnt++);
-	memory_table.push(s);
+	memory_table.push(s, type);
 	return s;
 }
 
@@ -370,13 +370,15 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 		//iden [expr]
 		//[] , iden, expr, t0
 		string s1 = tk_set[0].token;
+		int type = -1;
+		
 		vector<token_info> vt;
 		for (int i = 2; i < tk_set.size() - 1; i++) {
 			vt.push_back(tk_set[i]);
 		}
 		parse("EXPR", vt);
 		string s2 = get_last_result();
-		push("[]", s1, s2, gen_temp());
+		push("[]", s1, s2, gen_temp(array_type));
 	}
 	else if (type == "ENDFUNC") {
 	push("end_func", "", "", "");
