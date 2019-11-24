@@ -597,7 +597,7 @@ void gm_analyse::isLoopStatement(void){
 		end_midcode("WHILE", la_cnt);
 		isStatement();
 		mc_gen.push(string("GOTO"), string("label_while_begin") + to_string(la_cnt), string(""), string(""));
-		mc_gen.push(string("LABEL"), string("label_if_end"), to_string(la_cnt), string(""));
+		mc_gen.push(string("LABEL"), string("label_while_end"), to_string(la_cnt), string(""));
 	}
 	else if (type == DOTK) {
 		mc_gen.push(string("LABEL"), string("label_dowhile"), to_string(la_cnt), string(""));
@@ -793,11 +793,12 @@ void gm_analyse::isReturnStatement(void){
 		isExpression();
 		end_midcode("EXPR");
 		s1 = mc_gen.get_last_result();
-		mc_gen.push("ret", s1, "", "");
+		
 		if (type == RPARENT) {
 			OUT(tk.now_token); getsym;
 		}
 	}
+	mc_gen.push("ret", s1, "", "");
 	//------------pass---------------
 	string s("<返回语句>");
 	OUT_LABEL(s);

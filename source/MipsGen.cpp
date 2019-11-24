@@ -362,8 +362,14 @@ void MipsGen::parse(MidCode mc) {
 		emit("jr", "$ra", "", "");
 	}
 	else if (op == "ret") {
-	if (!s1.size())
-		return;
+		if (!s1.size()) {
+			vector<RegTableItem> clr_s = clear_s();
+			vector<RegTableItem> clr_t = clear_t();
+			pop("$ra");
+			pop("$sp");
+			emit("jr", "$ra", "", "");
+			return;
+		}
 	if (is_digit(s1[0])) {
 		emit("li", "$v0", to_string(toi(s1)), "");
 	}
@@ -372,6 +378,11 @@ void MipsGen::parse(MidCode mc) {
 		emit("move", "$v0", s1_reg, "");
 
 	}
+	vector<RegTableItem> clr_s = clear_s();
+	vector<RegTableItem> clr_t = clear_t();
+	pop("$ra");
+	pop("$sp");
+	emit("jr", "$ra", "", "");
 }
 	else if (op == "exit") {
 	emit("li", "$v0", "10", "");

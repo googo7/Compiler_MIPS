@@ -1,404 +1,871 @@
 INTTK int
-IDENFR array
+IDENFR arr
 LBRACK [
-INTCON 10
-<æ— ç¬¦å·æ•´æ•°>
+INTCON 1000
+<ÎÞ·ûºÅÕûÊý>
 RBRACK ]
-<å˜é‡å®šä¹‰>
-SEMICN ;
-INTTK int
-IDENFR mark
+COMMA ,
+IDENFR tmp
 LBRACK [
-INTCON 10
-<æ— ç¬¦å·æ•´æ•°>
+INTCON 1000
+<ÎÞ·ûºÅÕûÊý>
 RBRACK ]
-<å˜é‡å®šä¹‰>
+<±äÁ¿¶¨Òå>
 SEMICN ;
-<å˜é‡è¯´æ˜Ž>
+<±äÁ¿ËµÃ÷>
 VOIDTK void
-IDENFR print_func
+IDENFR merge
 LPARENT (
 INTTK int
-IDENFR n
-<å‚æ•°è¡¨>
-RPARENT )
-LBRACE {
-INTTK int
-IDENFR j
-<å˜é‡å®šä¹‰>
-SEMICN ;
-<å˜é‡è¯´æ˜Ž>
-FORTK for
-LPARENT (
-IDENFR j
-ASSIGN =
-INTCON 0
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-SEMICN ;
-IDENFR j
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-LSS <
-IDENFR n
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<æ¡ä»¶>
-SEMICN ;
-IDENFR j
-ASSIGN =
-IDENFR j
-PLUS +
-INTCON 1
-<æ— ç¬¦å·æ•´æ•°>
-<æ­¥é•¿>
-RPARENT )
-LBRACE {
-PRINTFTK printf
-LPARENT (
-IDENFR array
-LBRACK [
-IDENFR j
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-RBRACK ]
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-RPARENT )
-<å†™è¯­å¥>
-SEMICN ;
-<è¯­å¥>
-<è¯­å¥åˆ—>
-RBRACE }
-<è¯­å¥>
-<å¾ªçŽ¯è¯­å¥>
-<è¯­å¥>
-<è¯­å¥åˆ—>
-<å¤åˆè¯­å¥>
-RBRACE }
-<æ— è¿”å›žå€¼å‡½æ•°å®šä¹‰>
-VOIDTK void
-IDENFR func
-LPARENT (
-INTTK int
-IDENFR loc
+IDENFR s1
 COMMA ,
 INTTK int
-IDENFR n
-<å‚æ•°è¡¨>
+IDENFR l1
+COMMA ,
+INTTK int
+IDENFR s2
+COMMA ,
+INTTK int
+IDENFR l2
+<²ÎÊý±í>
 RPARENT )
 LBRACE {
 INTTK int
 IDENFR i
-<å˜é‡å®šä¹‰>
+COMMA ,
+IDENFR j
+COMMA ,
+IDENFR k
+<±äÁ¿¶¨Òå>
 SEMICN ;
-<å˜é‡è¯´æ˜Ž>
-IFTK if
+<±äÁ¿ËµÃ÷>
+IDENFR i
+ASSIGN =
+INTCON 0
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+IDENFR j
+ASSIGN =
+INTCON 0
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+IDENFR k
+ASSIGN =
+IDENFR s1
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+WHILETK while
 LPARENT (
-IDENFR loc
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-EQL ==
-IDENFR n
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<æ¡ä»¶>
+IDENFR i
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+LSS <
+IDENFR l1
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
 RPARENT )
 LBRACE {
-IDENFR print_func
+IFTK if
 LPARENT (
-IDENFR n
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<å€¼å‚æ•°è¡¨>
+IDENFR j
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+LSS <
+IDENFR l2
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
 RPARENT )
-<æ— è¿”å›žå€¼å‡½æ•°è°ƒç”¨è¯­å¥>
+LBRACE {
+IFTK if
+LPARENT (
+IDENFR arr
+LBRACK [
+IDENFR s1
+<Òò×Ó>
+<Ïî>
+PLUS +
+IDENFR i
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+GRE >
+IDENFR arr
+LBRACK [
+IDENFR s2
+<Òò×Ó>
+<Ïî>
+PLUS +
+IDENFR j
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
+RPARENT )
+LBRACE {
+IDENFR tmp
+LBRACK [
+IDENFR k
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+ASSIGN =
+IDENFR arr
+LBRACK [
+IDENFR s2
+<Òò×Ó>
+<Ïî>
+PLUS +
+IDENFR j
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
 SEMICN ;
-<è¯­å¥>
+<Óï¾ä>
+IDENFR j
+ASSIGN =
+IDENFR j
+<Òò×Ó>
+<Ïî>
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+<Óï¾äÁÐ>
+RBRACE }
+<Óï¾ä>
+ELSETK else
+LBRACE {
+IDENFR tmp
+LBRACK [
+IDENFR k
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+ASSIGN =
+IDENFR arr
+LBRACK [
+IDENFR s1
+<Òò×Ó>
+<Ïî>
+PLUS +
+IDENFR i
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+IDENFR i
+ASSIGN =
+IDENFR i
+<Òò×Ó>
+<Ïî>
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+<Óï¾äÁÐ>
+RBRACE }
+<Óï¾ä>
+<Ìõ¼þÓï¾ä>
+<Óï¾ä>
+IDENFR k
+ASSIGN =
+IDENFR k
+<Òò×Ó>
+<Ïî>
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+<Óï¾äÁÐ>
+RBRACE }
+<Óï¾ä>
+ELSETK else
+LBRACE {
+WHILETK while
+LPARENT (
+IDENFR i
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+LSS <
+IDENFR l1
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
+RPARENT )
+LBRACE {
+IDENFR tmp
+LBRACK [
+IDENFR k
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+ASSIGN =
+IDENFR arr
+LBRACK [
+IDENFR s1
+<Òò×Ó>
+<Ïî>
+PLUS +
+IDENFR i
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+IDENFR k
+ASSIGN =
+IDENFR k
+<Òò×Ó>
+<Ïî>
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+IDENFR i
+ASSIGN =
+IDENFR i
+<Òò×Ó>
+<Ïî>
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+<Óï¾äÁÐ>
+RBRACE }
+<Óï¾ä>
+<Ñ­»·Óï¾ä>
+<Óï¾ä>
+<Óï¾äÁÐ>
+RBRACE }
+<Óï¾ä>
+<Ìõ¼þÓï¾ä>
+<Óï¾ä>
+<Óï¾äÁÐ>
+RBRACE }
+<Óï¾ä>
+<Ñ­»·Óï¾ä>
+<Óï¾ä>
+WHILETK while
+LPARENT (
+IDENFR j
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+LSS <
+IDENFR l2
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
+RPARENT )
+LBRACE {
+IDENFR tmp
+LBRACK [
+IDENFR k
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+ASSIGN =
+IDENFR arr
+LBRACK [
+IDENFR s2
+<Òò×Ó>
+<Ïî>
+PLUS +
+IDENFR j
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+IDENFR k
+ASSIGN =
+IDENFR k
+<Òò×Ó>
+<Ïî>
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+IDENFR j
+ASSIGN =
+IDENFR j
+<Òò×Ó>
+<Ïî>
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+<Óï¾äÁÐ>
+RBRACE }
+<Óï¾ä>
+<Ñ­»·Óï¾ä>
+<Óï¾ä>
+FORTK for
+LPARENT (
+IDENFR i
+ASSIGN =
+IDENFR s1
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+SEMICN ;
+IDENFR i
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+LSS <
+IDENFR k
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
+SEMICN ;
+IDENFR i
+ASSIGN =
+IDENFR i
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<²½³¤>
+RPARENT )
+IDENFR arr
+LBRACK [
+IDENFR i
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+ASSIGN =
+IDENFR tmp
+LBRACK [
+IDENFR i
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+<Ñ­»·Óï¾ä>
+<Óï¾ä>
+<Óï¾äÁÐ>
+<¸´ºÏÓï¾ä>
+RBRACE }
+<ÎÞ·µ»ØÖµº¯Êý¶¨Òå>
+VOIDTK void
+IDENFR inner_merge_sort
+LPARENT (
+INTTK int
+IDENFR start
+COMMA ,
+INTTK int
+IDENFR length
+<²ÎÊý±í>
+RPARENT )
+LBRACE {
+INTTK int
+IDENFR tmp
+COMMA ,
+IDENFR mid
+<±äÁ¿¶¨Òå>
+SEMICN ;
+<±äÁ¿ËµÃ÷>
+IFTK if
+LPARENT (
+IDENFR length
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+LEQ <=
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
+RPARENT )
 RETURNTK return
-<è¿”å›žè¯­å¥>
+<·µ»ØÓï¾ä>
 SEMICN ;
-<è¯­å¥>
-<è¯­å¥åˆ—>
-RBRACE }
-<è¯­å¥>
-<æ¡ä»¶è¯­å¥>
-<è¯­å¥>
-FORTK for
+<Óï¾ä>
+<Ìõ¼þÓï¾ä>
+<Óï¾ä>
+IFTK if
 LPARENT (
-IDENFR i
-ASSIGN =
-INTCON 0
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-SEMICN ;
-IDENFR i
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-LSS <
-IDENFR n
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<æ¡ä»¶>
-SEMICN ;
-IDENFR i
-ASSIGN =
-IDENFR i
-PLUS +
-INTCON 1
-<æ— ç¬¦å·æ•´æ•°>
-<æ­¥é•¿>
+IDENFR length
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+EQL ==
+INTCON 2
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
 RPARENT )
 LBRACE {
 IFTK if
 LPARENT (
-IDENFR mark
+IDENFR arr
 LBRACK [
-IDENFR i
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
+IDENFR start
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
 RBRACK ]
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-EQL ==
-INTCON 0
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<æ¡ä»¶>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+GRE >
+IDENFR arr
+LBRACK [
+IDENFR start
+<Òò×Ó>
+<Ïî>
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
 RPARENT )
 LBRACE {
-IDENFR array
+IDENFR tmp
+ASSIGN =
+IDENFR arr
 LBRACK [
-IDENFR loc
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
+IDENFR start
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+IDENFR arr
+LBRACK [
+IDENFR start
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
 RBRACK ]
 ASSIGN =
-IDENFR i
-<å› å­>
-<é¡¹>
+IDENFR arr
+LBRACK [
+IDENFR start
+<Òò×Ó>
+<Ïî>
 PLUS +
 INTCON 1
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<èµ‹å€¼è¯­å¥>
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
 SEMICN ;
-<è¯­å¥>
-IDENFR mark
+<Óï¾ä>
+IDENFR arr
 LBRACK [
-IDENFR i
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
+IDENFR start
+<Òò×Ó>
+<Ïî>
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
 RBRACK ]
 ASSIGN =
-INTCON 1
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<èµ‹å€¼è¯­å¥>
+IDENFR tmp
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
 SEMICN ;
-<è¯­å¥>
-IDENFR func
+<Óï¾ä>
+<Óï¾äÁÐ>
+RBRACE }
+<Óï¾ä>
+<Ìõ¼þÓï¾ä>
+<Óï¾ä>
+RETURNTK return
+<·µ»ØÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+<Óï¾äÁÐ>
+RBRACE }
+<Óï¾ä>
+<Ìõ¼þÓï¾ä>
+<Óï¾ä>
+IDENFR mid
+ASSIGN =
+IDENFR length
+<Òò×Ó>
+DIV /
+INTCON 2
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+IDENFR inner_merge_sort
 LPARENT (
-IDENFR loc
-<å› å­>
-<é¡¹>
-PLUS +
-INTCON 1
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
+IDENFR start
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
 COMMA ,
-IDENFR n
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<å€¼å‚æ•°è¡¨>
+IDENFR mid
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Öµ²ÎÊý±í>
 RPARENT )
-<æ— è¿”å›žå€¼å‡½æ•°è°ƒç”¨è¯­å¥>
+<ÎÞ·µ»ØÖµº¯Êýµ÷ÓÃÓï¾ä>
 SEMICN ;
-<è¯­å¥>
-IDENFR mark
-LBRACK [
-IDENFR i
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-RBRACK ]
-ASSIGN =
-INTCON 0
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<èµ‹å€¼è¯­å¥>
+<Óï¾ä>
+IDENFR inner_merge_sort
+LPARENT (
+IDENFR start
+<Òò×Ó>
+<Ïî>
+PLUS +
+IDENFR mid
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+COMMA ,
+IDENFR length
+<Òò×Ó>
+<Ïî>
+MINU -
+IDENFR mid
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Öµ²ÎÊý±í>
+RPARENT )
+<ÎÞ·µ»ØÖµº¯Êýµ÷ÓÃÓï¾ä>
 SEMICN ;
-<è¯­å¥>
-<è¯­å¥åˆ—>
+<Óï¾ä>
+IDENFR merge
+LPARENT (
+IDENFR start
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+COMMA ,
+IDENFR mid
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+COMMA ,
+IDENFR start
+<Òò×Ó>
+<Ïî>
+PLUS +
+IDENFR mid
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+COMMA ,
+IDENFR length
+<Òò×Ó>
+<Ïî>
+MINU -
+IDENFR mid
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Öµ²ÎÊý±í>
+RPARENT )
+<ÎÞ·µ»ØÖµº¯Êýµ÷ÓÃÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+<Óï¾äÁÐ>
+<¸´ºÏÓï¾ä>
 RBRACE }
-<è¯­å¥>
-<æ¡ä»¶è¯­å¥>
-<è¯­å¥>
-<è¯­å¥åˆ—>
-RBRACE }
-<è¯­å¥>
-<å¾ªçŽ¯è¯­å¥>
-<è¯­å¥>
-<è¯­å¥åˆ—>
-<å¤åˆè¯­å¥>
-RBRACE }
-<æ— è¿”å›žå€¼å‡½æ•°å®šä¹‰>
+<ÎÞ·µ»ØÖµº¯Êý¶¨Òå>
 VOIDTK void
 MAINTK main
 LPARENT (
 RPARENT )
 LBRACE {
 INTTK int
-IDENFR i
-<å˜é‡å®šä¹‰>
-SEMICN ;
-INTTK int
 IDENFR n
-<å˜é‡å®šä¹‰>
+COMMA ,
+IDENFR i
+COMMA ,
+IDENFR a
+<±äÁ¿¶¨Òå>
 SEMICN ;
-<å˜é‡è¯´æ˜Ž>
+<±äÁ¿ËµÃ÷>
+PRINTFTK printf
+LPARENT (
+STRCON 17373248
+<×Ö·û´®>
+RPARENT )
+<Ð´Óï¾ä>
+SEMICN ;
+<Óï¾ä>
 SCANFTK scanf
 LPARENT (
 IDENFR n
 RPARENT )
-<è¯»è¯­å¥>
+<¶ÁÓï¾ä>
 SEMICN ;
-<è¯­å¥>
+<Óï¾ä>
 FORTK for
 LPARENT (
 IDENFR i
 ASSIGN =
 INTCON 0
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
 SEMICN ;
 IDENFR i
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
 LSS <
-INTCON 10
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<æ¡ä»¶>
+IDENFR n
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
 SEMICN ;
 IDENFR i
 ASSIGN =
 IDENFR i
 PLUS +
 INTCON 1
-<æ— ç¬¦å·æ•´æ•°>
-<æ­¥é•¿>
+<ÎÞ·ûºÅÕûÊý>
+<²½³¤>
 RPARENT )
 LBRACE {
-IDENFR array
+SCANFTK scanf
+LPARENT (
+IDENFR a
+RPARENT )
+<¶ÁÓï¾ä>
+SEMICN ;
+<Óï¾ä>
+IDENFR arr
 LBRACK [
 IDENFR i
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
 RBRACK ]
 ASSIGN =
-INTCON 0
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<èµ‹å€¼è¯­å¥>
+IDENFR a
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<¸³ÖµÓï¾ä>
 SEMICN ;
-<è¯­å¥>
-IDENFR mark
-LBRACK [
-IDENFR i
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-RBRACK ]
-ASSIGN =
-INTCON 0
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<èµ‹å€¼è¯­å¥>
-SEMICN ;
-<è¯­å¥>
-<è¯­å¥åˆ—>
+<Óï¾ä>
+<Óï¾äÁÐ>
 RBRACE }
-<è¯­å¥>
-<å¾ªçŽ¯è¯­å¥>
-<è¯­å¥>
-IDENFR func
+<Óï¾ä>
+<Ñ­»·Óï¾ä>
+<Óï¾ä>
+IDENFR inner_merge_sort
 LPARENT (
 INTCON 0
-<æ— ç¬¦å·æ•´æ•°>
-<æ•´æ•°>
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
 COMMA ,
 IDENFR n
-<å› å­>
-<é¡¹>
-<è¡¨è¾¾å¼>
-<å€¼å‚æ•°è¡¨>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Öµ²ÎÊý±í>
 RPARENT )
-<æ— è¿”å›žå€¼å‡½æ•°è°ƒç”¨è¯­å¥>
+<ÎÞ·µ»ØÖµº¯Êýµ÷ÓÃÓï¾ä>
 SEMICN ;
-<è¯­å¥>
+<Óï¾ä>
+FORTK for
+LPARENT (
+IDENFR i
+ASSIGN =
+INTCON 0
+<ÎÞ·ûºÅÕûÊý>
+<ÕûÊý>
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+SEMICN ;
+IDENFR i
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+LSS <
+IDENFR n
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+<Ìõ¼þ>
+SEMICN ;
+IDENFR i
+ASSIGN =
+IDENFR i
+PLUS +
+INTCON 1
+<ÎÞ·ûºÅÕûÊý>
+<²½³¤>
+RPARENT )
 PRINTFTK printf
 LPARENT (
-STRCON aaaa\n
-<å­—ç¬¦ä¸²>
+IDENFR arr
+LBRACK [
+IDENFR i
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
+RBRACK ]
+<Òò×Ó>
+<Ïî>
+<±í´ïÊ½>
 RPARENT )
-<å†™è¯­å¥>
+<Ð´Óï¾ä>
 SEMICN ;
-<è¯­å¥>
-<è¯­å¥åˆ—>
-<å¤åˆè¯­å¥>
+<Óï¾ä>
+<Ñ­»·Óï¾ä>
+<Óï¾ä>
+<Óï¾äÁÐ>
+<¸´ºÏÓï¾ä>
 RBRACE }
-<ä¸»å‡½æ•°>
-<ç¨‹åº>
+<Ö÷º¯Êý>
+<³ÌÐò>

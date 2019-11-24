@@ -1,6 +1,6 @@
 ﻿#include "SymbolTable.h"
 
-func_info::func_info() { ; }
+func_info::func_info() { }
 func_info::func_info(string s, vector<int> si, int i) {
 	this->iden = s;
 	this->v_table = si;

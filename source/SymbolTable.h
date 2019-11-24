@@ -27,9 +27,9 @@
 using namespace std;
 class func_info {
 public:
-	string iden;
-	vector<int> v_table;
-	int return_type;
+	string iden = "";
+	vector<int> v_table = vector<int>{};
+	int return_type = VOID;
 	func_info();
 	func_info(string, vector<int>, int);
 };
