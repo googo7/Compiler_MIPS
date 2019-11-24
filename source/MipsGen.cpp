@@ -363,6 +363,8 @@ void MipsGen::parse(MidCode mc) {
 	}
 	else if (op == "ret") {
 		if (!s1.size()) {
+			if (func_now == "main")
+				return;
 			vector<RegTableItem> clr_s = clear_s();
 			vector<RegTableItem> clr_t = clear_t();
 			pop("$ra");

@@ -99,7 +99,8 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 	else if (type == "EXPR") {
 		// a + b * c - d / (5 + -1) - func() + a[1] + b()
 		//运算符栈的方法解析表达式
-
+		if (!tk_set.size())
+			return;
 		int cnt_pa = 0;
 		vector<token_info> expr;
 		int i = 0;
