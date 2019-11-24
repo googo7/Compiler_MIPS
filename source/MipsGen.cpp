@@ -129,7 +129,7 @@ void MipsGen::parse(MidCode mc) {
 			}
 		}
 		else {
-			string s1_reg, s2_reg;
+			string s1_reg = "", s2_reg = "";
 			//result[s2] = s1
 			if (is_digit(s1[0])) {
 				emit("li", "$t8", s1, "");
@@ -183,7 +183,7 @@ void MipsGen::parse(MidCode mc) {
 	emit("LABEL", s1, s2, "");
 	}
 	else if (op == "<" || op == "<=" || op == ">=" || op == ">" || op == "==" || op == "!=") {
-		string result_reg = lookup(result), s1_reg, s2_reg;
+		string result_reg = lookup(result), s1_reg = "", s2_reg = "";
 		if (is_digit(s1[0])) {
 			if (is_digit(s2[0])) {
 				int res = 0;
@@ -324,7 +324,7 @@ void MipsGen::parse(MidCode mc) {
 		sw("$t8", s2);
 	}
 	else if (op == "func_push_para") {
-	string s1_reg;
+	string s1_reg = "";
 	if (is_digit(s1[0])) {
 		s1_reg = "$t8";
 		emit("li", "$t8", s1, "");

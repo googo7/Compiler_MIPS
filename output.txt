@@ -1,21 +1,15 @@
+VOIDTK void
+MAINTK main
+LPARENT (
+RPARENT )
+LBRACE {
 INTTK int
 IDENFR a
 <变量定义>
 SEMICN ;
 <变量说明>
-INTTK int
-IDENFR foo
-<声明头部>
-LPARENT (
-<参数表>
-RPARENT )
-LBRACE {
 IDENFR a
 ASSIGN =
-IDENFR a
-<因子>
-<项>
-PLUS +
 INTCON 1
 <无符号整数>
 <整数>
@@ -25,74 +19,11 @@ INTCON 1
 <赋值语句>
 SEMICN ;
 <语句>
-RETURNTK return
+IFTK if
 LPARENT (
 IDENFR a
 <因子>
 <项>
 <表达式>
+<条件>
 RPARENT )
-<返回语句>
-SEMICN ;
-<语句>
-<语句列>
-<复合语句>
-RBRACE }
-<有返回值函数定义>
-VOIDTK void
-MAINTK main
-LPARENT (
-RPARENT )
-LBRACE {
-INTTK int
-IDENFR b
-<变量定义>
-SEMICN ;
-<变量说明>
-IDENFR a
-ASSIGN =
-INTCON 0
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR b
-ASSIGN =
-IDENFR a
-<因子>
-<项>
-PLUS +
-IDENFR foo
-LPARENT (
-<值参数表>
-RPARENT )
-<有返回值函数调用语句>
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-IDENFR b
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-RETURNTK return
-<返回语句>
-SEMICN ;
-<语句>
-<语句列>
-<复合语句>
-RBRACE }
-<主函数>
-<程序>

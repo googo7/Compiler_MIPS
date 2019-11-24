@@ -273,8 +273,8 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 	}
 	else if (type == "CONDITION") {
 		//exp1 <= exp2
-		string s1 = "";
-		string s2 = "";
+		string s1;
+		string s2;
 		string op = "=";
 		vector<token_info> vt1, vt2;
 		int i;

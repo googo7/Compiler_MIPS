@@ -154,7 +154,7 @@ void gm_analyse::isConstDeclaration(void){
 	OUT_LABEL(s);
 }
 void gm_analyse::isConstDefinition(void){
-	string iden = "";
+	string iden;
 	if (type == INTTK) {
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
@@ -258,7 +258,7 @@ void gm_analyse::isVariDeclaration(void){
 	OUT_LABEL(s);
 }
 void gm_analyse::isVariDefinition(void){
-	string iden = "";
+	string iden;
 	int res = isTypeIden();
 	if (type == IDENFR) {
 		iden = token;
@@ -617,10 +617,10 @@ void gm_analyse::isLoopStatement(void){
 		end_midcode("DOWHILE", la_cnt);
 	}
 	else if (type == FORTK) {
-		string s1 = "";
-		string s2 = "";
-		string result = "";
-		string op = "";
+		string s1;
+		string s2;
+		string result;
+		string op;
 		begin_midcode();
 		OUT(tk.now_token); getsym;
 		if (type == LPARENT) {
@@ -684,7 +684,8 @@ void gm_analyse::isCondition(void){
 	OUT_LABEL(s);
 }
 void gm_analyse::isAssignStatement(void){
-	string s1 = "", s2 = "", result = "";
+	string s1, s2, result;
+	s2 = "";
 	if (type == IDENFR) {
 		result = token;
 		OUT(tk.now_token); getsym;
