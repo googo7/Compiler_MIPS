@@ -370,7 +370,6 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 		//iden [expr]
 		//[] , iden, expr, t0
 		string s1 = tk_set[0].token;
-		int type = -1;
 		
 		vector<token_info> vt;
 		for (int i = 2; i < tk_set.size() - 1; i++) {

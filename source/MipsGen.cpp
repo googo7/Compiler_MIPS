@@ -129,18 +129,24 @@ void MipsGen::parse(MidCode mc) {
 			}
 		}
 		else {
+			string s1_reg, s2_reg;
 			//result[s2] = s1
-			if (is_digit(s1[0]))
+			if (is_digit(s1[0])) {
 				emit("li", "$t8", s1, "");
-			else {
-				lw("$t8", s1);
+				s1_reg = "$t8";
 			}
-			if (is_digit(s2[0]))
+			else {
+				s1_reg = lookup(s1);
+			}
+			if (is_digit(s2[0])) {
 				emit("li", "$t9", s2, "");
-			else
-				lw("$t9", s2);
-			emit("sll", "$t9", "$t9", "2");
-			sw("$t8", result, "$t9");
+				emit("sll", "$t9", "$t9", "2");
+			}
+			else {
+				s2_reg = lookup(s2, "$t9");
+				emit("sll", "$t9", s2_reg, "2");
+			}
+			sw(s1_reg, result, "$t9");
 		}
 	}
 	else if (op == "[]") {
@@ -148,11 +154,13 @@ void MipsGen::parse(MidCode mc) {
 		string result_reg = lookup(result);
 		if (is_digit(s2[0])) {
 			emit("li", "$t9", s2, "");
+			emit("sll", "$t9", "$t9", "2");
 		}
 		else {
-			lw("$t9", s2);
+			string s2_reg = lookup(s2);
+			emit("sll", "$t9", s2_reg, "2");
 		}
-		emit("sll", "$t9", "$t9", "2");
+		
 		lw(result_reg, s1, "$t9");
 		if (result_reg == "$t8")
 			sw(result_reg, result);
@@ -569,6 +577,7 @@ string MipsGen::alloc(string iden, string reg) {
 			return reg;
 		}
 	}
+	return "";
 }
 
 vector<RegTableItem> MipsGen::clear_t() {
