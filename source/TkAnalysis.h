@@ -24,7 +24,7 @@ public:
 	int type = 0;
 	string token = "";
 	token_info();
-	token_info(int, string&);
+	token_info(int, string);
 	string out_type_string();
 };
 

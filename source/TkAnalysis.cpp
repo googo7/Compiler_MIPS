@@ -30,7 +30,7 @@ token_info::token_info() {
 
 
 //常用的构造函数
-token_info::token_info(int type, string& token) {
+token_info::token_info(int type, string token) {
 	this->type = type;
 	this->token = token;
 }
@@ -59,7 +59,7 @@ void tk_analyse::get_token() {
 		get_char();
 	}
 	if (is_alpha()) {
-		string tk_temp;
+		string tk_temp = "";
 		while (is_alnum()) {
 			tk_temp.push_back(ch); get_char();
 		}
@@ -72,7 +72,7 @@ void tk_analyse::get_token() {
 		}
 	}
 	else if(is_digit()){
-		string tk_temp;
+		string tk_temp = "";
 		if (ch == '0') {
 			get_char();
 			if (is_digit()) {

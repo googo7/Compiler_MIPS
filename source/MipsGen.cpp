@@ -1,6 +1,7 @@
 ﻿#include "MipsGen.h"
 #include "FILEOperator.h"
 #include "GMAnalysis.h"
+#include <sstream>
 extern MemoryTable memory_table;
 extern gm_analyse gm;
 MidCode mc_now;
@@ -58,8 +59,10 @@ void MipsGen::parse(MidCode mc) {
 				s2_reg = lookup(s2, "$t9");
 				if (op == "add")
 					emit("addiu", result_reg, s2_reg, s1);
-				else
-					emit("addiu", result_reg, s2_reg, to_string(0 - toi(s1)));
+				else {
+					emit("subu", "$t9", "$0", s2_reg);
+					emit("addiu", result_reg, "$t9", s1);
+				}
 			}
 		}
 		else {
@@ -146,6 +149,7 @@ void MipsGen::parse(MidCode mc) {
 				s2_reg = lookup(s2, "$t9");
 				emit("sll", "$t9", s2_reg, "2");
 			}
+			
 			sw(s1_reg, result, "$t9");
 		}
 	}
@@ -450,7 +454,11 @@ void MipsGen::emit(string op, string s1, string s2, string s3) {
 	else if (op == "string") {
 		res = op + s2 + ":";
 		res += "\t.asciiz";
-		res += "\t" + s1;
+		for (int i = 0; i < s1.size(); i++) {
+			if (s1[i] == '\\')
+				res += '\\';
+			res += s1[i];
+		}
 	}
 	else if (op == "la") {
 		res += "\t" + s1;
@@ -486,6 +494,7 @@ void MipsGen::sw(string s, string id, string reg) {
 		emit("sw", s, to_string(addr + 0x1800), reg);
 		return;
 	}
+	emit("subu", "$t9", "$sp", "$t9");
 	emit("sw", s, to_string(-addr), reg);
 }
 
@@ -506,6 +515,7 @@ void MipsGen::lw(string s, string id, string reg) {
 		emit("lw", s, to_string(addr + 0x1800), reg);
 		return;
 	}
+	emit("subu", "$t9", "$sp", "$t9");
 	emit("lw", s, to_string(-addr), reg);
 }
 
@@ -623,8 +633,13 @@ vector<RegTableItem> MipsGen::clear_s() {
 
 
 int MipsGen::toi(string a) {
-	if (is_digit(a[0]))
-		return stoi(a);
+	if (isdigit(a[0])) {
+		int c;
+		stringstream ss;
+		ss << a;
+		ss >> c;
+		return c;
+	}
 	else
 		return int(a[1]);
 }

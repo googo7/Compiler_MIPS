@@ -9,10 +9,10 @@ class MidCode {
 public:
 	MidCode();
 	MidCode(string, string, string, string);
-	string op;
-	string s1;
-	string s2;
-	string result;
+	string op = "";
+	string s1 = "";
+	string s2 = "";
+	string result = "";
 	string out();
 };
 

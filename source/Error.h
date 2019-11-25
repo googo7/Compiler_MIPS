@@ -27,7 +27,7 @@ using namespace std;
 
 class error_info{
 public:
-	string code;
+	string code = "";
 	unsigned line;
 	error_info();
 	error_info(string, unsigned);

@@ -1,0 +1,27 @@
+.data:
+	enter: .asciiz "\n"
+.text:
+j main
+main:
+	sw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	-4
+	lw	$s0,	0	($sp)
+	li	$s0,	115
+	lw	$t0,	-8	($sp)
+	li	$t0,	98
+	lw	$s1,	-4	($sp)
+	move	$s1,	$t0
+	move	$a0,	$s0
+	li	$v0,	11
+	syscall
+	la	$a0,	enter
+	li	$v0,	4
+	syscall
+	move	$a0,	$s1
+	li	$v0,	1
+	syscall
+	la	$a0,	enter
+	li	$v0,	4
+	syscall
+	li	$v0,	10
+	syscall

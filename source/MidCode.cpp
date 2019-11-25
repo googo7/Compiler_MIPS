@@ -47,7 +47,10 @@ void MidCodeGen::push(string op, string s1, string s2, string result) {
 }
 
 string MidCodeGen::get_last_result(void) {
-	return this->mc[mc.size() - 1].result;
+	if (mc.size())
+		return this->mc[mc.size() - 1].result;
+	else
+		return "";
 }
 
 string MidCodeGen::gen_temp(int type) {
@@ -78,8 +81,9 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 		string s2;
 		vector<token_info> vt;
 		int cnt_para = 0;
+		int cnt_parent = 1;
 		for (int i = 2; i < tk_set.size(); i++) {
-			if (tk_set[i].type == COMMA) {
+			if (tk_set[i].type == COMMA && cnt_parent == 1) {
 				parse("EXPR", vt);
 				string res = get_last_result();
 				push(string("func_push_para"), res, to_string(cnt_para++), string(""));
@@ -87,6 +91,10 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 			}
 			else if (i != tk_set.size() - 1) {
 				vt.push_back(tk_set[i]);
+				if (tk_set[i].type == LPARENT)
+					cnt_parent++;
+				else if (tk_set[i].type == RPARENT)
+					cnt_parent--;
 			}
 		}
 		parse("EXPR", vt);
@@ -251,9 +259,6 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 		if (stack.size() == 1) {
 			s1 = stack[stack.size() - 1]; stack.pop_back();
 			push("=", s1, "", s1);
-		}
-		else {
-			exit(0);
 		}
 	}
 	else if (type == "IFHEAD") {

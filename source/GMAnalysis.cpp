@@ -5,7 +5,6 @@
 #include "FILEOperator.h"
 #include "MemoryManage.h"
 #include <set>
-#include <iostream>
 #include <sstream>
 
 //函数宏简介
@@ -180,7 +179,7 @@ void gm_analyse::isConstDefinition(void){
 		}
 	}
 	else if (type == CHARTK) {
-		char c = 0;
+		char c = '0';
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
 			iden = token;
@@ -353,6 +352,7 @@ void gm_analyse::isDeclarationHeader(void){
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
 			symtab.func_push(token, vector<int>{}, CHAR);
+			func_name_now = token;
 			OUT_DEF(tk.now_token); getsym;
 		}
 	}//else

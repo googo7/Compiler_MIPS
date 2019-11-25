@@ -36,10 +36,10 @@ public:
 
 class var_info {
 public:
-	string iden;
-	int isConst;
+	string iden = "";
+	int isConst = 0;
 	int _type = -1;
-	int value;
+	int value = 0;
 	int addr = -1;
 	int size = 1;
 	var_info();

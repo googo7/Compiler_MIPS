@@ -1,9 +1,9 @@
+void main(){
+char a;
+int b;
+a = 's';
+b = 'a'+ 1;
 
-void main() {
-int a;
-a=1;
-if(a)
 	printf(a);
-else
-	printf("nnnnn");
+	printf(b);
 }

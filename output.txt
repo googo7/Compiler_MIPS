@@ -3,13 +3,30 @@ MAINTK main
 LPARENT (
 RPARENT )
 LBRACE {
-INTTK int
+CHARTK char
 IDENFR a
+<变量定义>
+SEMICN ;
+INTTK int
+IDENFR b
 <变量定义>
 SEMICN ;
 <变量说明>
 IDENFR a
 ASSIGN =
+CHARCON s
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR b
+ASSIGN =
+CHARCON a
+<因子>
+<项>
+PLUS +
 INTCON 1
 <无符号整数>
 <整数>
@@ -19,11 +36,28 @@ INTCON 1
 <赋值语句>
 SEMICN ;
 <语句>
-IFTK if
+PRINTFTK printf
 LPARENT (
 IDENFR a
 <因子>
 <项>
 <表达式>
-<条件>
 RPARENT )
+<写语句>
+SEMICN ;
+<语句>
+PRINTFTK printf
+LPARENT (
+IDENFR b
+<因子>
+<项>
+<表达式>
+RPARENT )
+<写语句>
+SEMICN ;
+<语句>
+<语句列>
+<复合语句>
+RBRACE }
+<主函数>
+<程序>
