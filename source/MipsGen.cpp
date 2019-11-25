@@ -633,7 +633,7 @@ vector<RegTableItem> MipsGen::clear_s() {
 
 
 int MipsGen::toi(string a) {
-	if (isdigit(a[0])) {
+	if (isdigit(a[0]) || a[0] == '+' || a[0] == '-') {
 		int c;
 		stringstream ss;
 		ss << a;

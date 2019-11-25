@@ -38,7 +38,7 @@ string func_name_now = "";
 int func_var_pt = 0;
 MemoryTable memory_table;
 int array_type = 0;
-
+int func_return_type = 0;
 
 extern string file_string;
 
@@ -853,6 +853,7 @@ void gm_analyse::isVoidFunction(void){
 void gm_analyse::isReturnFunctionCall(void){
 	begin_midcode();
 	if (type == IDENFR) {
+		func_return_type = symtab.func_lookup(token).return_type;
 		OUT(tk.now_token); getsym;
 	}
 	if (type == LPARENT) {

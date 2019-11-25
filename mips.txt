@@ -2,23 +2,35 @@
 	enter: .asciiz "\n"
 .text:
 j main
+getnext:
+	sw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	-4
+	lw	$t8,	12	($sp)
+	sw	$t8,	0	($sp)
+	lw	$s0,	0	($sp)
+	move	$v0,	$s0
+	addiu	$sp,	$sp,	4
+	lw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	4
+	lw	$sp,	0	($sp)
+	jr	$ra
+	addiu	$sp,	$sp,	4
+	lw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	4
+	lw	$sp,	0	($sp)
+	jr	$ra
 main:
 	sw	$ra,	0	($sp)
 	addiu	$sp,	$sp,	-4
-	lw	$s0,	0	($sp)
-	li	$s0,	115
-	lw	$t0,	-8	($sp)
-	li	$t0,	98
-	lw	$s1,	-4	($sp)
-	move	$s1,	$t0
-	move	$a0,	$s0
+	li	$t8,	'a'
+	sw	$t8,	0	($sp)
+	sw	$sp,	-4	($sp)
+	addiu	$sp,	$sp,	-8
+	jal	getnext
+	lw	$t0,	0	($sp)
+	move	$t0,	$v0
+	move	$a0,	$t0
 	li	$v0,	11
-	syscall
-	la	$a0,	enter
-	li	$v0,	4
-	syscall
-	move	$a0,	$s1
-	li	$v0,	1
 	syscall
 	la	$a0,	enter
 	li	$v0,	4

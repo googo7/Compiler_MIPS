@@ -1,54 +1,59 @@
+CHARTK char
+IDENFR getnext
+<声明头部>
+LPARENT (
+CHARTK char
+IDENFR a
+<参数表>
+RPARENT )
+LBRACE {
+RETURNTK return
+LPARENT (
+IDENFR a
+<因子>
+<项>
+<表达式>
+RPARENT )
+<返回语句>
+SEMICN ;
+<语句>
+<语句列>
+<复合语句>
+RBRACE }
+<有返回值函数定义>
 VOIDTK void
 MAINTK main
 LPARENT (
 RPARENT )
 LBRACE {
-CHARTK char
-IDENFR a
-<变量定义>
-SEMICN ;
+CONSTTK const
 INTTK int
-IDENFR b
-<变量定义>
-SEMICN ;
-<变量说明>
 IDENFR a
 ASSIGN =
-CHARCON s
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
-IDENFR b
-ASSIGN =
-CHARCON a
-<因子>
-<项>
-PLUS +
-INTCON 1
+INTCON 2
 <无符号整数>
 <整数>
-<因子>
-<项>
-<表达式>
-<赋值语句>
+<常量定义>
 SEMICN ;
-<语句>
+CONSTTK const
+CHARTK char
+IDENFR ch
+ASSIGN =
+CHARCON a
+<常量定义>
+SEMICN ;
+<常量说明>
 PRINTFTK printf
 LPARENT (
-IDENFR a
+IDENFR getnext
+LPARENT (
+IDENFR ch
 <因子>
 <项>
 <表达式>
+<值参数表>
 RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-PRINTFTK printf
-LPARENT (
-IDENFR b
+<有返回值函数调用语句>
 <因子>
 <项>
 <表达式>

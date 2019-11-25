@@ -1,9 +1,9 @@
-void main(){
-char a;
-int b;
-a = 's';
-b = 'a'+ 1;
+char getnext(char a){
+	return (a);
+}
 
-	printf(a);
-	printf(b);
+void main(){
+	const int a = 2;
+	const char ch = 'a';
+	printf(getnext(ch));
 }

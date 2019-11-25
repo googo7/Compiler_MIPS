@@ -9,6 +9,7 @@ extern int label_cnt;
 extern MemoryTable memory_table;
 extern string func_name_now;
 extern int array_type;
+extern int func_return_type;
 MidCode::MidCode() { ; }
 MidCode::MidCode(string o, string s, string ss, string r) {
 	this->op = o;
@@ -102,7 +103,8 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 		push(string("func_push_para"), res, to_string(cnt_para++), string(""));
 		vt.clear();
 		s1 = tk_set[0].token;
-		push(string("func_call"), s1, string(""), gen_temp());
+		
+		push(string("func_call"), s1, string(""), gen_temp(func_return_type));
 	}
 	else if (type == "EXPR") {
 		// a + b * c - d / (5 + -1) - func() + a[1] + b()
