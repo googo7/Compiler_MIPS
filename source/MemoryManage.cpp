@@ -25,8 +25,8 @@ void MemoryTable::push(string func_name, pair<string, int> temp_name) {
 		map[func_name] = vector<var_info>{ var_info(temp_name.first, 0, temp_name.second, -1, 0) };
 		return;
 	}
-	int addr = map[func_name][map[func_name].size() - 1].addr;
-	var_info v(temp_name.first, 0, temp_name.second, -1, addr + 1);
+	int addr = map[func_name][map[func_name].size() - 1].addr + map[func_name][map[func_name].size() - 1].size;
+	var_info v(temp_name.first, 0, temp_name.second, -1, addr);
 	map[func_name].push_back(v);
 }
 

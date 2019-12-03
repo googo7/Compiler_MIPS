@@ -19,4 +19,7 @@ void main(){
 	b[A() + 8] = '1';
 	c[b[9] - '1'] = 9;
 printf(    b[9]     );	
+printf(    b[  B( c[0] ) ]     );	
+printf(    b[ B(B( c[0] )) ]     );	
+	printf(    b[  B(B(B( c[0] ))) ]     );	
 }

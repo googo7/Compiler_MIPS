@@ -62,7 +62,7 @@ void error_analyse::push(unsigned line, string code) {
 }
 
 void error_analyse::out() {
-	int len = this->error_set.size();
+	int len = (int)this->error_set.size();
 	for (int i = 0; i < len; i++) {
 		write_into_file(error_set[i]);
 	}

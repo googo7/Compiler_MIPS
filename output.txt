@@ -1,8 +1,121 @@
+INTTK int
+IDENFR a
+LBRACK [
+INTCON 10
+<无符号整数>
+RBRACK ]
+COMMA ,
+IDENFR b
+LBRACK [
+INTCON 10
+<无符号整数>
+RBRACK ]
+<变量定义>
+SEMICN ;
+INTTK int
+IDENFR c
+LBRACK [
+INTCON 1000
+<无符号整数>
+RBRACK ]
+<变量定义>
+SEMICN ;
 CHARTK char
-IDENFR getnext
+IDENFR d
+LBRACK [
+INTCON 12
+<无符号整数>
+RBRACK ]
+<变量定义>
+SEMICN ;
+<变量说明>
+INTTK int
+IDENFR A
 <声明头部>
 LPARENT (
-CHARTK char
+<参数表>
+RPARENT )
+LBRACE {
+INTTK int
+IDENFR a
+LBRACK [
+INTCON 5
+<无符号整数>
+RBRACK ]
+<变量定义>
+SEMICN ;
+<变量说明>
+IDENFR a
+LBRACK [
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RBRACK ]
+ASSIGN =
+INTCON 4
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR a
+LBRACK [
+INTCON 4
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RBRACK ]
+ASSIGN =
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+RETURNTK return
+LPARENT (
+IDENFR a
+LBRACK [
+IDENFR a
+LBRACK [
+INTCON 1
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RBRACK ]
+<因子>
+<项>
+<表达式>
+RBRACK ]
+<因子>
+<项>
+<表达式>
+RPARENT )
+<返回语句>
+SEMICN ;
+<语句>
+<语句列>
+<复合语句>
+RBRACE }
+<有返回值函数定义>
+INTTK int
+IDENFR B
+<声明头部>
+LPARENT (
+INTTK int
 IDENFR a
 <参数表>
 RPARENT )
@@ -26,34 +139,90 @@ MAINTK main
 LPARENT (
 RPARENT )
 LBRACE {
-CONSTTK const
 INTTK int
 IDENFR a
-ASSIGN =
-INTCON 2
+COMMA ,
+IDENFR c
+LBRACK [
+INTCON 100
 <无符号整数>
-<整数>
-<常量定义>
+RBRACK ]
+<变量定义>
 SEMICN ;
-CONSTTK const
 CHARTK char
-IDENFR ch
-ASSIGN =
-CHARCON a
-<常量定义>
+IDENFR b
+LBRACK [
+INTCON 10
+<无符号整数>
+RBRACK ]
+<变量定义>
 SEMICN ;
-<常量说明>
-PRINTFTK printf
+<变量说明>
+IDENFR b
+LBRACK [
+IDENFR A
 LPARENT (
-IDENFR getnext
-LPARENT (
-IDENFR ch
-<因子>
-<项>
-<表达式>
 <值参数表>
 RPARENT )
 <有返回值函数调用语句>
+<因子>
+<项>
+PLUS +
+INTCON 8
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RBRACK ]
+ASSIGN =
+CHARCON 1
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+IDENFR c
+LBRACK [
+IDENFR b
+LBRACK [
+INTCON 9
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RBRACK ]
+<因子>
+<项>
+MINU -
+CHARCON 1
+<因子>
+<项>
+<表达式>
+RBRACK ]
+ASSIGN =
+INTCON 9
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+<赋值语句>
+SEMICN ;
+<语句>
+PRINTFTK printf
+LPARENT (
+IDENFR b
+LBRACK [
+INTCON 9
+<无符号整数>
+<整数>
+<因子>
+<项>
+<表达式>
+RBRACK ]
 <因子>
 <项>
 <表达式>

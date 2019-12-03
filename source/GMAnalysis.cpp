@@ -22,7 +22,7 @@
 #define PUSH do{(sp.push(tk.ch_pt - token.size())); line_reg = tk.line;}while(0)
 #define POP do{tk.ch_pt = sp.top(); sp.pop(); tk.get_token(); tk.line = line_reg;}while(0)
 #define OUT(A) do{write_into_file(A); if (midcode_flag) {midcode_vt.push_back(replace(tk.now_token));}}while(0)
-#define OUT_DEF(A) do{write_into_file(A); if (midcode_flag) {midcode_vt.push_back((tk.now_token));}}while(0)
+#define OUT_NO(A) do{write_into_file(A); if (midcode_flag) {midcode_vt.push_back((tk.now_token));}}while(0)
 #define OUT_LABEL(A) do{write_into_file(A);}while(0)
 #define push_into_symtab(A, B, C, D) do{if(!D && isLocal) symtab.local_push(iden, A, B, C, -1);else if(!D && !isLocal) symtab.global_push(iden, A, B, C, -1); else if (D && isLocal) symtab.local_push(iden, A, B, C, local_cnt++); else symtab.global_push(iden, A, B, C, global_cnt++);} while(0)  //添加到符号表，分别为isConst,type,value,addr,默认具有iden
 int isLocal = 0;    //表示是否处在local内或在global作用域内
@@ -39,7 +39,6 @@ int func_var_pt = 0;
 MemoryTable memory_table;
 int array_type = 0;
 int func_return_type = 0;
-
 extern string file_string;
 
 
@@ -158,7 +157,7 @@ void gm_analyse::isConstDefinition(void){
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
 			iden = token;
-			OUT_DEF(tk.now_token); getsym;
+			OUT_NO(tk.now_token); getsym;
 		}//else
 		if (type == ASSIGN) {
 			OUT(tk.now_token); getsym;
@@ -169,7 +168,7 @@ void gm_analyse::isConstDefinition(void){
 			OUT(tk.now_token); getsym;
 			if (type == IDENFR) {
 				iden = token;
-				OUT_DEF(tk.now_token); getsym;
+				OUT_NO(tk.now_token); getsym;
 			}//else
 			if (type == ASSIGN) {
 				OUT(tk.now_token); getsym;
@@ -183,7 +182,7 @@ void gm_analyse::isConstDefinition(void){
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
 			iden = token;
-			OUT_DEF(tk.now_token); getsym;
+			OUT_NO(tk.now_token); getsym;
 		}//else
 		if (type == ASSIGN) {
 			OUT(tk.now_token); getsym;
@@ -206,7 +205,7 @@ void gm_analyse::isConstDefinition(void){
 			OUT(tk.now_token); getsym;
 			if (type == IDENFR) {
 				iden = token;
-				OUT_DEF(tk.now_token); getsym;
+				OUT_NO(tk.now_token); getsym;
 			}//else
 			if (type == ASSIGN) {
 				OUT(tk.now_token); getsym;
@@ -261,7 +260,7 @@ void gm_analyse::isVariDefinition(void){
 	int res = isTypeIden();
 	if (type == IDENFR) {
 		iden = token;
-		OUT_DEF(tk.now_token); getsym;
+		OUT_NO(tk.now_token); getsym;
 	
 	}//else
 	if (type == LBRACK) {
@@ -286,7 +285,7 @@ void gm_analyse::isVariDefinition(void){
 		OUT(tk.now_token); getsym;
 		if (type == IDENFR) {
 			iden = token;
-			OUT_DEF(tk.now_token); getsym;
+			OUT_NO(tk.now_token); getsym;
 		}
 		if (type == LBRACK) {
 			array_type = res;
@@ -345,7 +344,7 @@ void gm_analyse::isDeclarationHeader(void){
 		if (type == IDENFR) {
 			symtab.func_push(token, vector<int>{}, INT);
 			func_name_now = token;
-			OUT_DEF(tk.now_token); getsym;
+			OUT_NO(tk.now_token); getsym;
 		}
 	}
 	else if (type == CHARTK) {
@@ -353,7 +352,7 @@ void gm_analyse::isDeclarationHeader(void){
 		if (type == IDENFR) {
 			symtab.func_push(token, vector<int>{}, CHAR);
 			func_name_now = token;
-			OUT_DEF(tk.now_token); getsym;
+			OUT_NO(tk.now_token); getsym;
 		}
 	}//else
 	//------------pass-------------------
@@ -424,7 +423,7 @@ void gm_analyse::isVariTable(void){
 	int res = isTypeIden();
 	if (type == IDENFR) {
 		string iden = token;
-		OUT_DEF(tk.now_token);push_into_symtab(0, res, -1, 1); getsym;
+		OUT_NO(tk.now_token);push_into_symtab(0, res, -1, 1); getsym;
 	}
 	vt.push_back(res);
 	while (type == COMMA) {
@@ -433,7 +432,7 @@ void gm_analyse::isVariTable(void){
 		res = isTypeIden();
 		if (type == IDENFR) {
 			string iden = token;
-			OUT_DEF(tk.now_token); push_into_symtab(0, res, -1, 1);getsym;//要求必须OUT后修改，否则修改后replace生效
+			OUT_NO(tk.now_token); push_into_symtab(0, res, -1, 1);getsym;//要求必须OUT后修改，否则修改后replace生效->改为OUT_NO万无一失
 		}//else
 		vt.push_back(res);
 	}
@@ -445,13 +444,19 @@ void gm_analyse::isValueVariTable(void){
 	string s("<值参数表>");
 	if (type == RPARENT) {
 		//empty
+		//mc_gen.push("func_push_para", "", "", "");
 		OUT_LABEL(s);
 		return;
 	}
+	
 	isExpression();
+	int i = 1;
+	mc_gen.push("func_push_para", mc_gen.get_last_result(), "0", "");
 	while (type == COMMA) {
+		
 		OUT(tk.now_token); getsym;
 		isExpression();
+		mc_gen.push("func_push_para", mc_gen.get_last_result(), to_string(i++), "");
 	}
 	//----------pass------------------
 	OUT_LABEL(s);
@@ -587,6 +592,7 @@ void gm_analyse::isLoopStatement(void){
 	if (type == WHILETK) {
 		begin_midcode();
 		OUT(tk.now_token); getsym;
+		mc_gen.push(string("LABEL"), string("label_while_begin"), to_string(la_cnt), string(""));
 		if (type == LPARENT) {
 			OUT(tk.now_token); getsym;
 		}//else
@@ -627,12 +633,19 @@ void gm_analyse::isLoopStatement(void){
 			OUT(tk.now_token); getsym;
 		}//else
 		if (type == IDENFR) {
+			result = token;
 			OUT(tk.now_token); getsym;
 		}//else
 		if (type == ASSIGN) {
 			OUT(tk.now_token); getsym;
 		}//else
+
+		midcode_flag = 0;
 		isExpression();
+		midcode_flag = 1;
+		mc_gen.push("=", mc_gen.get_last_result(), "", result);
+		mc_gen.push("LABEL", "label_for_begin", to_string(la_cnt), "");
+		midcode_vt.push_back(token_info(IDENFR, mc_gen.get_last_result()));
 		if (type == SEMICN) {
 			OUT(tk.now_token); getsym;
 		}//else
@@ -648,7 +661,12 @@ void gm_analyse::isLoopStatement(void){
 			OUT(tk.now_token); getsym;
 		}//else
 		if (type == IDENFR) {
-			s1 = token;
+			if (symtab.var_lookup(token).isConst) {
+				s1 = to_string(symtab.var_lookup(token).value);
+			}
+			else {
+				s1 = token;
+			}
 			OUT(tk.now_token); getsym;
 		}//else
 		if (type == PLUS || type == MINU) {
@@ -674,10 +692,16 @@ void gm_analyse::isLoopStatement(void){
 	OUT_LABEL(s);
 }
 void gm_analyse::isCondition(void){
+	midcode_flag = 0;
 	isExpression();
+	midcode_flag = 1;
+	midcode_vt.push_back(token_info(IDENFR, mc_gen.get_last_result()));
 	if (type == LSS || type == LEQ || type == GRE || type == GEQ || type == NEQ || type == EQL) {
 		isRelationshipOperator();
+		midcode_flag = 0;
 		isExpression();
+		midcode_flag = 1;
+		midcode_vt.push_back(token_info(IDENFR, mc_gen.get_last_result()));
 	}// not else
 	//-----------------pass--------------
 	string s("<条件>");
@@ -690,9 +714,7 @@ void gm_analyse::isAssignStatement(void){
 		OUT(tk.now_token); getsym;
 		if (type == LBRACK) {
 			OUT(tk.now_token); getsym;
-			begin_midcode();
 			isExpression();
-			end_midcode("EXPR");
 			s2 = mc_gen.get_last_result();
 			if (type == RBRACK) {
 				OUT(tk.now_token); getsym;
@@ -702,9 +724,7 @@ void gm_analyse::isAssignStatement(void){
 	if (type == ASSIGN) {
 		OUT(tk.now_token); getsym;
 	}
-	begin_midcode();
 	isExpression();
-	end_midcode("EXPR");
 	s1 = mc_gen.get_last_result();
 	mc_gen.push("=", s1, s2, result);
 	//----------------pass---------------
@@ -752,9 +772,7 @@ void gm_analyse::isPrintfStatement(void){
 		OUT_LABEL(ss);
 		if (type == COMMA) {
 			OUT(tk.now_token); getsym;
-			begin_midcode();
 			isExpression();
-			end_midcode("EXPR");
 			s2 = mc_gen.get_last_result();
 		}
 	}
@@ -768,9 +786,7 @@ void gm_analyse::isPrintfStatement(void){
 		}
 	}
 	else{
-		begin_midcode();
 		isExpression();
-		end_midcode("EXPR");
 		s2 = mc_gen.get_last_result();
 	}
 	if (type == RPARENT) {
@@ -788,9 +804,7 @@ void gm_analyse::isReturnStatement(void){
 	}//else
 	if (type == LPARENT) {
 		OUT(tk.now_token); getsym;
-		begin_midcode();
 		isExpression();
-		end_midcode("EXPR");
 		s1 = mc_gen.get_last_result();
 		
 		if (type == RPARENT) {
@@ -851,8 +865,9 @@ void gm_analyse::isVoidFunction(void){
 	OUT_LABEL(s);
 }
 void gm_analyse::isReturnFunctionCall(void){
-	begin_midcode();
+	string res = "";
 	if (type == IDENFR) {
+		res = token;
 		func_return_type = symtab.func_lookup(token).return_type;
 		OUT(tk.now_token); getsym;
 	}
@@ -863,14 +878,15 @@ void gm_analyse::isReturnFunctionCall(void){
 	if (type == RPARENT) {
 		OUT(tk.now_token); getsym;
 	}
-	end_midcode(string("FUNCCALL"));
+	mc_gen.push("func_call", res, "", mc_gen.gen_temp());
 
 	string s("<有返回值函数调用语句>");
 	OUT_LABEL(s);
 }
 void gm_analyse::isVoidFunctionCall(void) {
-	begin_midcode();
+	string res = "";
 	if (type == IDENFR) {
+		res = token;
 		OUT(tk.now_token); getsym;
 	}
 	if (type == LPARENT) {
@@ -880,28 +896,125 @@ void gm_analyse::isVoidFunctionCall(void) {
 	if (type == RPARENT) {
 		OUT(tk.now_token); getsym;
 	}
-	end_midcode(string("FUNCCALL"));
+	mc_gen.push("func_call", res, "", "");
+		
 	string s("<无返回值函数调用语句>");
 	OUT_LABEL(s);
 }
 void gm_analyse::isExpression(void){
+	//type for expr
+	int expr_type = INT;
+	if (type == CHARCON) {
+		PUSH; 
+		sp.top() = sp.top() - 2;
+		getsym;
+		if(type != PLUS && type != MINU && type != MULT && type != DIV)
+			expr_type = CHAR;
+		POP;
+	}
+	if (type == IDENFR) {
+		string iden = token;
+		PUSH; getsym;
+		if (type == LBRACK) {
+			int cnt = 0;
+			do {
+				if (type == RBRACK) {
+					cnt -= 1;
+				}
+				else if (type == LBRACK) {
+					cnt += 1;
+				}
+				getsym;
+			} while (cnt);
+			if (type != PLUS && type != MINU && type != MULT && type != DIV) {
+				if (symtab.var_lookup(iden)._type == CHAR) {
+					expr_type = CHAR;
+				}
+			}
+		}
+		else if (type == LPARENT) {
+			int cnt = 0;
+			do {
+				if (type == RPARENT) {
+					cnt -= 1;
+				}
+				else if (type == LPARENT) {
+					cnt += 1;
+				}
+				getsym;
+			} while (cnt);
+			if (type != PLUS && type != MINU && type != MULT && type != DIV) {
+				if (symtab.func_lookup(iden).return_type == CHAR) {
+					expr_type = CHAR;
+				}
+			}
+		}
+		else if (type != PLUS && type != MINU && type != MULT && type != DIV) {
+			if (symtab.var_lookup(iden)._type == CHAR) {
+				expr_type = CHAR;
+			}
+		}
+		POP;
+	}
+
+	
+	int isPos = 1;
 	if (type == PLUS || type == MINU) {
+		if (type == MINU) isPos = 0;
 		OUT(tk.now_token); getsym;
 	}// not else
 	isTerm();
+	string left = mc_gen.get_last_result();
+	if (!isPos) {
+		mc_gen.push("sub", "0", left, mc_gen.gen_temp());
+		left = mc_gen.get_last_result();
+	}
 	while (type == PLUS || type == MINU) {
+		expr_type = INT;
+		if (type == PLUS)
+			isPos = 1;
+		else
+			isPos = 0;
 		isPlusOperator();
 		isTerm();
+		string right = mc_gen.get_last_result();
+		if (isPos == 1) {
+			mc_gen.push("add", left, right, mc_gen.gen_temp());
+		}
+		else {
+			mc_gen.push("sub", left, right, mc_gen.gen_temp());
+		}
+		left = mc_gen.get_last_result();
+	}
+	if (expr_type == CHAR) {
+		mc_gen.push("=", mc_gen.get_last_result(), "", mc_gen.gen_temp(CHAR));
+	}
+	else {
+		mc_gen.push("=", mc_gen.get_last_result(), "", mc_gen.gen_temp(INT));
 	}
 	//---------------pass------------------
 	string s("<表达式>");
 	OUT_LABEL(s);
+
 }
+
 void gm_analyse::isTerm(void){
 	isFactor();
+	string left = mc_gen.get_last_result();
+	if(type != MULT && type == DIV)
+		mc_gen.push("=", left, "", left);
 	while (type == MULT || type == DIV) {
+		int isMult = 1;
+		if (type == DIV)
+			isMult = 0;
 		isMultOperator();
 		isFactor();
+		string right = mc_gen.get_last_result();
+		if(isMult)
+			mc_gen.push("mult", left, right, mc_gen.gen_temp());
+		else
+			mc_gen.push("div", left, right, mc_gen.gen_temp());
+		left = mc_gen.get_last_result();
 	}
 	//--------------pass------------------------
 	string s("<项>");
@@ -917,15 +1030,26 @@ void gm_analyse::isFactor(void) {
 		else {
 			POP; 
 			string res = token;
+			
 			OUT(tk.now_token); getsym;
 			if (type == LBRACK) {
 				array_type = symtab.var_lookup(res)._type;
 				OUT(tk.now_token); getsym;
 				isExpression();
+				mc_gen.push("[]", res, mc_gen.get_last_result(), mc_gen.gen_temp());
 				if (type == RBRACK) {
 					OUT(tk.now_token); getsym;
 				}
-			}// not else
+			}
+			else {
+				if (symtab.var_lookup(res).isConst) {
+					mc_gen.push("=", to_string(symtab.var_lookup(res).value), "", to_string(symtab.var_lookup(res).value));
+				}
+				else if(symtab.local_lookup(res))
+					mc_gen.push("=", res, "", res);
+				else
+					mc_gen.push("=", res, "", mc_gen.gen_temp());
+			}
 
 		}
 	}          
@@ -937,10 +1061,12 @@ void gm_analyse::isFactor(void) {
 		}
 	}
 	else if (type == PLUS || type == MINU || type == INTCON || type == INTERROR) {
-		isInteger();
+		int num = isInteger();
+		mc_gen.push("=", to_string(num), "", to_string(num));
 	}
 	else if (type == CHARCON || type == CHARERROR) {
-		isChar();
+		int ch = isChar();
+		mc_gen.push("=", to_string(ch), "", to_string(ch));
 	}//else
 	//------------pass----------------
 	string s("<因子>");

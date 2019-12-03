@@ -2,13 +2,69 @@
 	enter: .asciiz "\n"
 .text:
 j main
-getnext:
+A:
+	sw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	-4
+	lw	$t0,	-20	($sp)
+	li	$t0,	1
+	sw	$t0,	-20	($sp)
+	lw	$t1,	-24	($sp)
+	li	$t1,	4
+	sw	$t1,	-24	($sp)
+	sll	$t9,	$t0,	2
+	subu	$t9,	$sp,	$t9
+	sw	$t1,	0	($t9)
+	lw	$t2,	-28	($sp)
+	li	$t2,	4
+	sw	$t2,	-28	($sp)
+	lw	$t3,	-32	($sp)
+	li	$t3,	1
+	sw	$t3,	-32	($sp)
+	sll	$t9,	$t2,	2
+	subu	$t9,	$sp,	$t9
+	sw	$t3,	0	($t9)
+	lw	$t4,	-36	($sp)
+	li	$t4,	1
+	sw	$t4,	-36	($sp)
+	lw	$t5,	-40	($sp)
+	sll	$t9,	$t4,	2
+	subu	$t9,	$sp,	$t9
+	lw	$t5,	0	($t9)
+	sw	$t5,	-40	($sp)
+	lw	$t6,	-44	($sp)
+	move	$t6,	$t5
+	sw	$t6,	-44	($sp)
+	lw	$t7,	-48	($sp)
+	sll	$t9,	$t6,	2
+	subu	$t9,	$sp,	$t9
+	lw	$t7,	0	($t9)
+	sw	$t7,	-48	($sp)
+	lw	$t8,	-52	($sp)
+	move	$t8,	$t7
+	sw	$t8,	-52	($sp)
+	lw	$t8,	-52	($sp)
+	move	$v0,	$t8
+	addiu	$sp,	$sp,	4
+	lw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	4
+	lw	$sp,	0	($sp)
+	jr	$ra
+	addiu	$sp,	$sp,	4
+	lw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	4
+	lw	$sp,	0	($sp)
+	jr	$ra
+B:
 	sw	$ra,	0	($sp)
 	addiu	$sp,	$sp,	-4
 	lw	$t8,	12	($sp)
 	sw	$t8,	0	($sp)
 	lw	$s0,	0	($sp)
-	move	$v0,	$s0
+	move	$s0,	$t8
+	lw	$t0,	-4	($sp)
+	move	$t0,	$s0
+	sw	$t0,	-4	($sp)
+	move	$v0,	$t0
 	addiu	$sp,	$sp,	4
 	lw	$ra,	0	($sp)
 	addiu	$sp,	$sp,	4
@@ -22,14 +78,60 @@ getnext:
 main:
 	sw	$ra,	0	($sp)
 	addiu	$sp,	$sp,	-4
-	li	$t8,	'a'
-	sw	$t8,	0	($sp)
-	sw	$sp,	-4	($sp)
-	addiu	$sp,	$sp,	-8
-	jal	getnext
-	lw	$t0,	0	($sp)
+	sw	$sp,	-492	($sp)
+	addiu	$sp,	$sp,	-496
+	jal	A
+	lw	$t0,	-444	($sp)
 	move	$t0,	$v0
-	move	$a0,	$t0
+	sw	$t0,	-444	($sp)
+	lw	$t1,	-448	($sp)
+	addiu	$t1,	$t0,	8
+	sw	$t1,	-448	($sp)
+	lw	$t2,	-452	($sp)
+	move	$t2,	$t1
+	sw	$t2,	-452	($sp)
+	lw	$t3,	-456	($sp)
+	li	$t3,	49
+	sw	$t3,	-456	($sp)
+	sll	$t9,	$t2,	2
+	subu	$t9,	$sp,	$t9
+	sw	$t3,	-404	($t9)
+	lw	$t4,	-460	($sp)
+	li	$t4,	9
+	sw	$t4,	-460	($sp)
+	lw	$t5,	-464	($sp)
+	sll	$t9,	$t4,	2
+	subu	$t9,	$sp,	$t9
+	lw	$t5,	-404	($t9)
+	sw	$t5,	-464	($sp)
+	lw	$t6,	-468	($sp)
+	addiu	$t6,	$t5,	-49
+	sw	$t6,	-468	($sp)
+	lw	$t7,	-472	($sp)
+	move	$t7,	$t6
+	sw	$t7,	-472	($sp)
+	lw	$t8,	-476	($sp)
+	li	$t8,	9
+	sw	$t8,	-476	($sp)
+	lw	$t8,	-476	($sp)
+	sll	$t9,	$t7,	2
+	subu	$t9,	$sp,	$t9
+	sw	$t8,	-4	($t9)
+	lw	$t8,	-480	($sp)
+	li	$t8,	9
+	sw	$t8,	-480	($sp)
+	lw	$t8,	-484	($sp)
+	lw	$t8,	-480	($sp)
+	sll	$t9,	$t8,	2
+	subu	$t9,	$sp,	$t9
+	lw	$t8,	-404	($t9)
+	sw	$t8,	-484	($sp)
+	lw	$t8,	-488	($sp)
+	lw	$t9,	-484	($sp)
+	move	$t8,	$t9
+	sw	$t8,	-488	($sp)
+	lw	$t8,	-488	($sp)
+	move	$a0,	$t8
 	li	$v0,	11
 	syscall
 	la	$a0,	enter

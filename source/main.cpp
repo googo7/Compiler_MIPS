@@ -4,11 +4,13 @@
 #include "Error.h"
 #include "SymbolTable.h"
 #include "MemoryManage.h"
+#include "MipsGen.h"
 #include <iostream>
 using namespace std;
 extern string file_string;
 extern MemoryTable memory_table;
 gm_analyse gm;
+MipsGen mips_gen;
 void symtab_test() {
 	Symtab symtab = Symtab();
 	symtab.func_push(string("fun1"), vector<int> {1}, 1);
@@ -39,6 +41,7 @@ int main() {
 	gm = gm_analyse();
 	gm.isProgram();
 	gm.er.out();
+	mips_gen.func_table = gm.symtab.func_table;
 	gm.mc_gen.out();
 	close_file();
 	//symtab_test();

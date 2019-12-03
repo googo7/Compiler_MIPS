@@ -104,14 +104,14 @@ void Symtab::adjust_size(string s, int value) {
 	for (int i = 0; i < this->local_var_table.size(); i++) {
 		var_info vi = this->local_var_table[i];
 		if (vi.iden == s) {
-			vi.size = value;
+			this->local_var_table[i].size = value;
 			return;
 		}
 	}
 	for (int i = 0; i < this->global_var_table.size(); i++) {
 		var_info vi = this->global_var_table[i];
 		if (vi.iden == s) {
-			vi.size = value;
+			this->global_var_table[i].size = value;
 			return;
 		}
 	}

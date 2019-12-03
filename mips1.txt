@@ -1,0 +1,384 @@
+.data:
+	enter: .asciiz "\n"
+string0:	.asciiz"17373248"
+.text:
+j main
+merge:
+	sw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	-4
+	lw	$t8,	24	($sp)
+	sw	$t8,	0	($sp)
+	lw	$t8,	20	($sp)
+	sw	$t8,	-4	($sp)
+	lw	$t8,	16	($sp)
+	sw	$t8,	-8	($sp)
+	lw	$t8,	12	($sp)
+	sw	$t8,	-12	($sp)
+	lw	$s0,	-16	($sp)
+	li	$s0,	0
+	lw	$s1,	-20	($sp)
+	li	$s1,	0
+	lw	$s2,	-24	($sp)
+	lw	$s3,	0	($sp)
+	move	$s2,	$s3
+label_while_begin0:
+	lw	$t0,	-28	($sp)
+	lw	$s4,	-4	($sp)
+	slt	$t0,	$s0,	$s4
+	beq	$t0,	$0,	label_while_end0
+	lw	$t1,	-32	($sp)
+	lw	$s5,	-12	($sp)
+	slt	$t1,	$s1,	$s5
+	beq	$t1,	$0,	label_if_head1
+	lw	$t2,	-36	($sp)
+	addu	$t2,	$s3,	$s0
+	lw	$t3,	-40	($sp)
+	sll	$t9,	$t2,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t3,	0	($t9)
+	lw	$t4,	-44	($sp)
+	lw	$s6,	-8	($sp)
+	addu	$t4,	$s6,	$s1
+	lw	$t5,	-48	($sp)
+	sll	$t9,	$t4,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t5,	0	($t9)
+	lw	$t6,	-52	($sp)
+	sgt	$t6,	$t3,	$t5
+	beq	$t6,	$0,	label_if_head2
+	lw	$t7,	-56	($sp)
+	addu	$t7,	$s6,	$s1
+	lw	$t8,	-60	($sp)
+	sll	$t9,	$t7,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t8,	0	($t9)
+	sw	$t8,	-60	($sp)
+	lw	$t8,	-60	($sp)
+	sll	$t9,	$s2,	2
+	addu	$t9,	$gp,	$t9
+	sw	$t8,	4000	($t9)
+	lw	$t8,	-64	($sp)
+	addiu	$t8,	$s1,	1
+	sw	$t8,	-64	($sp)
+	lw	$t9,	-64	($sp)
+	move	$s1,	$t9
+	j	label_if_tail2
+label_if_head2:
+	lw	$t8,	-68	($sp)
+	addu	$t8,	$s3,	$s0
+	sw	$t8,	-68	($sp)
+	lw	$t8,	-72	($sp)
+	lw	$t8,	-68	($sp)
+	sll	$t9,	$t8,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t8,	0	($t9)
+	sw	$t8,	-72	($sp)
+	lw	$t8,	-72	($sp)
+	sll	$t9,	$s2,	2
+	addu	$t9,	$gp,	$t9
+	sw	$t8,	4000	($t9)
+	lw	$t8,	-76	($sp)
+	addiu	$t8,	$s0,	1
+	sw	$t8,	-76	($sp)
+	lw	$t9,	-76	($sp)
+	move	$s0,	$t9
+label_if_tail2:
+	lw	$t8,	-80	($sp)
+	addiu	$t8,	$s2,	1
+	sw	$t8,	-80	($sp)
+	lw	$t9,	-80	($sp)
+	move	$s2,	$t9
+	j	label_if_tail1
+label_if_head1:
+label_while_begin3:
+	lw	$t8,	-84	($sp)
+	slt	$t8,	$s0,	$s4
+	sw	$t8,	-84	($sp)
+	lw	$t8,	-84	($sp)
+	beq	$t8,	$0,	label_while_end3
+	lw	$t8,	-88	($sp)
+	addu	$t8,	$s3,	$s0
+	sw	$t8,	-88	($sp)
+	lw	$t8,	-92	($sp)
+	lw	$t8,	-88	($sp)
+	sll	$t9,	$t8,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t8,	0	($t9)
+	sw	$t8,	-92	($sp)
+	lw	$t8,	-92	($sp)
+	sll	$t9,	$s2,	2
+	addu	$t9,	$gp,	$t9
+	sw	$t8,	4000	($t9)
+	lw	$t8,	-96	($sp)
+	addiu	$t8,	$s2,	1
+	sw	$t8,	-96	($sp)
+	lw	$t9,	-96	($sp)
+	move	$s2,	$t9
+	lw	$t8,	-100	($sp)
+	addiu	$t8,	$s0,	1
+	sw	$t8,	-100	($sp)
+	lw	$t9,	-100	($sp)
+	move	$s0,	$t9
+	j	label_while_begin3
+label_while_end3:
+label_if_tail1:
+	j	label_while_begin0
+label_while_end0:
+label_while_begin4:
+	lw	$t8,	-104	($sp)
+	slt	$t8,	$s1,	$s5
+	sw	$t8,	-104	($sp)
+	lw	$t8,	-104	($sp)
+	beq	$t8,	$0,	label_while_end4
+	lw	$t8,	-108	($sp)
+	addu	$t8,	$s6,	$s1
+	sw	$t8,	-108	($sp)
+	lw	$t8,	-112	($sp)
+	lw	$t8,	-108	($sp)
+	sll	$t9,	$t8,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t8,	0	($t9)
+	sw	$t8,	-112	($sp)
+	lw	$t8,	-112	($sp)
+	sll	$t9,	$s2,	2
+	addu	$t9,	$gp,	$t9
+	sw	$t8,	4000	($t9)
+	lw	$t8,	-116	($sp)
+	addiu	$t8,	$s2,	1
+	sw	$t8,	-116	($sp)
+	lw	$t9,	-116	($sp)
+	move	$s2,	$t9
+	lw	$t8,	-120	($sp)
+	addiu	$t8,	$s1,	1
+	sw	$t8,	-120	($sp)
+	lw	$t9,	-120	($sp)
+	move	$s1,	$t9
+	j	label_while_begin4
+label_while_end4:
+	move	$s0,	$s3
+label_for_begin5:
+	lw	$t8,	-124	($sp)
+	slt	$t8,	$s0,	$s2
+	sw	$t8,	-124	($sp)
+	lw	$t8,	-124	($sp)
+	beq	$t8,	$0,	label_for_end5
+	lw	$t8,	-128	($sp)
+	sll	$t9,	$s0,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t8,	4000	($t9)
+	sw	$t8,	-128	($sp)
+	lw	$t8,	-128	($sp)
+	sll	$t9,	$s0,	2
+	addu	$t9,	$gp,	$t9
+	sw	$t8,	0	($t9)
+	addiu	$s0,	$s0,	1
+	j	label_for_begin5
+label_for_end5:
+	addiu	$sp,	$sp,	4
+	lw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	4
+	lw	$sp,	0	($sp)
+	jr	$ra
+inner_merge_sort:
+	sw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	-4
+	lw	$t8,	16	($sp)
+	sw	$t8,	0	($sp)
+	lw	$t8,	12	($sp)
+	sw	$t8,	-4	($sp)
+	lw	$t0,	-16	($sp)
+	lw	$s0,	-4	($sp)
+	sle	$t0,	$s0,	1
+	beq	$t0,	$0,	label_if_head6
+	addiu	$sp,	$sp,	4
+	lw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	4
+	lw	$sp,	0	($sp)
+	jr	$ra
+	j	label_if_tail6
+label_if_head6:
+label_if_tail6:
+	lw	$t1,	-20	($sp)
+	seq	$t1,	$s0,	2
+	beq	$t1,	$0,	label_if_head7
+	lw	$t2,	-24	($sp)
+	lw	$s1,	0	($sp)
+	sll	$t9,	$s1,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t2,	0	($t9)
+	lw	$t3,	-28	($sp)
+	addiu	$t3,	$s1,	1
+	lw	$t4,	-32	($sp)
+	sll	$t9,	$t3,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t4,	0	($t9)
+	lw	$t5,	-36	($sp)
+	sgt	$t5,	$t2,	$t4
+	beq	$t5,	$0,	label_if_head8
+	lw	$t6,	-40	($sp)
+	sll	$t9,	$s1,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t6,	0	($t9)
+	lw	$s2,	-8	($sp)
+	move	$s2,	$t6
+	lw	$t7,	-44	($sp)
+	addiu	$t7,	$s1,	1
+	lw	$t8,	-48	($sp)
+	sll	$t9,	$t7,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t8,	0	($t9)
+	sw	$t8,	-48	($sp)
+	lw	$t8,	-48	($sp)
+	sll	$t9,	$s1,	2
+	addu	$t9,	$gp,	$t9
+	sw	$t8,	0	($t9)
+	lw	$t8,	-52	($sp)
+	addiu	$t8,	$s1,	1
+	sw	$t8,	-52	($sp)
+	lw	$t9,	-52	($sp)
+	sll	$t9,	$t9,	2
+	addu	$t9,	$gp,	$t9
+	sw	$s2,	0	($t9)
+	j	label_if_tail8
+label_if_head8:
+label_if_tail8:
+	addiu	$sp,	$sp,	4
+	lw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	4
+	lw	$sp,	0	($sp)
+	jr	$ra
+	j	label_if_tail7
+label_if_head7:
+label_if_tail7:
+	move	$t8,	$s0
+	li	$t9,	2
+	div	$t8,	$t9
+	lw	$t8,	-56	($sp)
+	mflo	$t8
+	sw	$t8,	-56	($sp)
+	lw	$s3,	-12	($sp)
+	lw	$t9,	-56	($sp)
+	move	$s3,	$t9
+	sw	$s1,	-76	($sp)
+	sw	$s3,	-80	($sp)
+	sw	$s0,	-4	($sp)
+	sw	$s1,	0	($sp)
+	sw	$s2,	-8	($sp)
+	sw	$s3,	-12	($sp)
+	sw	$sp,	-84	($sp)
+	addiu	$sp,	$sp,	-88
+	jal	inner_merge_sort
+	lw	$s0,	-4	($sp)
+	lw	$s1,	0	($sp)
+	lw	$s2,	-8	($sp)
+	lw	$s3,	-12	($sp)
+	lw	$t8,	-60	($sp)
+	addu	$t8,	$s1,	$s3
+	sw	$t8,	-60	($sp)
+	lw	$t8,	-60	($sp)
+	sw	$t8,	-76	($sp)
+	lw	$t8,	-64	($sp)
+	subu	$t8,	$s0,	$s3
+	sw	$t8,	-64	($sp)
+	lw	$t8,	-64	($sp)
+	sw	$t8,	-80	($sp)
+	sw	$s0,	-4	($sp)
+	sw	$s1,	0	($sp)
+	sw	$s2,	-8	($sp)
+	sw	$s3,	-12	($sp)
+	sw	$sp,	-84	($sp)
+	addiu	$sp,	$sp,	-88
+	jal	inner_merge_sort
+	lw	$s0,	-4	($sp)
+	lw	$s1,	0	($sp)
+	lw	$s2,	-8	($sp)
+	lw	$s3,	-12	($sp)
+	sw	$s1,	-76	($sp)
+	sw	$s3,	-80	($sp)
+	lw	$t8,	-68	($sp)
+	addu	$t8,	$s1,	$s3
+	sw	$t8,	-68	($sp)
+	lw	$t8,	-68	($sp)
+	sw	$t8,	-84	($sp)
+	lw	$t8,	-72	($sp)
+	subu	$t8,	$s0,	$s3
+	sw	$t8,	-72	($sp)
+	lw	$t8,	-72	($sp)
+	sw	$t8,	-88	($sp)
+	sw	$s0,	-4	($sp)
+	sw	$s1,	0	($sp)
+	sw	$s2,	-8	($sp)
+	sw	$s3,	-12	($sp)
+	sw	$sp,	-92	($sp)
+	addiu	$sp,	$sp,	-96
+	jal	merge
+	lw	$s0,	-4	($sp)
+	lw	$s1,	0	($sp)
+	lw	$s2,	-8	($sp)
+	lw	$s3,	-12	($sp)
+	addiu	$sp,	$sp,	4
+	lw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	4
+	lw	$sp,	0	($sp)
+	jr	$ra
+main:
+	sw	$ra,	0	($sp)
+	addiu	$sp,	$sp,	-4
+	la	$a0,	string0
+	li	$v0,	4
+	syscall
+	la	$a0,	enter
+	li	$v0,	4
+	syscall
+	li	$v0,	5
+	syscall
+	lw	$s0,	0	($sp)
+	move	$s0,	$v0
+	lw	$s1,	-4	($sp)
+	li	$s1,	0
+label_for_begin9:
+	lw	$t0,	-12	($sp)
+	slt	$t0,	$s1,	$s0
+	beq	$t0,	$0,	label_for_end9
+	li	$v0,	5
+	syscall
+	lw	$s2,	-8	($sp)
+	move	$s2,	$v0
+	sll	$t9,	$s1,	2
+	addu	$t9,	$gp,	$t9
+	sw	$s2,	0	($t9)
+	addiu	$s1,	$s1,	1
+	j	label_for_begin9
+label_for_end9:
+	li	$t8,	0
+	sw	$t8,	-24	($sp)
+	sw	$s0,	-28	($sp)
+	sw	$s0,	0	($sp)
+	sw	$s1,	-4	($sp)
+	sw	$s2,	-8	($sp)
+	sw	$sp,	-32	($sp)
+	addiu	$sp,	$sp,	-36
+	jal	inner_merge_sort
+	lw	$s0,	0	($sp)
+	lw	$s1,	-4	($sp)
+	lw	$s2,	-8	($sp)
+	li	$s1,	0
+label_for_begin10:
+	lw	$t1,	-16	($sp)
+	slt	$t1,	$s1,	$s0
+	beq	$t1,	$0,	label_for_end10
+	lw	$t2,	-20	($sp)
+	sll	$t9,	$s1,	2
+	addu	$t9,	$gp,	$t9
+	lw	$t2,	0	($t9)
+	move	$a0,	$t2
+	li	$v0,	1
+	syscall
+	la	$a0,	enter
+	li	$v0,	4
+	syscall
+	addiu	$s1,	$s1,	1
+	j	label_for_begin10
+label_for_end10:
+	li	$v0,	10
+	syscall

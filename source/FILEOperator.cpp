@@ -49,17 +49,17 @@ void read_from_file() {
 }
 
 void write_into_file(token_info tk) {
-	cout << tk.out_type_string() << " " << tk.token << endl;
+	//cout << tk.out_type_string() << " " << tk.token << endl;
 	ofile << tk.out_type_string() << " " << tk.token << endl;
 }
 
 void write_into_file(string s) {
-	cout << s << endl;
+	//cout << s << endl;
 	ofile << s << endl;
 }
 
 void write_into_file(error_info er) {
-	cout << er.line << " " << er.code << endl;
+	//cout << er.line << " " << er.code << endl;
 	efile << er.line << " " << er.code << endl;
 }
 
