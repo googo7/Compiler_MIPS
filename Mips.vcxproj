@@ -125,6 +125,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Error.cpp" />
+    <ClCompile Include="source\er_source\er_Error.cpp" />
+    <ClCompile Include="source\er_source\er_FILEOperator.cpp" />
+    <ClCompile Include="source\er_source\er_GMAnalysis.cpp" />
+    <ClCompile Include="source\er_source\er_main.cpp" />
+    <ClCompile Include="source\er_source\er_SymbolTable.cpp" />
+    <ClCompile Include="source\er_source\er_TkAnalysis.cpp" />
     <ClCompile Include="source\FILEOperator.cpp" />
     <ClCompile Include="source\GMAnalysis.cpp" />
     <ClCompile Include="source\main.cpp" />
@@ -136,6 +142,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Error.h" />
+    <ClInclude Include="source\er_source\er_Error.h" />
+    <ClInclude Include="source\er_source\er_FILEOperator.h" />
+    <ClInclude Include="source\er_source\er_GMAnalysis.h" />
+    <ClInclude Include="source\er_source\er_SymbolTable.h" />
+    <ClInclude Include="source\er_source\er_TkAnalysis.h" />
     <ClInclude Include="source\FILEOperator.h" />
     <ClInclude Include="source\GMAnalysis.h" />
     <ClInclude Include="source\MemoryManage.h" />

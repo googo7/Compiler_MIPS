@@ -1,22 +1,10 @@
-int a[10], b[10];
-int c[1000];
-char d[12];
+const char Aa = 'a';
 
-int A(){
-	int a[5];
-	a[1] = 4;
-	a[4] = 1;
-	return (a[a[1]]);
+int add(int a, int b){
+	return(a+b);
 }
 
-int B(int a){
-	return (a);
-}
 
 void main(){
-	int a, c[100];
-	char b[10];
-	b[A() + 8] = '1';
-	c[b[9] - '1'] = 9;
-printf(    b[9]     );	
+	printf(add(add(1, 2), add(1, 4)));
 }
