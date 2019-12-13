@@ -40,4 +40,5 @@ public:
 	int get_last_type(void);
 	void out();
 	void op_inline();
+	void op_compare();
 };

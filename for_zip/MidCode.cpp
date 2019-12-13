@@ -240,6 +240,7 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 void MidCodeGen::out() {
 	mips_gen.predeal(this->mc);
 	op_inline();
+	op_compare();
 	for (int i = 0; i < this->mc.size(); i++) {
 		write_into_file(mc[i]);
 		mips_gen.parse(mc[i]);
@@ -377,6 +378,43 @@ void MidCodeGen::op_inline() {
 				mc.insert(mc.begin() + i + 1, in_func.func_mc[j]);
 			}
 			mc[i] = MidCode("begin_inline_func", "", "", "");
+			//mc.erase(mc.begin() + i);
+			//mc.insert(mc.begin() + j + 1, MidCode("begin_inline_func", "", "", ""));
+			
+		}
+	}
+
+}
+
+void MidCodeGen::op_compare() {
+	string s1, s2;
+	for (unsigned int i = 0; i < mc.size(); i++) {
+		if (mc[i].op == "BZ") {
+			s1 = mc[i - 1].s1;
+			s2 = mc[i - 1].s2;
+			if (mc[i - 1].op == "<") {
+				mc[i] = MidCode("BGE", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else if (mc[i - 1].op == "<=") {
+				mc[i] = MidCode("BGT", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else if (mc[i - 1].op == ">") {
+				mc[i] = MidCode("BLE", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else if (mc[i - 1].op == ">=") {
+				mc[i] = MidCode("BLT", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else if (mc[i - 1].op == "==") {
+				mc[i] = MidCode("BNE", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else if (mc[i - 1].op == "!=") {
+				mc[i] = MidCode("BEQ", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else {
+				continue;
+			}
+			mc.erase(mc.begin() + i - 1);
+			i--;
 		}
 	}
 

@@ -215,6 +215,82 @@ void MipsGen::parse(MidCode mc) {
 	else if (op == "LABEL") {
 	emit("LABEL", s1, s2, "");
 	}
+	else if (op == "BGE" || op == "BGT" || op == "BLE" || op == "BLT" || op == "BNE" || op == "BEQ") {
+	string s1_reg = "", s2_reg = "";
+	if (is_digit(s1[0])) {
+		if (is_digit(s2[0])) {
+			int res = 0;
+			if (op == "BGE")
+				res = (toi(s1) >= toi(s2));
+			else if (op == "BGT")
+				res = (toi(s1) > toi(s2));
+			else if (op == "BLE")
+				res = (toi(s1) <= toi(s2));
+			else if (op == "BLT")
+				res = (toi(s1) < toi(s2));
+			else if (op == "BNE")
+				res = (toi(s1) != toi(s2));
+			else if (op == "BEQ")
+				res = (toi(s1) == toi(s2));
+			if (res)
+				emit("j", result, "", "");
+
+		}
+		else {
+			s2_reg = lookup(s2, "$t9");
+			if (op == "BGE")  
+				emit("ble",s2_reg, to_string(toi(s1)), result);
+			else if (op == "BGT")
+				emit("blt", s2_reg, to_string(toi(s1)), result);
+			else if (op == "BLE")
+				emit("bge", s2_reg, to_string(toi(s1)), result);
+			else if (op == "BLT")
+				emit("bgt", s2_reg, to_string(toi(s1)), result);
+			else if (op == "BNE")
+				emit("bne", s2_reg, to_string(toi(s1)), result);
+			else if (op == "BEQ")
+				emit("beq", s2_reg, to_string(toi(s1)), result);
+		}
+	}
+	else {
+		if (is_digit(s2[0])) {
+			s1_reg = lookup(s1, "$t9");
+			if (op == "BGE")   
+				emit("bge", s1_reg, to_string(toi(s2)), result);
+			else if (op == "BGT")
+				emit("bgt", s1_reg, to_string(toi(s2)), result);
+			else if (op == "BLE")
+				emit("ble", s1_reg, to_string(toi(s2)), result);
+			else if (op == "BLT")
+				emit("blt", s1_reg, to_string(toi(s2)), result);
+			else if (op == "BNE")
+				emit("bne", s1_reg, to_string(toi(s2)), result);
+			else if (op == "BEQ")
+				emit("beq", s1_reg, to_string(toi(s2)), result);
+		}
+		else {
+			s1_reg = lookup(s1);
+			s2_reg = lookup(s2, "$t9");
+			if (op == "BGE")   // num < iden
+				emit("bge", s1_reg, s2_reg, result);
+			else if (op == "BGT")
+				emit("bgt", s1_reg, s2_reg, result);
+			else if (op == "BLE")
+				emit("ble", s1_reg, s2_reg, result);
+			else if (op == "BLT")
+				emit("blt", s1_reg, s2_reg, result);
+			else if (op == "BNE")
+				emit("bne", s1_reg, s2_reg, result);
+			else if (op == "BEQ")
+				emit("beq", s1_reg, s2_reg, result);
+		}
+	}
+
+	/*else {
+		sw(result_reg, result);
+	}*/
+
+}
 	else if (op == "<" || op == "<=" || op == ">=" || op == ">" || op == "==" || op == "!=") {
 		string result_reg = lookup(result), s1_reg = "", s2_reg = "";
 		if (is_digit(s1[0])) {
@@ -524,9 +600,11 @@ void MipsGen::parse(MidCode mc) {
 				}
 				reg_table.erase(reg_table.begin() + j);
 				j--;
-				memory_table.setflag(func_now, inline_para[i], 0);
+				
 			}
 		}
+		if(inline_para[i] != s1)
+			memory_table.setflag(func_now, inline_para[i], 0);
 	}
 	inline_para = {};
 	}
@@ -536,6 +614,31 @@ void MipsGen::parse(MidCode mc) {
 void MipsGen::emit(string op, string s1, string s2, string s3) {
 	string res;
 	res = "\t" + op;
+	if (s1 == "$s8")
+		s1 = "$a1";
+	else if (s1 == "$s9")
+		s1 = "$a2";
+	else if (s1 == "$s10")
+		s1 = "$a3";
+	else if (s1 == "$s11")
+		s1 = "$fp";
+	if (s2 == "$s8")
+		s2 = "$a1";
+	else if (s2 == "$s9")
+		s2 = "$a2";
+	else if (s2 == "$s10")
+		s2 = "$a3";
+	else if (s2 == "$s11")
+		s2 = "$fp";
+	if (s3 == "$s8")
+		s3 = "$a1";
+	else if (s3 == "$s9")
+		s3 = "$a2";
+	else if (s3 == "$s10")
+		s3 = "$a3";
+	else if (s3 == "$s11")
+		s3 = "$fp";
+
 	if (op == "lw" || op == "sw") {
 		res += "\t" + s1;
 		res += ",\t" + s2;
@@ -587,7 +690,7 @@ void MipsGen::emit(string op, string s1, string s2, string s3) {
 		res += ",\t" + s2;
 		res += ",\t" + s3;
 
-	} 
+	}
 	else if (op == "string") {
 		res = op + s2 + ":";
 		res += "\t.asciiz";
@@ -601,8 +704,13 @@ void MipsGen::emit(string op, string s1, string s2, string s3) {
 		res += "\t" + s1;
 		res += ",\t" + s2;
 	}
-	else if(op == "jal" || op == "jr"){
+	else if (op == "jal" || op == "jr") {
 		res += "\t" + s1;
+	}
+	else if (op == "bge" || op == "bgt" || op == "ble" || op == "blt" || op == "bne" || op == "beq") {
+		res += "\t" + s1;
+		res += ",\t" + s2;
+		res += ",\t" + s3;
 	}
 	write_into_mfile(res);
 }
@@ -704,8 +812,31 @@ string MipsGen::lookup(string iden, string reg) {
 	}
 	for (int i = 0; i < this->reg_table.size(); i++) {
 		if (this->reg_table[i].isHit) {
-			if (this->reg_table[i].var.iden == iden)
-				return this->reg_table[i].reg;
+			if (this->reg_table[i].var.iden == iden) {
+				string r = this->reg_table[i].reg;
+				if (this->reg_table[i].var.iden[0] == 'x' && this->reg_table[i].var.iden[1] == 'x' && this->reg_table[i].var.iden[2] == 'j' && this->reg_table[i].var.iden[3] == '_' && this->reg_table[i].var.iden[4] == 't')
+				{
+					for (int j = 0; j < use_t_reg.size(); j++) {
+						if (use_t_reg[j] == reg_table[i].reg){
+							use_t_reg.erase(use_t_reg.begin() + j);
+							j--;
+							}
+					}
+					free_t_reg.push_back(reg_table[i].reg);
+					this->reg_table.erase(this->reg_table.begin() + i);
+					i--;
+				}
+				else {
+					for (int j = 0; j < use_s_reg.size(); j++) {
+						if (this->reg_table[i].reg == use_s_reg[j]) {
+							this->use_s_reg.erase(use_s_reg.begin() + j);
+							j--;
+						}
+					}
+					this->use_s_reg.push_back(r);
+				}
+				return r;
+			}
 		}
 	}
 	return alloc(v, reg);
@@ -721,17 +852,36 @@ string MipsGen::alloc(var_info v, string reg) {
 			free_s_reg.erase(free_s_reg.begin());
 			use_s_reg.push_back(reg);
 			if (v.value != 12306) {
-				this->reg_table.push_back(RegTableItem(reg, 1, var_info(v.iden, -1, -1, -1, -1)));
+				this->reg_table.push_back(RegTableItem(reg, 1, var_info(v.iden, 0, 1, 0, -10)));
 				memory_table.setflag(func_now, v.iden);
 			}
 			else {
-				this->reg_table.push_back(RegTableItem(reg, 1, var_info(v.iden, -1, -1, -1, -1)));
+				this->reg_table.push_back(RegTableItem(reg, 1, var_info(v.iden, 0, 1, 0, -10)));
 				lw(reg, v.iden);
 			}
-			
 			return reg;
 		}
 		else {
+			/*string reg_replace = use_s_reg[0], iden_replace;
+			use_s_reg.erase(use_s_reg.begin());
+			use_s_reg.push_back(reg_replace);
+			for (int i = 0; i < reg_table.size(); i++) {
+				if (reg_table[i].reg == reg_replace) {
+					iden_replace = reg_table[i].var.iden;
+					reg_table.erase(reg_table.begin() + i);
+					i--;
+				}
+			}
+			sw(reg_replace, iden_replace);
+			if (v.value != 12306) {
+				this->reg_table.push_back(RegTableItem(reg_replace, 1, var_info(v.iden, 0, 1, 0, -10)));
+				memory_table.setflag(func_now, v.iden);
+			}
+			else {
+				this->reg_table.push_back(RegTableItem(reg_replace, 1, var_info(v.iden, 0, 1, 0, -10)));
+				lw(reg_replace, v.iden);
+			}
+			return reg_replace;*/
 			if (v.value != 12306) {
 				memory_table.setflag(func_now, v.iden);
 			}
@@ -751,11 +901,11 @@ string MipsGen::alloc(var_info v, string reg) {
 			if(expr_temp_cnt)
 				t_temp.push_back(reg);
 			if (v.value != 12306) {
-				this->reg_table.push_back(RegTableItem(reg, 1, var_info(v.iden, -1, -1, -1, -1)));
+				this->reg_table.push_back(RegTableItem(reg, 1, var_info(v.iden, 0, 1, 0, -10)));
 				memory_table.setflag(func_now, v.iden);
 			}
 			else {
-				this->reg_table.push_back(RegTableItem(reg, 1, var_info(v.iden, -1, -1, -1, -1)));
+				this->reg_table.push_back(RegTableItem(reg, 1, var_info(v.iden, 0, 1, 0, -10)));
 				lw(reg, v.iden);
 			}
 			//lw(reg, iden);
@@ -820,7 +970,7 @@ void MipsGen::pop_reg_table() {
 void MipsGen::clear_reg() {
 	this->reg_table = {};
 	this->use_s_reg = {};
-	this->free_s_reg = { "$s0", "$s1", "$s2", "$s3", "$s4", "$s5", "$s6","$s7" };
+	this->free_s_reg = { "$s0", "$s1", "$s2", "$s3", "$s4", "$s5", "$s6","$s7", "$s8", "$s9", "$s10", "$s11" };
 	this->use_t_reg = {};
 	this->free_t_reg = { "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6","$t7" };
 }
