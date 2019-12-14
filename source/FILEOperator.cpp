@@ -1,5 +1,5 @@
 ﻿#include <string>
-#include <fstream>
+
 #include <sstream>
 #include <iostream>
 
@@ -18,7 +18,7 @@ static ifstream ifile;
 static ofstream ofile;
 static ofstream efile;
 static ofstream midfile;
-static ofstream mipsfile;
+ ofstream mipsfile;
 string file_string;
 
 void open_file() {

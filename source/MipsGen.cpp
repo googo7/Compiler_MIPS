@@ -11,6 +11,7 @@ string func_now = "";
 int para_pt = 0;
 int expr_temp_cnt = 0;
 vector<string> inline_para;
+extern gm_analyse gm;
 int inline_flag = 0;
 /*
 	func
@@ -605,9 +606,45 @@ void MipsGen::parse(MidCode mc) {
 		}
 		if(inline_para[i] != s1)
 			memory_table.setflag(func_now, inline_para[i], 0);
+		
+	}
+	for (int j = 0; j < reg_table.size(); j++) {
+		if (reg_table[j].var.iden.size() > 5 && reg_table[j].var.iden[4] == 'i' && reg_table[j].var.iden[5] == 'n') {
+			memory_table.setflag(func_now, reg_table[j].var.iden, 0);
+			string ss = reg_table[j].reg;
+			for (int k = 0; k < use_s_reg.size(); k++) {
+				if (use_s_reg[k] == ss) {
+					use_s_reg.erase(use_s_reg.begin() + k);
+					k--;
+				}
+			}
+			free_s_reg.push_back(ss);
+			reg_table.erase(reg_table.begin() + j);
+			j--;
+		}
 	}
 	inline_para = {};
 	}
+	else if (op == "clear_for_block") {
+	for (int i = 0; i < reg_table.size(); i++) {
+		string reg = reg_table[i].reg;
+		string iden = reg_table[i].var.iden;
+		if (reg[1] == 's') {
+			int res = gm.mc_gen.check_use(iden, s1);
+			if (!res) {
+				for (int k = 0; k < use_s_reg.size(); k++) {
+					if (use_s_reg[k] == reg) {
+						use_s_reg.erase(use_s_reg.begin() + k);
+						k--;
+						}
+					}
+					free_s_reg.push_back(reg);
+					reg_table.erase(reg_table.begin() + i);
+					i--;
+			}
+		}
+	}
+}
 	
 }
 

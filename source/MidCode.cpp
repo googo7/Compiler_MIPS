@@ -12,6 +12,7 @@ extern string func_name_now;
 extern int array_type;
 extern int func_return_type;
 MidCode::MidCode() { ; }
+extern ofstream mipsfile;
 MidCode::MidCode(string o, string s, string ss, string r, int i) {
 	this->op = o;
 	this->s1 = s;
@@ -250,10 +251,12 @@ void MidCodeGen::out() {
 	mips_gen.predeal(this->mc);
 	op_inline();
 	op_compare();
+	op_block();
 	for (int i = 0; i < this->mc.size(); i++) {
 		write_into_file(mc[i]);
 		mips_gen.parse(mc[i]);
 	}
+
 }
 
 void MidCodeGen::op_inline() {
@@ -427,6 +430,37 @@ void MidCodeGen::op_compare() {
 		}
 	}
 
+}
+
+void MidCodeGen::op_block() {
+	for (int i = 0; i < mc.size(); i++) {
+		if (mc[i].op == "func")
+			func_name_now = mc[i].s2;
+		if (mc[i].op == "LABEL" && mc[i].s1 == "label_for_begin") {
+			string num = mc[i].s2;
+			while (!(mc[i].op == "LABEL" && mc[i].s1 == "label_for_end" && mc[i].s2 == num)) {
+				i++;
+			}
+			mc.insert(mc.begin() + i + 1, MidCode("clear_for_block", mc[i].s1+mc[i].s2, "", ""));
+		}
+	}
+}
+
+int MidCodeGen::check_use(string iden, string begin) {
+	for (int i = 0; i < mc.size(); i++) {
+		if (mc[i].op == "LABEL" && mc[i].s1 + mc[i].s2 == begin) {
+			for (int j = i; j < mc.size(); j++) {
+				if (mc[j].s1 == iden || mc[j].s2 == iden || mc[j].result == iden) {
+					return 1;
+				}
+				else if (mc[j].op == "end_func") {
+					break;
+				}
+			}
+		}
+	}
+
+	return 0;
 }
 
 inline_func::inline_func() { ; }

@@ -272,6 +272,7 @@ LABEL		|label_if_tail	|5		|
 add		|j		|1		|j
 GOTO		|label_for_begin1	|		|
 LABEL		|label_for_end	|1		|
+clear_for_block		|label_for_end1	|		|
 printf		|"---------------------------------------------------------------"		|		|
 printf		|"'water flower'number is:"		|		|
 save_temp		|		|		|
@@ -442,6 +443,7 @@ LABEL		|label_if_tail	|8		|
 add		|i		|1		|i
 GOTO		|label_for_begin7	|		|
 LABEL		|label_for_end	|7		|
+clear_for_block		|label_for_end7	|		|
 save_temp		|		|		|
 =		|0		|		|0
 clear_temp		|0		|		|
@@ -464,6 +466,7 @@ printf		|"  "		|xxj_temp43	|
 add		|i		|1		|i
 GOTO		|label_for_begin9	|		|
 LABEL		|label_for_end	|9		|
+clear_for_block		|label_for_end9	|		|
 printf		|" "		|		|
 printf		|"---------------------------------------------------------------"		|		|
 save_temp		|		|		|
@@ -606,6 +609,7 @@ clear_temp		|1		|		|
 add		|m		|1		|m
 GOTO		|label_for_begin10	|		|
 LABEL		|label_for_end	|10		|
+clear_for_block		|label_for_end10	|		|
 save_temp		|		|		|
 =		|h		|		|h
 clear_temp		|h		|		|

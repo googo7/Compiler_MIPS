@@ -280,53 +280,53 @@ label_for_begin7:
 	li	$t9,	10
 	div	$s3,	$t9
 	mflo	$t0
-	move	$s5,	$t0
-	li	$s6,	10
-	div	$s5,	$s6
-	mflo	$t1
-	mult	$t1,	$s6
-	mflo	$t2
-	subu	$t3,	$s5,	$t2
-	move	$s5,	$t3
-	move	$t0,	$s5
-	move	$s0,	$t0
-	move	$s5,	$s3
-	li	$s6,	10
-	div	$s5,	$s6
-	mflo	$t0
-	mult	$t0,	$s6
-	mflo	$t1
-	subu	$t2,	$s5,	$t1
-	move	$s5,	$t2
-	move	$t0,	$s5
 	move	$a1,	$t0
-	move	$a2,	$s1
-	move	$a3,	$s0
-	move	$fp,	$a1
-	li	$t9,	100
-	mult	$a2,	$t9
-	mflo	$t0
-	li	$t9,	10
-	mult	$a3,	$t9
-	mflo	$t1
-	addu	$t2,	$t0,	$t1
-	addu	$t3,	$t2,	$fp
-	move	$t0,	$t3
-	move	$a2,	$s1
-	move	$a3,	$s0
-	move	$fp,	$a1
-	mult	$a2,	$a2
+	li	$a2,	10
+	div	$a1,	$a2
 	mflo	$t1
 	mult	$t1,	$a2
 	mflo	$t2
-	mult	$a3,	$a3
+	subu	$t3,	$a1,	$t2
+	move	$a1,	$t3
+	move	$t0,	$a1
+	move	$s0,	$t0
+	move	$a3,	$s3
+	li	$fp,	10
+	div	$a3,	$fp
+	mflo	$t0
+	mult	$t0,	$fp
+	mflo	$t1
+	subu	$t2,	$a3,	$t1
+	move	$a3,	$t2
+	move	$t0,	$a3
+	move	$s5,	$t0
+	move	$s6,	$s1
+	move	$s2,	$s0
+	move	$s4,	$s5
+	li	$t9,	100
+	mult	$s6,	$t9
+	mflo	$t0
+	li	$t9,	10
+	mult	$s2,	$t9
+	mflo	$t1
+	addu	$t2,	$t0,	$t1
+	addu	$t3,	$t2,	$s4
+	move	$t0,	$t3
+	move	$a1,	$s1
+	move	$a2,	$s0
+	move	$a3,	$s5
+	mult	$a1,	$a1
+	mflo	$t1
+	mult	$t1,	$a1
+	mflo	$t2
+	mult	$a2,	$a2
 	mflo	$t3
-	mult	$t3,	$a3
+	mult	$t3,	$a2
 	mflo	$t4
 	addu	$t5,	$t2,	$t4
-	mult	$fp,	$fp
+	mult	$a3,	$a3
 	mflo	$t6
-	mult	$t6,	$fp
+	mult	$t6,	$a3
 	mflo	$t7
 	addu	$t1,	$t5,	$t7
 	move	$t2,	$t1
@@ -372,82 +372,60 @@ label_for_end9:
 	la	$a0,	enter
 	li	$v0,	4
 	syscall
-	li	$t8,	0
-	sw	$t8,	-544	($sp)
-	li	$t8,	1
-	sw	$t8,	-548	($sp)
-	li	$t8,	2
-	sw	$t8,	-536	($sp)
+	li	$fp,	0
+	li	$s6,	1
+	li	$s2,	2
 label_for_begin10:
-	lw	$t9,	-536	($sp)
-	bgt	$t9,	128,	label_for_end10
-	lw	$t8,	-536	($sp)
+	bgt	$s2,	128,	label_for_end10
 	li	$t9,	2
-	div	$t8,	$t9
+	div	$s2,	$t9
 	mflo	$t0
-	move	$t8,	$t0
-	sw	$t8,	-540	($sp)
+	move	$s4,	$t0
 	li	$s3,	2
 label_for_begin11:
-	lw	$t9,	-540	($sp)
-	bgt	$s3,	$t9,	label_for_end11
-	lw	$t8,	-536	($sp)
-	div	$t8,	$s3
+	bgt	$s3,	$s4,	label_for_end11
+	div	$s2,	$s3
 	mflo	$t0
 	mult	$t0,	$s3
 	mflo	$t1
-	move	$t8,	$t1
-	sw	$t8,	-552	($sp)
-	lw	$t9,	-536	($sp)
-	move	$s5,	$t9
-	move	$s6,	$s3
-	div	$s5,	$s6
+	move	$a1,	$t1
+	move	$a2,	$s2
+	move	$a3,	$s3
+	div	$a2,	$a3
 	mflo	$t0
-	mult	$t0,	$s6
+	mult	$t0,	$a3
 	mflo	$t1
-	subu	$t2,	$s5,	$t1
-	move	$s5,	$t2
-	move	$t0,	$s5
+	subu	$t2,	$a2,	$t1
+	move	$a2,	$t2
+	move	$t0,	$a2
 	bne	$t0,	0,	label_if_head12
-	lw	$t8,	-548	($sp)
-	li	$t8,	0
-	sw	$t8,	-548	($sp)
+	li	$s6,	0
 	j	label_if_tail12
 label_if_head12:
 label_if_tail12:
 	addiu	$s3,	$s3,	1
 	j	label_for_begin11
 label_for_end11:
-	lw	$t9,	-548	($sp)
-	bne	$t9,	1,	label_if_head13
+	bne	$s6,	1,	label_if_head13
 	la	$a0,	string14
 	li	$v0,	4
 	syscall
-	lw	$t8,	-536	($sp)
-	move	$a0,	$t8
+	move	$a0,	$s2
 	li	$v0,	1
 	syscall
 	la	$a0,	enter
 	li	$v0,	4
 	syscall
-	lw	$t8,	-544	($sp)
-	addiu	$t0,	$t8,	1
-	lw	$t8,	-544	($sp)
-	move	$t8,	$t0
-	sw	$t8,	-544	($sp)
-	lw	$t8,	-544	($sp)
+	addiu	$t0,	$fp,	1
+	move	$fp,	$t0
 	li	$t9,	10
-	div	$t8,	$t9
+	div	$fp,	$t9
 	mflo	$t1
 	li	$t9,	10
 	mult	$t1,	$t9
 	mflo	$t0
-	lw	$t8,	-552	($sp)
-	move	$t8,	$t0
-	sw	$t8,	-552	($sp)
-	lw	$t8,	-552	($sp)
-	lw	$t9,	-544	($sp)
-	bne	$t8,	$t9,	label_if_head14
+	move	$a1,	$t0
+	bne	$a1,	$fp,	label_if_head14
 	la	$a0,	string14
 	li	$v0,	4
 	syscall
@@ -460,20 +438,14 @@ label_if_tail14:
 	j	label_if_tail13
 label_if_head13:
 label_if_tail13:
-	lw	$t8,	-548	($sp)
-	li	$t8,	1
-	sw	$t8,	-548	($sp)
-	lw	$t8,	-536	($sp)
-	lw	$t8,	-536	($sp)
-	addiu	$t8,	$t8,	1
-	sw	$t8,	-536	($sp)
+	li	$s6,	1
+	addiu	$s2,	$s2,	1
 	j	label_for_begin10
 label_for_end10:
 	la	$a0,	string15
 	li	$v0,	4
 	syscall
-	lw	$t8,	-544	($sp)
-	move	$a0,	$t8
+	move	$a0,	$fp
 	li	$v0,	1
 	syscall
 	la	$a0,	enter
