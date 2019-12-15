@@ -10,10 +10,11 @@ using namespace std;
 class MipsGen {
 public:
 	vector<MidCode> mc;
-	unordered_map<string, string> string_map = {};
+	unordered_map<string, string> string_map =  unordered_map<string, string>({});
 	vector<func_info> func_table;
 	func_info func_lookup(string);
 	void emit(string, string, string, string);
+	void emit(vector<string>);
 	void parse(MidCode mc);
 	string SorT(string s);
 	void sw(string s, string id);

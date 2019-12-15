@@ -58,6 +58,7 @@ int MidCodeGen::get_last_type(void) {
 		}
 	else
 		return 1;
+	return 1;
 }
 string MidCodeGen::get_last_result(int flag) {
 	/*if (flag) {
@@ -73,6 +74,7 @@ string MidCodeGen::get_last_result(int flag) {
 		}
 	else
 		return "";
+	return "";
 }
 
 string MidCodeGen::gen_temp(int type) {
@@ -225,6 +227,42 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 		push(string("BZ"), get_last_result(), "label_for_end" + to_string(cnt), string(""));
 
 	}
+	else if (type == "FOR_TAIL") {
+	//for(iden = expr; con; iden = iden + step) stat1
+	/*
+		iden = expr;
+		label_for_begin:
+		BZ con <label_for_end>
+		stat1
+		iden = iden + step;
+		GOTO <label_for_begin>
+		label_for_end:
+
+
+
+		iden = expr;
+		BZ con <label_for_end>
+		label_for_begin:
+		
+		stat1
+		iden = iden + step;
+		BNZ con <label_for_begin>
+		label_for_end:
+	*/
+	vector<token_info> con;
+	int i;
+
+	for (i = 6; i < tk_set.size(); i++) {
+		if (tk_set[i].type == SEMICN) {
+			break;
+		}
+		con.push_back(tk_set[i]);
+	}
+
+	push(string("BNZ"), get_last_result(), "label_for_begin" + to_string(cnt), string(""));
+
+
+	}
 	//else if (type == "ARRAY") {
 	//	//iden [expr]
 	//	//[] , iden, expr, t0
@@ -252,11 +290,16 @@ void MidCodeGen::out() {
 	op_inline();
 	op_compare();
 	op_block();
+	
 	for (int i = 0; i < this->mc.size(); i++) {
 		write_into_file(mc[i]);
 		mips_gen.parse(mc[i]);
 	}
 
+	op_kui();
+	for (int i = 0; i < mips_code.size(); i++) {
+		mips_gen.emit(mips_code[i]);
+	}
 }
 
 void MidCodeGen::op_inline() {
@@ -274,9 +317,9 @@ void MidCodeGen::op_inline() {
 				
 				i++;
 				vM.push_back(mc[i]);
-				if (mc[i].s1 != "" && !isdigit(mc[i].s1[0]) && (memory_table.lookup(func_name_now, mc[i].s1).addr == -1)
-					|| mc[i].s2 != "" && !isdigit(mc[i].s2[0]) && memory_table.lookup(func_name_now, mc[i].s2).addr == -1
-					|| mc[i].result != "" && !isdigit(mc[i].result[0]) && memory_table.lookup(func_name_now, mc[i].result).addr == -1)
+				if ((mc[i].s1 != "" && !isdigit(mc[i].s1[0]) && (memory_table.lookup(func_name_now, mc[i].s1).addr == -1))
+					|| (mc[i].s2 != "" && !isdigit(mc[i].s2[0]) && memory_table.lookup(func_name_now, mc[i].s2).addr == -1)
+					|| (mc[i].result != "" && !isdigit(mc[i].result[0]) && memory_table.lookup(func_name_now, mc[i].result).addr == -1))
 					break;
 				if (mc[i].op == "para") {
 					para_pt.push_back(mc[i].s2);
@@ -306,7 +349,7 @@ void MidCodeGen::op_inline() {
 		vector<MidCode> vm_temp = {};
 		vector<MidCode> vm = inline_func_info[i].func_mc;
 		vector<string> para_set = inline_func_info[i].para;
-		unordered_map<string, string> temp_map = {};
+		unordered_map<string, string> temp_map = unordered_map<string, string>({});
 		if(inline_func_info[i].ret != "" && !(isdigit(inline_func_info[i].ret[0]) || inline_func_info[i].ret[0] == '+' || inline_func_info[i].ret[0] == '-'))
 			para_set.push_back(inline_func_info[i].ret);
 		for (int j = 0; j < vm.size(); j++) {
@@ -428,6 +471,33 @@ void MidCodeGen::op_compare() {
 			mc.erase(mc.begin() + i - 1);
 			i--;
 		}
+		else if (mc[i].op == "BNZ") {
+			s1 = mc[i - 1].s1;
+			s2 = mc[i - 1].s2;
+			if (mc[i - 1].op == "<") {
+				mc[i] = MidCode("BLT", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else if (mc[i - 1].op == "<=") {
+				mc[i] = MidCode("BLE", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else if (mc[i - 1].op == ">") {
+				mc[i] = MidCode("BGT", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else if (mc[i - 1].op == ">=") {
+				mc[i] = MidCode("BGE", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else if (mc[i - 1].op == "==") {
+				mc[i] = MidCode("BEQ", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else if (mc[i - 1].op == "!=") {
+				mc[i] = MidCode("BNE", s1, s2, mc[i].s2, mc[i].res_type);
+			}
+			else {
+				continue;
+			}
+			mc.erase(mc.begin() + i - 1);
+			i--;
+		}
 	}
 
 }
@@ -442,6 +512,33 @@ void MidCodeGen::op_block() {
 				i++;
 			}
 			mc.insert(mc.begin() + i + 1, MidCode("clear_for_block", mc[i].s1+mc[i].s2, "", ""));
+		}
+	}
+}
+
+
+void MidCodeGen::op_kui() {
+	for (int i = 0; i < mips_code.size(); i++) {
+		if (mips_code[i][0] == "move" && mips_code[i][2][1] == 't') {
+			if (mips_code[i - 1][0] == "addu" || mips_code[i - 1][0] == "addiu" || mips_code[i - 1][0] == "subu" || mips_code[i - 1][0] == "subiu" || mips_code[i - 1][0] == "mflo" || mips_code[i - 1][0] == "move" || mips_code[i - 1][0] == "li") {
+				if (mips_code[i - 1][1] == mips_code[i][2]) {
+					mips_code[i - 1][1] = mips_code[i][1];
+					mips_code.erase(mips_code.begin() + i);
+					i--;
+				}
+			}
+		}
+		/*if (mips_code[i][0] == "syscall" && mips_code[i - 1][0] == "li") {
+			if (mips_code[i - 3][0] == "syscall" && mips_code[i - 4][0] == "li") {
+				if (mips_code[i - 1][2] == mips_code[i - 4][2]) {
+					mips_code.erase(mips_code.begin() + i - 1);
+					i--;
+				}
+			}
+		}*/
+		if (mips_code[i][0] == "bne" || mips_code[i][0] == "beq" || mips_code[i][0] == "bgt" || mips_code[i][0] == "bge" || mips_code[i][0] == "blt" || mips_code[i][0] == "ble") {
+			if (mips_code[i][2] == "0")
+				mips_code[i][2] = "$0";
 		}
 	}
 }

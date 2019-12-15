@@ -32,6 +32,7 @@ class MidCodeGen {
 public:
 	vector<MidCode> mc;
 	vector<inline_func> inline_func_info;
+	vector<vector<string>> mips_code;
 	MidCodeGen();
 	void push(string, string, string, string, int i = 1);
 	void parse(string, vector<token_info>, int i = 0);
@@ -42,5 +43,6 @@ public:
 	void op_inline();
 	void op_compare();
 	void op_block();
+	void op_kui();
 	int check_use(string iden, string begin);
 };

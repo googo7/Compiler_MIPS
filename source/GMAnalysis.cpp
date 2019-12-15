@@ -450,7 +450,6 @@ void gm_analyse::isValueVariTable(void){
 	}
 	
 	isExpression();
-	int i = 1;
 	vector<string> expr_name = {};
 	expr_name.push_back(mc_gen.get_last_result(1));
 	//mc_gen.push("func_push_para", mc_gen.get_last_result(1), "0", "");
@@ -650,7 +649,7 @@ void gm_analyse::isLoopStatement(void){
 		isExpression();
 		midcode_flag = 1;
 		mc_gen.push("=", mc_gen.get_last_result(1), "", result);
-		mc_gen.push("LABEL", "label_for_begin", to_string(la_cnt), "");
+		int begin = mc_gen.mc.size();
 		midcode_vt.push_back(token_info(IDENFR, mc_gen.get_last_result()));
 		if (type == SEMICN) {
 			OUT(tk.now_token); getsym;
@@ -686,10 +685,18 @@ void gm_analyse::isLoopStatement(void){
 		if (type == RPARENT) {
 			OUT(tk.now_token); getsym;
 		}//else
+		vector<token_info> vm = midcode_vt;
 		end_midcode("FOR", la_cnt);
+		int end = mc_gen.mc.size() - 1;
+		mc_gen.push("LABEL", "label_for_begin", to_string(la_cnt), "");
+		
 		isStatement();
 		mc_gen.push(op, s1, s2, result);
-		mc_gen.push("GOTO", "label_for_begin" + to_string(la_cnt), "", "");
+		for (int i = begin; i < end; i++) {
+			mc_gen.mc.push_back(mc_gen.mc[i]);
+		}
+
+		mc_gen.parse("FOR_TAIL", vm, la_cnt);
 		mc_gen.push("LABEL", "label_for_end", to_string(la_cnt), "");
 	}//else
 

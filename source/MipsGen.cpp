@@ -649,6 +649,20 @@ void MipsGen::parse(MidCode mc) {
 }
 
 void MipsGen::emit(string op, string s1, string s2, string s3) {
+	gm.mc_gen.mips_code.push_back(vector<string>({ op, s1, s2, s3 }));
+}
+
+void MipsGen::emit(vector<string> vs) {
+	string op = vs[0];
+	string s1 = vs[1];
+	string s2 = vs[2];
+	string s3 = vs[3];
+	static int text_flag = 1;
+	if (text_flag && op == "LABEL") {
+		write_into_mfile(".text:");
+		write_into_mfile("j main");
+		text_flag = 0;
+	}
 	string res;
 	res = "\t" + op;
 	if (s1 == "$s8")
@@ -823,8 +837,7 @@ void MipsGen::predeal(vector<MidCode> mc) {
 			}
 		}
 	}
-	write_into_mfile(".text:");
-	write_into_mfile("j main");
+	
 }
 
 void MipsGen::push(string reg) {
@@ -853,6 +866,7 @@ string MipsGen::lookup(string iden, string reg) {
 				string r = this->reg_table[i].reg;
 				if (this->reg_table[i].var.iden[0] == 'x' && this->reg_table[i].var.iden[1] == 'x' && this->reg_table[i].var.iden[2] == 'j' && this->reg_table[i].var.iden[3] == '_' && this->reg_table[i].var.iden[4] == 't')
 				{
+					memory_table.setflag(func_now, iden, 0);
 					for (int j = 0; j < use_t_reg.size(); j++) {
 						if (use_t_reg[j] == reg_table[i].reg){
 							use_t_reg.erase(use_t_reg.begin() + j);

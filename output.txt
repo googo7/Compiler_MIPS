@@ -455,26 +455,6 @@ INTCON 1
 <步长>
 RPARENT )
 LBRACE {
-IDENFR x1
-ASSIGN =
-LPARENT (
-IDENFR j
-<因子>
-DIV /
-IDENFR i
-<因子>
-<项>
-<表达式>
-RPARENT )
-<因子>
-MULT *
-IDENFR i
-<因子>
-<项>
-<表达式>
-<赋值语句>
-SEMICN ;
-<语句>
 IFTK if
 LPARENT (
 IDENFR mod

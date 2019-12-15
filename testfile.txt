@@ -46,7 +46,7 @@ void complete_flower_num()
     s = j;
     for(i=1; i<j; i=i+1)
     {
-      x1 = (j/i) * i ;
+
       if( mod(j,i) == 0 )
       {
         n = n + 1;
