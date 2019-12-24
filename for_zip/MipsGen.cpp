@@ -534,7 +534,7 @@ void MipsGen::parse(MidCode mc) {
 		emit("li", "$v0", "10", "");
 		emit("syscall", "", "", "");
 	}
-	else if (op == "clear_temp") {
+	/*else if (op == "clear_temp") {
 		string remain = "";
 		
 		for (int i = 0; i < this->reg_table.size(); i++) {
@@ -564,7 +564,7 @@ void MipsGen::parse(MidCode mc) {
 		expr_temp_cnt--;
 		t_temp = this->t_temp_stack[t_temp_stack.size() - 1];
 		t_temp_stack.pop_back();
-	}
+	}*/
 	else if (op == "save_temp") {
 		expr_temp_cnt++;
 		this->t_temp_stack.push_back(t_temp);
@@ -848,6 +848,29 @@ void MipsGen::push(string reg) {
 void MipsGen::pop(string reg) {
 	emit("addiu", "$sp", "$sp", "4");
 	emit("lw", reg, "0", "$sp");
+}
+
+void MipsGen::del_temp(string iden) {
+	for (int i = 0; i < this->reg_table.size(); i++) {
+		if (this->reg_table[i].isHit) {
+			if (this->reg_table[i].var.iden == iden) {
+				string r = this->reg_table[i].reg;
+				if (this->reg_table[i].var.iden[0] == 'x' && this->reg_table[i].var.iden[1] == 'x' && this->reg_table[i].var.iden[2] == 'j' && this->reg_table[i].var.iden[3] == '_' && this->reg_table[i].var.iden[4] == 't')
+				{
+					memory_table.setflag(func_now, iden, 0);
+					for (int j = 0; j < use_t_reg.size(); j++) {
+						if (use_t_reg[j] == reg_table[i].reg) {
+							use_t_reg.erase(use_t_reg.begin() + j);
+							j--;
+						}
+					}
+					free_t_reg.push_back(reg_table[i].reg);
+					this->reg_table.erase(this->reg_table.begin() + i);
+					i--;
+				}
+			}
+		}
+	}
 }
 
 string MipsGen::lookup(string iden, string reg) {

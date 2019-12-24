@@ -287,16 +287,18 @@ void MidCodeGen::parse(string type, vector<token_info> tk_set, int cnt) {
 
 void MidCodeGen::out() {
 	mips_gen.predeal(this->mc);
-	op_inline();
-	op_compare();
-	op_block();
+	//op_dead();
+	//op_inline();
+	//op_compare();
+	//op_block();
 	
 	for (int i = 0; i < this->mc.size(); i++) {
-		write_into_file(mc[i]);
+		if(mc[i].op != "save_temp" && mc[i].op != "clear_temp" && mc[i].op != "begin_inline_func" && mc[i].op != "end_inline_func" && mc[i].op != "clear_for_block")
+			write_into_file(mc[i]);
 		mips_gen.parse(mc[i]);
 	}
 
-	op_kui();
+	//op_kui();
 	for (int i = 0; i < mips_code.size(); i++) {
 		mips_gen.emit(mips_code[i]);
 	}
@@ -309,7 +311,7 @@ void MidCodeGen::op_inline() {
 	vector<MidCode> vM = {};
 	for (int i = 0; i < this->mc.size(); i++) {
 		func_pt = ""; para_pt = {}; ret = ""; vM = {};
-		if (mc[i].op == "func") {
+		if (mc[i].op == "func" && mc[i].s2 != "main") {
 			func_name_now = mc[i].s2;
 			vM.push_back(mc[i]);
 			func_pt = mc[i].s2;
@@ -324,7 +326,7 @@ void MidCodeGen::op_inline() {
 				if (mc[i].op == "para") {
 					para_pt.push_back(mc[i].s2);
 				}
-				else if (mc[i].op == "ret") {
+				else if (mc[i].op == "ret" && ret == "") {
 					ret = mc[i].s1;
 				}
 				else if (mc[i].op == "BZ" || mc[i].op == "GOTO" || mc[i].op == "func_call" || mc[i].op == "BNZ") {
@@ -418,13 +420,14 @@ void MidCodeGen::op_inline() {
 				j--;
 			}
 			mc.insert(mc.begin() + i + 1, MidCode("end_inline_func", mc[i].result, "", ""));
-			if(in_func.ret != "" && in_func.ret[0] == 'x' && in_func.ret[1] == 'x' && in_func.ret[2] == 'j' && in_func.ret[3] == '_' && in_func.ret[4] == 't')
-				mc.insert(mc.begin() + i + 1, MidCode("=", in_func.ret, "", mc[i].result, mc[i].res_type));
-			else if(in_func.ret != "" && !(isdigit(in_func.ret[0]) || in_func.ret[0] == '+' || in_func.ret[0] == '-'))
-				mc.insert(mc.begin() + i + 1, MidCode("=", "xxj_inline_" + in_func.ret, "", mc[i].result, mc[i].res_type));
-			else if(in_func.ret != "")
-				mc.insert(mc.begin() + i + 1, MidCode("=", in_func.ret, "", mc[i].result, mc[i].res_type));
-
+			if (mc[i].result != "") {
+				if (in_func.ret != "" && in_func.ret[0] == 'x' && in_func.ret[1] == 'x' && in_func.ret[2] == 'j' && in_func.ret[3] == '_' && in_func.ret[4] == 't')
+					mc.insert(mc.begin() + i + 1, MidCode("=", in_func.ret, "", mc[i].result, mc[i].res_type));
+				else if (in_func.ret != "" && !(isdigit(in_func.ret[0]) || in_func.ret[0] == '+' || in_func.ret[0] == '-'))
+					mc.insert(mc.begin() + i + 1, MidCode("=", "xxj_inline_" + in_func.ret, "", mc[i].result, mc[i].res_type));
+				else if (in_func.ret != "")
+					mc.insert(mc.begin() + i + 1, MidCode("=", in_func.ret, "", mc[i].result, mc[i].res_type));
+			}
 			for (int j = in_func.func_mc.size() - 1; j >= 0; j--) {
 				if (in_func.func_mc[j].result[0] == 'x' && in_func.func_mc[j].result[1] == 'x' && in_func.func_mc[j].result[2] == 'j' && in_func.func_mc[j].result[3] == '_' && in_func.func_mc[j].result[4] == 't') {
 					string s11 = in_func.func_mc[j].result;
@@ -517,28 +520,73 @@ void MidCodeGen::op_block() {
 }
 
 
+void MidCodeGen::op_dead() {
+	vector<string> vs;
+	int cnt = 0;
+	int cnt_temp = mc.size();
+	while (cnt != cnt_temp) {
+		vs = {};
+		for (int i = 0; i < mc.size(); i++) {
+			if (mc[i].result != "" && !isdigit(mc[i].result[0]) && (mc[i].result[0]!='-') && !(mc[i].result[0] == 'l' && mc[i].result[1] == 'a' && mc[i].result[5] == '_')) {
+				int res = check_use(mc[i].result, i);
+				if (!res && mc[i].op != "func_call") {
+					int flag = 0;
+					for (int j = 0; j < vs.size(); j++) {
+						if (vs[j] == mc[i].result) {
+							flag = 1;
+							break;
+						}
+					}
+					if (flag)
+						continue;
+					mc.erase(mc.begin() + i);
+					i--;
+				}
+				else if(mc[i].op != "func_call") {
+					vs.push_back(mc[i].result);
+				}
+				else if(!res){
+					mc[i].result = "";
+				}
+				if (mc[i].op == "scanf") {
+					vs.push_back(mc[i].s1);
+				}
+				vs.push_back(mc[i].s1);
+				vs.push_back(mc[i].s2);
+			}
+		}
+		cnt = cnt_temp;
+		cnt_temp = mc.size();
+	}
+}
+
 void MidCodeGen::op_kui() {
 	for (int i = 0; i < mips_code.size(); i++) {
 		if (mips_code[i][0] == "move" && mips_code[i][2][1] == 't') {
-			if (mips_code[i - 1][0] == "addu" || mips_code[i - 1][0] == "addiu" || mips_code[i - 1][0] == "subu" || mips_code[i - 1][0] == "subiu" || mips_code[i - 1][0] == "mflo" || mips_code[i - 1][0] == "move" || mips_code[i - 1][0] == "li") {
+			//if (mips_code[i - 1][0] == "addu" || mips_code[i - 1][0] == "addiu" || mips_code[i - 1][0] == "subu" || mips_code[i - 1][0] == "subiu" || mips_code[i - 1][0] == "mflo" || mips_code[i - 1][0] == "move" || mips_code[i - 1][0] == "li") {
 				if (mips_code[i - 1][1] == mips_code[i][2]) {
 					mips_code[i - 1][1] = mips_code[i][1];
 					mips_code.erase(mips_code.begin() + i);
 					i--;
 				}
-			}
+			//}
 		}
-		/*if (mips_code[i][0] == "syscall" && mips_code[i - 1][0] == "li") {
-			if (mips_code[i - 3][0] == "syscall" && mips_code[i - 4][0] == "li") {
-				if (mips_code[i - 1][2] == mips_code[i - 4][2]) {
-					mips_code.erase(mips_code.begin() + i - 1);
-					i--;
-				}
-			}
-		}*/
+		//if (mips_code[i][0] == "syscall" && mips_code[i - 1][0] == "li") {
+		//	if (mips_code[i - 3][0] == "syscall" && mips_code[i - 4][0] == "li") {
+		//		if (mips_code[i - 1][2] == mips_code[i - 4][2]) {
+		//			mips_code.erase(mips_code.begin() + i - 1);
+		//			i--;
+		//		}
+		//	}
+		//}
 		if (mips_code[i][0] == "bne" || mips_code[i][0] == "beq" || mips_code[i][0] == "bgt" || mips_code[i][0] == "bge" || mips_code[i][0] == "blt" || mips_code[i][0] == "ble") {
 			if (mips_code[i][2] == "0")
 				mips_code[i][2] = "$0";
+		}
+		if (mips_code[i][0] == "j" && mips_code[i + 1][0] == "LABEL" && mips_code[i + 2][0] == "LABEL") {
+			if (mips_code[i][1] == mips_code[i + 2][1] + mips_code[i + 2][2]) {
+				mips_code.erase(mips_code.begin() + i);
+			}
 		}
 	}
 }
@@ -557,6 +605,18 @@ int MidCodeGen::check_use(string iden, string begin) {
 		}
 	}
 
+	return 0;
+}
+
+int MidCodeGen::check_use(string iden, int i) {
+	for (i++; i < mc.size(); i++) {
+		if ((mc[i].s1 == iden || mc[i].s2 == iden || mc[i].result == iden) && mc[i].op != "clear_temp"&& mc[i].op != "end_inline_func") {
+			return 1;
+		}
+		else if (mc[i].op == "exit") {
+			break;
+		}
+	}
 	return 0;
 }
 

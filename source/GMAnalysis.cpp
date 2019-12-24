@@ -624,7 +624,7 @@ void gm_analyse::isLoopStatement(void){
 		isCondition();
 		if (type == RPARENT) {
 			OUT(tk.now_token); getsym;
-		}//else
+		}//else 
 		end_midcode("DOWHILE", la_cnt);
 	}
 	else if (type == FORTK) {
@@ -738,7 +738,7 @@ void gm_analyse::isAssignStatement(void){
 		OUT(tk.now_token); getsym;
 	}
 	isExpression();
-	s1 = mc_gen.get_last_result(1);
+	s1 = mc_gen.get_last_result (1);
 	mc_gen.push("=", s1, s2, result);
 	//----------------pass---------------
 	string s("<赋值语句>");

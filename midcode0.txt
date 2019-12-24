@@ -1,0 +1,223 @@
+func		|void		|assignGlobal		|
+para		|0		|a		|
+para		|4		|b		|
+para		|8		|c		|
+para		|12		|d		|
+=		|a		|		|a
+=		|a		|		|global_int_1
+=		|b		|		|b
+=		|b		|		|global_char_1
+=		|c		|		|c
+=		|c		|		|global_int_2
+=		|d		|		|d
+=		|d		|		|global_char_2
+=		|0		|		|0
+=		|0		|		|num5
+=		|num5		|		|xxj_temp0
+=		|100		|		|100
+BGE		|xxj_temp0	|100		|label_for_end0
+LABEL		|label_for_begin	|0		|
+=		|num5		|		|xxj_temp2
+=		|num5		|		|xxj_temp3
+=		|xxj_temp3	|xxj_temp2	|global_array_1
+add		|num5		|1		|num5
+=		|num5		|		|xxj_temp0
+=		|100		|		|100
+BLT		|xxj_temp0	|100		|label_for_begin0
+LABEL		|label_for_end	|0		|
+=		|100		|		|100
+=		|100		|		|num5
+=		|0		|		|0
+=		|num5		|		|xxj_temp4
+BGT		|0		|xxj_temp4	|label_for_end1
+LABEL		|label_for_begin	|1		|
+=		|num5		|		|xxj_temp6
+=		|10000		|		|10000
+=		|num5		|		|xxj_temp7
+sub		|10000		|xxj_temp7	|xxj_temp8
+=		|xxj_temp8	|xxj_temp6	|global_array_2
+sub		|num5		|1		|num5
+=		|0		|		|0
+=		|num5		|		|xxj_temp4
+BLE		|0		|xxj_temp4	|label_for_begin1
+LABEL		|label_for_end	|1		|
+=		|100		|		|100
+=		|100		|		|num5
+=		|num5		|		|xxj_temp9
+=		|100		|		|100
+=		|100		|		|100
+add		|100		|100		|xxj_temp10
+BGE		|xxj_temp9	|xxj_temp10	|label_for_end2
+LABEL		|label_for_begin	|2		|
+=		|num5		|		|xxj_temp12
+=		|100		|		|100
+sub		|xxj_temp12	|100		|xxj_temp13
+=		|57		|		|57
+=		|57		|xxj_temp13	|global_array_3
+add		|num5		|1		|num5
+=		|num5		|		|xxj_temp9
+=		|100		|		|100
+=		|100		|		|100
+add		|100		|100		|xxj_temp10
+BLT		|xxj_temp9	|xxj_temp10	|label_for_begin2
+LABEL		|label_for_end	|2		|
+=		|0		|		|0
+=		|0		|		|num5
+=		|num5		|		|xxj_temp14
+=		|100		|		|100
+BGE		|xxj_temp14	|100		|label_for_end3
+LABEL		|label_for_begin	|3		|
+=		|num5		|		|xxj_temp16
+=		|95		|		|95
+=		|95		|xxj_temp16	|global_array_4
+add		|num5		|1		|num5
+=		|num5		|		|xxj_temp14
+=		|100		|		|100
+BLT		|xxj_temp14	|100		|label_for_begin3
+LABEL		|label_for_end	|3		|
+ret		|		|		|
+end_func		|		|		|
+func		|void		|printGlobal		|
+=		|global_int_1		|		|xxj_temp17
+printf		|"global_int_1 = "		|xxj_temp17	|
+=		|global_int_2		|		|xxj_temp18
+printf		|"global_int_2 = "		|xxj_temp18	|
+=		|global_char_1		|		|xxj_temp19
+printf		|"global_char_1 = "		|xxj_temp19	|
+=		|global_char_2		|		|xxj_temp20
+printf		|"global_char_2 = "		|xxj_temp20	|
+=		|num5		|		|xxj_temp21
+printf		|"num5 = "		|xxj_temp21	|
+=		|9		|		|9
+=		|9		|		|num5
+=		|9		|		|9
+=		|9		|		|num5
+=		|num5		|		|xxj_temp22
+=		|0		|		|0
+BLT		|xxj_temp22	|0		|label_for_end4
+LABEL		|label_for_begin	|4		|
+=		|num5		|		|xxj_temp24
+printf		|		|xxj_temp24	|
+sub		|num5		|1		|num5
+=		|num5		|		|xxj_temp22
+=		|0		|		|0
+BGE		|xxj_temp22	|0		|label_for_begin4
+LABEL		|label_for_end	|4		|
+=		|12345679		|		|12345679
+printf		|"const_int_1 = "		|12345679		|
+=		|0		|		|0
+printf		|"const_int_2 = "		|0		|
+=		|0		|		|0
+printf		|"const_int_3 = "		|0		|
+=		|-12345679		|		|-12345679
+printf		|"const_int_4 = "		|-12345679		|
+=		|57		|		|57
+printf		|"const_char_1 = "		|57		|
+=		|95		|		|95
+printf		|"const_char_2 = "		|95		|
+=		|43		|		|43
+printf		|"const_char_3 = "		|43		|
+=		|42		|		|42
+printf		|"const_char_4 = "		|42		|
+=		|0		|		|0
+=		|0		|		|num5
+=		|num5		|		|xxj_temp25
+=		|100		|		|100
+BGE		|xxj_temp25	|100		|label_for_end5
+LABEL		|label_for_begin	|5		|
+=		|num5		|		|xxj_temp27
+[]		|global_array_1		|xxj_temp27	|xxj_temp28
+printf		|		|xxj_temp28	|
+=		|num5		|		|xxj_temp29
+[]		|global_array_2		|xxj_temp29	|xxj_temp30
+printf		|		|xxj_temp30	|
+=		|num5		|		|xxj_temp31
+[]		|global_array_3		|xxj_temp31	|xxj_temp32
+printf		|		|xxj_temp32	|
+=		|num5		|		|xxj_temp33
+[]		|global_array_4		|xxj_temp33	|xxj_temp34
+printf		|		|xxj_temp34	|
+add		|num5		|1		|num5
+=		|num5		|		|xxj_temp25
+=		|100		|		|100
+BLT		|xxj_temp25	|100		|label_for_begin5
+LABEL		|label_for_end	|5		|
+end_func		|		|		|
+func		|int		|globalPara		|
+para		|0		|a		|
+para		|4		|b		|
+para		|8		|c		|
+para		|12		|d		|
+para		|16		|e		|
+para		|20		|f		|
+=		|a		|		|a
+printf		|"a = "		|a		|
+=		|b		|		|b
+printf		|"b = "		|b		|
+=		|c		|		|c
+printf		|"c = "		|c		|
+=		|d		|		|d
+printf		|"d = "		|d		|
+=		|e		|		|e
+printf		|"e = "		|e		|
+=		|f		|		|f
+printf		|"f = "		|f		|
+=		|1		|		|1
+=		|1		|		|a
+=		|99		|		|99
+=		|99		|		|b
+=		|1		|		|1
+=		|1		|		|c
+=		|99		|		|99
+=		|99		|		|d
+=		|1		|		|1
+=		|1		|		|e
+=		|99		|		|99
+=		|99		|		|f
+=		|a		|		|a
+printf		|"a = "		|a		|
+=		|b		|		|b
+printf		|"b = "		|b		|
+=		|c		|		|c
+printf		|"c = "		|c		|
+=		|d		|		|d
+printf		|"d = "		|d		|
+=		|e		|		|e
+printf		|"e = "		|e		|
+=		|f		|		|f
+printf		|"f = "		|f		|
+=		|num5		|		|xxj_temp35
+ret		|xxj_temp35	|		|
+end_func		|		|		|
+func		|void		|testglobal		|
+=		|12345679		|		|12345679
+=		|57		|		|57
+=		|-12345679		|		|-12345679
+=		|42		|		|42
+func_push_para		|12345679		|0		|
+func_push_para		|57		|1		|
+func_push_para		|-12345679		|2		|
+func_push_para		|42		|3		|
+func_call		|assignGlobal		|		|
+func_call		|printGlobal		|		|
+=		|12345679		|		|12345679
+=		|57		|		|57
+=		|global_int_1		|		|xxj_temp36
+=		|global_char_1		|		|xxj_temp37
+=		|30		|		|30
+[]		|global_array_1		|30		|xxj_temp38
+=		|50		|		|50
+[]		|global_array_3		|50		|xxj_temp39
+func_push_para		|12345679		|0		|
+func_push_para		|57		|1		|
+func_push_para		|xxj_temp36	|2		|
+func_push_para		|xxj_temp37	|3		|
+func_push_para		|xxj_temp38	|4		|
+func_push_para		|xxj_temp39	|5		|
+func_call		|globalPara		|		|xxj_temp40
+func_call		|printGlobal		|		|
+end_func		|		|		|
+func		|void		|main		|
+func_call		|testglobal		|		|
+ret		|		|		|
+exit		|		|		|

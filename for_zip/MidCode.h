@@ -44,5 +44,7 @@ public:
 	void op_compare();
 	void op_block();
 	void op_kui();
+	void op_dead();
 	int check_use(string iden, string begin);
+	int check_use(string, int);
 };

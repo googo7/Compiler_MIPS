@@ -35,7 +35,7 @@ public:
 	vector<vector<string>> t_temp_stack = {};
 	void push_reg_table();
 	void pop_reg_table();
-
+	void del_temp(string);
 	string lookup(string iden, string reg = "$t8");
 	string alloc(var_info i, string reg);
 	vector<RegTableItem> clear_t();
